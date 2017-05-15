@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lake District Deep Map</title>
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="css/external/css.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/genericons.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/style.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/dualTimeline.css" type="text/css">
+
+    <script src="js/external/jquery.min.js"></script>
+    <script src="js/external/nanoscroller.js"></script>
+    <script src="js/external/jquery-ui.js"></script>
+    <script src="js/external/jquery.panzoom.js"></script>
+    <script src="js/external/modernizr.js"></script>
+    <script src="js/external/PxFacetSearch.js"></script>
+    <script src="js/external/PxLoader.js"></script>
+    <script src="js/external/colResizable-1.6.js"></script>
+
+    <script src="js/WebService.js"></script>
+    <script src="js/common/MapCommons.js"></script>
+    <script src="js/common/HistoricMapCommons.js"></script>
+    <script src="js/common/TimelineCommons.js"></script>
+    <script src="js/common/DualTimelineCommons.js"></script>
+
+    <script src="js/DeepMapNavigator.js"></script>
+    <script src="js/literary/LiteraryManager.js"></script>
+    <script src="js/literary/LiteraryInstance.js"></script>
+
+    <script src="js/literary/LiteraryRender.js"></script>
+</head>
+<body>
+<div class="row">
+    <nav id="site-navigation" class="main-navigation clear" role="navigation">
+        <h1 class="menu-toggle" title="Menu"><span class="screen-reader-text">Menu</span></h1>
+        <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+        <div class="menu-the-project-container">
+            <ul id="menu-the-project" class="menu nav-menu">
+                <li id="menu-item-39" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-39"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/">Home</a></li>
+                <li id="menu-item-36"
+                    class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor current-menu-ancestor current-menu-parent current-page-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-36">
+                    <a href="http://wp.lancs.ac.uk/lakesdeepmap/the-project/">The Project</a>
+                    <ul class="sub-menu">
+                        <li id="menu-item-37"
+                            class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-16 current_page_item menu-item-37">
+                            <a href="http://wp.lancs.ac.uk/lakesdeepmap/the-project/gis-deep-mapping/">Deep Mapping</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="menu-item-34" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-34"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/events/">Events</a></li>
+                <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/training/">Training</a></li>
+                <li id="menu-item-31" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/people/">People</a></li>
+                <li id="menu-item-32" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/gallery/">Gallery</a></li>
+                <li id="menu-item-30"
+                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-30">
+                    <a href="http://wp.lancs.ac.uk/lakesdeepmap/further-reading/">Further Reading</a>
+                    <ul class="sub-menu">
+                        <li id="menu-item-137"
+                            class="menu-item menu-item-type-custom menu-item-object-custom menu-item-137"><a
+                                href="http://www.lancaster.ac.uk/fass/projects/spatialhum.wordpress/">Spatial
+                            Humanities</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="row">
+    <div id="timeline" class="unit whole">
+        <div id="timelineLabels"></div>
+        <div id="timelineCanvasHost">
+            <canvas id="timelineCanvas"></canvas>
+        </div>
+        <table id="timeRangeSlider">
+        <tr>
+            <td style="width: 20%;"></td>
+            <td style="width: 20%;"></td>
+            <td style="width: 20%;"></td>
+            <td style="width: 20%;"></td>
+            <td style="width: 20%;"></td>
+        </tr>
+        </table>
+    </div>
+</div>
+<div class="row" id="dualTimeline" style="display:none">
+    <div id="timeline2" class="unit whole">
+        <div id="timelineLabels2"></div>
+        <div id="timelineCanvasHost2">
+            <canvas id="timelineCanvas2"></canvas>
+        </div>
+        <div id="timeRangeSlider2"></div>
+    </div>
+</div>
+<div class="row">
+    <div id="leftPanel">
+        <br>
+        <input id="checkDualTimeline" type="checkbox" onclick="deepMapNavigator.toggleDualTimeline();"/>
+        <label for="checkDualTimeline">Enable Dual Timeline</label>
+        <br>
+        <input id="checkHistoricMap" type="checkbox" onclick="deepMapNavigator.toggleHistoricMap();"/>
+        <label for="checkHistoricMap">Enable Historic Map</label>
+        <br>
+        <div id="literaryList"></div>
+    </div>
+    <div id="mainPanel">
+        <div id="map"></div>
+        <div id="histMap">
+            <div id="histMapContainer">
+                <img id="histMapImage" src="media/maps/6916105_4096.jpg">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var mapCommons;
+    var historicMapCommons;
+    var timelineCommons;
+    var dualTimelineCommons;
+
+    var deepMapNavigator;
+    var literaryManager;
+
+    var literaryRender;
+
+    mapCommons = new MapCommons();
+    historicMapCommons = new HistoricMapCommons();
+    timelineCommons = new TimelineCommons();
+
+    function initMap() {
+        mapCommons.init();
+
+        deepMapNavigator = new DeepMapNavigator();
+        literaryManager = new LiteraryManager();
+
+        literaryRender = new LiteraryRender();
+
+        literaryManager.init();
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFFW6ftcenI5Zs6FxjmwSKwJe0cA852_g&callback=initMap"></script>
+</html>

@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="NLPCommons">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../NLPCommon/dist" />
+      <root url="file://$PROJECT_DIR$/../NLPCommon/libs" />
+      <root url="file://$PROJECT_DIR$/../NLPCommon/openNLP" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../NLPCommon/dist" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../NLPCommon/libs" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../NLPCommon/openNLP" recursive="false" />
+  </library>
+</component>

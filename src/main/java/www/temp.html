@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="map" style="width:100vw;height:100vh"></div>
+</body>
+<script>
+    function initMap() {
+        var myLatLng = {lat: 54.57417972892827, lng: -3.1730026245116916};
+        //54.57417972892827,-3.1730026245116916
+
+        this.map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: myLatLng
+        });
+        var icon = 'media/sprites/sprite-hotspot-med.png';
+        var marker = new google.maps.Marker({
+            position: {lat:54.594487, lng:-3.138446},
+            map: this.map,
+                icon: icon
+        });
+        var cityCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: this.map,
+            center: {lat:54.594487, lng:-3.138446},
+            radius: 500
+        });
+        var cityCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: this.map,
+            center: {lat:54.594487, lng:-3.138446},
+            radius: 1000
+        });
+
+        var marker = new google.maps.Marker({
+            position: {lat: 54.594624, lng: -3.134729},
+            map: this.map,
+            title: "tree-1"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594254, lng: -3.140619},
+            map: this.map,
+            title: "Keswick Jetty"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59401, lng: -3.14107},
+            map: this.map,
+            title: "Wooden jetty 2"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59428, lng: -3.14092},
+            map: this.map,
+            title: "No idea what"    });var marker = new google.maps.Marker({
+            position: {lat: 54.592403, lng: -3.140187},
+            map: this.map,
+            title: "Wet Boots"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59753, lng: -3.142534},
+            map: this.map,
+            title: "Grasmoor"    });var marker = new google.maps.Marker({
+            position: {lat: 54.598335, lng: -3.138067},
+            map: this.map,
+            title: "A Winter Coat on Grisedale Pike"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594276, lng: -3.140292},
+            map: this.map,
+            title: "Derwent Boat launch.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597504, lng: -3.139461},
+            map: this.map,
+            title: "Robin"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59524, lng: -3.141275},
+            map: this.map,
+            title: "Crowe Park (1 of 1)"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594276, lng: -3.140292},
+            map: this.map,
+            title: "Keswick Boat Launch.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593803, lng: -3.141188},
+            map: this.map,
+            title: "Castle Crag, Derwentwater, Lake District, UK"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593464, lng: -3.140981},
+            map: this.map,
+            title: "Jetties"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59523, lng: -3.14102},
+            map: this.map,
+            title: "Gateway To Nowhere"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59753, lng: -3.142534},
+            map: this.map,
+            title: "Derwentwater"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595146, lng: -3.140759},
+            map: this.map,
+            title: "The gateway to the lakes"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59037, lng: -3.139696},
+            map: this.map,
+            title: "Looking across Derwent Water, Lake District National Park, Cumbria, UK"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59779, lng: -3.138656},
+            map: this.map,
+            title: "Gone Ahead"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595913, lng: -3.138995},
+            map: this.map,
+            title: "Aileen McEvoy"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59524, lng: -3.139996},
+            map: this.map,
+            title: "379. Winter by the lake."    });var marker = new google.maps.Marker({
+            position: {lat: 54.59289, lng: -3.141006},
+            map: this.map,
+            title: "Blue Hour"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593746, lng: -3.140501},
+            map: this.map,
+            title: "19 January 2017"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595474, lng: -3.141692},
+            map: this.map,
+            title: "Sunset over Derwentwater"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59475, lng: -3.140394},
+            map: this.map,
+            title: "18 January 2017"    });var marker = new google.maps.Marker({
+            position: {lat: 54.592094, lng: -3.140888},
+            map: this.map,
+            title: "No Rush"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59553, lng: -3.141403},
+            map: this.map,
+            title: "Watery Wheelbarrow, Derwentwater, Lake District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59652, lng: -3.141199},
+            map: this.map,
+            title: "Skiddaw, Keswick, Lake District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594395, lng: -3.140244},
+            map: this.map,
+            title: "10 January 2017 Three"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594738, lng: -3.140652},
+            map: this.map,
+            title: "Feeding the birds at Derwentwater"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593647, lng: -3.14067},
+            map: this.map,
+            title: "Early morning on Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59525, lng: -3.141177},
+            map: this.map,
+            title: "Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595444, lng: -3.141145},
+            map: this.map,
+            title: "Crow Park & Catbells, Lake District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593307, lng: -3.140739},
+            map: this.map,
+            title: "Derwentwaters Magic Sunset"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595474, lng: -3.14335},
+            map: this.map,
+            title: "Secret path around Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59471, lng: -3.14077},
+            map: this.map,
+            title: "Old Jetty in the Blue Hour"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59475, lng: -3.140675},
+            map: this.map,
+            title: "Keswick Jetty under water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595364, lng: -3.141189},
+            map: this.map,
+            title: "Head up against the storm"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595364, lng: -3.141189},
+            map: this.map,
+            title: "Sticks in Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595364, lng: -3.141189},
+            map: this.map,
+            title: "Derwent Waters in Blues"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59289, lng: -3.141006},
+            map: this.map,
+            title: "Rorschach"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593613, lng: -3.140556},
+            map: this.map,
+            title: "Derwentwater, Cumbria. Taken using a Samsung S5 Neo camera phone."    });var marker = new google.maps.Marker({
+            position: {lat: 54.595493, lng: -3.140975},
+            map: this.map,
+            title: "Derwent Water, Chrimbo Eve."    });var marker = new google.maps.Marker({
+            position: {lat: 54.593056, lng: -3.14048},
+            map: this.map,
+            title: "SETRA S416GT-HD - CRUSADER Holidays Clacton-on-Sea Essex"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595177, lng: -3.139804},
+            map: this.map,
+            title: "Theatre By The Lake Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 6"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 5"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 4"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 3"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 2"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 1"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59366, lng: -3.140612},
+            map: this.map,
+            title: "The Lake District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.590355, lng: -3.139783},
+            map: this.map,
+            title: "Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59044, lng: -3.139823},
+            map: this.map,
+            title: "IMG_1300"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594837, lng: -3.140501},
+            map: this.map,
+            title: "DSCF9964 Derwent Water, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594837, lng: -3.140501},
+            map: this.map,
+            title: "DSCF9963 Derwent Water, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597664, lng: -3.139311},
+            map: this.map,
+            title: "DSCF9957 Mini Golf course, Hope Park, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594837, lng: -3.140501},
+            map: this.map,
+            title: "DSCF9961 Derwent Water, Keswick, Lake District, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597645, lng: -3.139514},
+            map: this.map,
+            title: "DSCF9958 Mini Golf course, Hope Park, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597534, lng: -3.139407},
+            map: this.map,
+            title: "DSCF9959 Hope Park, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594837, lng: -3.140501},
+            map: this.map,
+            title: "DSCF9962 Derwent Water, Keswick, Lake District, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59707, lng: -3.139246},
+            map: this.map,
+            title: "DSCF9960 Hope Park, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597664, lng: -3.139311},
+            map: this.map,
+            title: "DSCF9956 Hope Park, Keswick, Lake District, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59488, lng: -3.140673},
+            map: this.map,
+            title: "Pied Wagtail (Motacilla alba yarrellii)"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59576, lng: -3.140966},
+            map: this.map,
+            title: "Could Stand Here All Day"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59317, lng: -3.140646},
+            map: this.map,
+            title: "Distant Snow"    });var marker = new google.maps.Marker({
+            position: {lat: 54.596703, lng: -3.141505},
+            map: this.map,
+            title: "Skiddaw Watching Over Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593376, lng: -3.140888},
+            map: this.map,
+            title: "Destination"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593506, lng: -3.140496},
+            map: this.map,
+            title: "Life On The Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59317, lng: -3.140646},
+            map: this.map,
+            title: "Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59381, lng: -3.140663},
+            map: this.map,
+            title: "Wild Flight"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59335, lng: -3.140636},
+            map: this.map,
+            title: "Lakeside Living"    });var marker = new google.maps.Marker({
+            position: {lat: 54.596016, lng: -3.141442},
+            map: this.map,
+            title: "A Room With A view"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5949, lng: -3.14078},
+            map: this.map,
+            title: "Keswick, Cumjbria. The boat landings by the lake."    });var marker = new google.maps.Marker({
+            position: {lat: 54.59289, lng: -3.141006},
+            map: this.map,
+            title: "Dark Isle"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59337, lng: -3.140487},
+            map: this.map,
+            title: "The Lake District 💙"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5942, lng: -3.140359},
+            map: this.map,
+            title: "The Lake District 💙"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595097, lng: -3.140031},
+            map: this.map,
+            title: "In Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59271, lng: -3.140598},
+            map: this.map,
+            title: "In Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593655, lng: -3.140642},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594193, lng: -3.140631},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59425, lng: -3.140762},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59444, lng: -3.141109},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594383, lng: -3.140703},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5945, lng: -3.14077},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594406, lng: -3.140595},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594395, lng: -3.140606},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59455, lng: -3.140528},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594563, lng: -3.14047},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597496, lng: -3.14195},
+            map: this.map,
+            title: "Dogging Herdwick!"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5969, lng: -3.139268},
+            map: this.map,
+            title: "Hope Park, Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594193, lng: -3.140781},
+            map: this.map,
+            title: "IMG_2058"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59368, lng: -3.132123},
+            map: this.map,
+            title: "IMG_1989"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594013, lng: -3.13155},
+            map: this.map,
+            title: "IMG_1114"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593887, lng: -3.131667},
+            map: this.map,
+            title: "IMG_1094-Pano"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595707, lng: -3.141021},
+            map: this.map,
+            title: "Oh Carole."    });var marker = new google.maps.Marker({
+            position: {lat: 54.597248, lng: -3.141462},
+            map: this.map,
+            title: "IMG_2189"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595394, lng: -3.140963},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59573, lng: -3.140008},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59573, lng: -3.140008},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595394, lng: -3.140963},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594486, lng: -3.14077},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59527, lng: -3.139862},
+            map: this.map,
+            title: "Derwent Water,  Lakes District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597504, lng: -3.139342},
+            map: this.map,
+            title: "Crazy golf, Sam style"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59739, lng: -3.139342},
+            map: this.map,
+            title: "Putter"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5974, lng: -3.139348},
+            map: this.map,
+            title: "Crazy golf"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59535, lng: -3.1415},
+            map: this.map,
+            title: "Derwent Mist"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59672, lng: -3.139387},
+            map: this.map,
+            title: "DSE_5439_1"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5972, lng: -3.139356},
+            map: this.map,
+            title: "DSE_5443"    });var marker = new google.maps.Marker({
+            position: {lat: 54.598015, lng: -3.138767},
+            map: this.map,
+            title: "DSE_5454"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59853, lng: -3.138439},
+            map: this.map,
+            title: "DSE_5455"    });var marker = new google.maps.Marker({
+            position: {lat: 54.596737, lng: -3.138778},
+            map: this.map,
+            title: "DSE_5389"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59639, lng: -3.139128},
+            map: this.map,
+            title: "DSE_5390"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59229, lng: -3.141042},
+            map: this.map,
+            title: "DSE_5409"    });var marker = new google.maps.Marker({
+            position: {lat: 54.591236, lng: -3.140948},
+            map: this.map,
+            title: "DSE_5430"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595554, lng: -3.141389},
+            map: this.map,
+            title: "136A1412-HDR.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595554, lng: -3.141389},
+            map: this.map,
+            title: "136A1402.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595554, lng: -3.141389},
+            map: this.map,
+            title: "136A1388.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59447, lng: -3.140853},
+            map: this.map,
+            title: "Compulsory photo of the boat launch at Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594437, lng: -3.141273},
+            map: this.map,
+            title: "High quality family photo"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594563, lng: -3.14147},
+            map: this.map,
+            title: "Holly tries a new snack"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594563, lng: -3.14147},
+            map: this.map,
+            title: "Holly tries a new snack"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594162, lng: -3.140575},
+            map: this.map,
+            title: "Leaving the boat at Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594624, lng: -3.134729},
+            map: this.map,
+            title: "tree-1"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594254, lng: -3.140619},
+            map: this.map,
+            title: "Keswick Jetty"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59401, lng: -3.14107},
+            map: this.map,
+            title: "Wooden jetty 2"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59428, lng: -3.14092},
+            map: this.map,
+            title: "No idea what"    });var marker = new google.maps.Marker({
+            position: {lat: 54.592403, lng: -3.140187},
+            map: this.map,
+            title: "Wet Boots"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59753, lng: -3.142534},
+            map: this.map,
+            title: "Grasmoor"    });var marker = new google.maps.Marker({
+            position: {lat: 54.598335, lng: -3.138067},
+            map: this.map,
+            title: "A Winter Coat on Grisedale Pike"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594276, lng: -3.140292},
+            map: this.map,
+            title: "Derwent Boat launch.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597504, lng: -3.139461},
+            map: this.map,
+            title: "Robin"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59524, lng: -3.141275},
+            map: this.map,
+            title: "Crowe Park (1 of 1)"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594276, lng: -3.140292},
+            map: this.map,
+            title: "Keswick Boat Launch.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593803, lng: -3.141188},
+            map: this.map,
+            title: "Castle Crag, Derwentwater, Lake District, UK"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593464, lng: -3.140981},
+            map: this.map,
+            title: "Jetties"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59523, lng: -3.14102},
+            map: this.map,
+            title: "Gateway To Nowhere"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59753, lng: -3.142534},
+            map: this.map,
+            title: "Derwentwater"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595146, lng: -3.140759},
+            map: this.map,
+            title: "The gateway to the lakes"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59037, lng: -3.139696},
+            map: this.map,
+            title: "Looking across Derwent Water, Lake District National Park, Cumbria, UK"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59779, lng: -3.138656},
+            map: this.map,
+            title: "Gone Ahead"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595913, lng: -3.138995},
+            map: this.map,
+            title: "Aileen McEvoy"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59524, lng: -3.139996},
+            map: this.map,
+            title: "379. Winter by the lake."    });var marker = new google.maps.Marker({
+            position: {lat: 54.59289, lng: -3.141006},
+            map: this.map,
+            title: "Blue Hour"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593746, lng: -3.140501},
+            map: this.map,
+            title: "19 January 2017"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595474, lng: -3.141692},
+            map: this.map,
+            title: "Sunset over Derwentwater"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59475, lng: -3.140394},
+            map: this.map,
+            title: "18 January 2017"    });var marker = new google.maps.Marker({
+            position: {lat: 54.592094, lng: -3.140888},
+            map: this.map,
+            title: "No Rush"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59553, lng: -3.141403},
+            map: this.map,
+            title: "Watery Wheelbarrow, Derwentwater, Lake District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59652, lng: -3.141199},
+            map: this.map,
+            title: "Skiddaw, Keswick, Lake District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594395, lng: -3.140244},
+            map: this.map,
+            title: "10 January 2017 Three"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594738, lng: -3.140652},
+            map: this.map,
+            title: "Feeding the birds at Derwentwater"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593647, lng: -3.14067},
+            map: this.map,
+            title: "Early morning on Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59525, lng: -3.141177},
+            map: this.map,
+            title: "Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595444, lng: -3.141145},
+            map: this.map,
+            title: "Crow Park & Catbells, Lake District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593307, lng: -3.140739},
+            map: this.map,
+            title: "Derwentwaters Magic Sunset"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595474, lng: -3.14335},
+            map: this.map,
+            title: "Secret path around Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59471, lng: -3.14077},
+            map: this.map,
+            title: "Old Jetty in the Blue Hour"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59475, lng: -3.140675},
+            map: this.map,
+            title: "Keswick Jetty under water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595364, lng: -3.141189},
+            map: this.map,
+            title: "Head up against the storm"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595364, lng: -3.141189},
+            map: this.map,
+            title: "Sticks in Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595364, lng: -3.141189},
+            map: this.map,
+            title: "Derwent Waters in Blues"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59289, lng: -3.141006},
+            map: this.map,
+            title: "Rorschach"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593613, lng: -3.140556},
+            map: this.map,
+            title: "Derwentwater, Cumbria. Taken using a Samsung S5 Neo camera phone."    });var marker = new google.maps.Marker({
+            position: {lat: 54.595493, lng: -3.140975},
+            map: this.map,
+            title: "Derwent Water, Chrimbo Eve."    });var marker = new google.maps.Marker({
+            position: {lat: 54.593056, lng: -3.14048},
+            map: this.map,
+            title: "SETRA S416GT-HD - CRUSADER Holidays Clacton-on-Sea Essex"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595177, lng: -3.139804},
+            map: this.map,
+            title: "Theatre By The Lake Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 6"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 5"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 4"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 3"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 2"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59228, lng: -3.141102},
+            map: this.map,
+            title: "21.12.16 Keswick 1"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59366, lng: -3.140612},
+            map: this.map,
+            title: "The Lake District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.590355, lng: -3.139783},
+            map: this.map,
+            title: "Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59044, lng: -3.139823},
+            map: this.map,
+            title: "IMG_1300"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594837, lng: -3.140501},
+            map: this.map,
+            title: "DSCF9964 Derwent Water, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594837, lng: -3.140501},
+            map: this.map,
+            title: "DSCF9963 Derwent Water, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597664, lng: -3.139311},
+            map: this.map,
+            title: "DSCF9957 Mini Golf course, Hope Park, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594837, lng: -3.140501},
+            map: this.map,
+            title: "DSCF9961 Derwent Water, Keswick, Lake District, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597645, lng: -3.139514},
+            map: this.map,
+            title: "DSCF9958 Mini Golf course, Hope Park, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597534, lng: -3.139407},
+            map: this.map,
+            title: "DSCF9959 Hope Park, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594837, lng: -3.140501},
+            map: this.map,
+            title: "DSCF9962 Derwent Water, Keswick, Lake District, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59707, lng: -3.139246},
+            map: this.map,
+            title: "DSCF9960 Hope Park, Keswick, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597664, lng: -3.139311},
+            map: this.map,
+            title: "DSCF9956 Hope Park, Keswick, Lake District, Cumbria"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59488, lng: -3.140673},
+            map: this.map,
+            title: "Pied Wagtail (Motacilla alba yarrellii)"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59576, lng: -3.140966},
+            map: this.map,
+            title: "Could Stand Here All Day"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59317, lng: -3.140646},
+            map: this.map,
+            title: "Distant Snow"    });var marker = new google.maps.Marker({
+            position: {lat: 54.596703, lng: -3.141505},
+            map: this.map,
+            title: "Skiddaw Watching Over Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593376, lng: -3.140888},
+            map: this.map,
+            title: "Destination"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593506, lng: -3.140496},
+            map: this.map,
+            title: "Life On The Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59317, lng: -3.140646},
+            map: this.map,
+            title: "Derwent Water"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59381, lng: -3.140663},
+            map: this.map,
+            title: "Wild Flight"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59335, lng: -3.140636},
+            map: this.map,
+            title: "Lakeside Living"    });var marker = new google.maps.Marker({
+            position: {lat: 54.596016, lng: -3.141442},
+            map: this.map,
+            title: "A Room With A view"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5949, lng: -3.14078},
+            map: this.map,
+            title: "Keswick, Cumjbria. The boat landings by the lake."    });var marker = new google.maps.Marker({
+            position: {lat: 54.59289, lng: -3.141006},
+            map: this.map,
+            title: "Dark Isle"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59337, lng: -3.140487},
+            map: this.map,
+            title: "The Lake District 💙"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5942, lng: -3.140359},
+            map: this.map,
+            title: "The Lake District 💙"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595097, lng: -3.140031},
+            map: this.map,
+            title: "In Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59271, lng: -3.140598},
+            map: this.map,
+            title: "In Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593655, lng: -3.140642},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594193, lng: -3.140631},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59425, lng: -3.140762},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59444, lng: -3.141109},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594383, lng: -3.140703},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5945, lng: -3.14077},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594406, lng: -3.140595},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594395, lng: -3.140606},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59455, lng: -3.140528},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594563, lng: -3.14047},
+            map: this.map,
+            title: "In Keswick by the water side"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597496, lng: -3.14195},
+            map: this.map,
+            title: "Dogging Herdwick!"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5969, lng: -3.139268},
+            map: this.map,
+            title: "Hope Park, Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594193, lng: -3.140781},
+            map: this.map,
+            title: "IMG_2058"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59368, lng: -3.132123},
+            map: this.map,
+            title: "IMG_1989"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594013, lng: -3.13155},
+            map: this.map,
+            title: "IMG_1114"    });var marker = new google.maps.Marker({
+            position: {lat: 54.593887, lng: -3.131667},
+            map: this.map,
+            title: "IMG_1094-Pano"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595707, lng: -3.141021},
+            map: this.map,
+            title: "Oh Carole."    });var marker = new google.maps.Marker({
+            position: {lat: 54.597248, lng: -3.141462},
+            map: this.map,
+            title: "IMG_2189"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595394, lng: -3.140963},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59573, lng: -3.140008},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59573, lng: -3.140008},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595394, lng: -3.140963},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594486, lng: -3.14077},
+            map: this.map,
+            title: "The Lakes - 2016-11-05"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59527, lng: -3.139862},
+            map: this.map,
+            title: "Derwent Water,  Lakes District"    });var marker = new google.maps.Marker({
+            position: {lat: 54.597504, lng: -3.139342},
+            map: this.map,
+            title: "Crazy golf, Sam style"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59739, lng: -3.139342},
+            map: this.map,
+            title: "Putter"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5974, lng: -3.139348},
+            map: this.map,
+            title: "Crazy golf"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59535, lng: -3.1415},
+            map: this.map,
+            title: "Derwent Mist"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59672, lng: -3.139387},
+            map: this.map,
+            title: "DSE_5439_1"    });var marker = new google.maps.Marker({
+            position: {lat: 54.5972, lng: -3.139356},
+            map: this.map,
+            title: "DSE_5443"    });var marker = new google.maps.Marker({
+            position: {lat: 54.598015, lng: -3.138767},
+            map: this.map,
+            title: "DSE_5454"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59853, lng: -3.138439},
+            map: this.map,
+            title: "DSE_5455"    });var marker = new google.maps.Marker({
+            position: {lat: 54.596737, lng: -3.138778},
+            map: this.map,
+            title: "DSE_5389"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59639, lng: -3.139128},
+            map: this.map,
+            title: "DSE_5390"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59229, lng: -3.141042},
+            map: this.map,
+            title: "DSE_5409"    });var marker = new google.maps.Marker({
+            position: {lat: 54.591236, lng: -3.140948},
+            map: this.map,
+            title: "DSE_5430"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595554, lng: -3.141389},
+            map: this.map,
+            title: "136A1412-HDR.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595554, lng: -3.141389},
+            map: this.map,
+            title: "136A1402.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.595554, lng: -3.141389},
+            map: this.map,
+            title: "136A1388.jpg"    });var marker = new google.maps.Marker({
+            position: {lat: 54.59447, lng: -3.140853},
+            map: this.map,
+            title: "Compulsory photo of the boat launch at Keswick"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594437, lng: -3.141273},
+            map: this.map,
+            title: "High quality family photo"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594563, lng: -3.14147},
+            map: this.map,
+            title: "Holly tries a new snack"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594563, lng: -3.14147},
+            map: this.map,
+            title: "Holly tries a new snack"    });var marker = new google.maps.Marker({
+            position: {lat: 54.594162, lng: -3.140575},
+            map: this.map,
+            title: "Leaving the boat at Keswick"    });
+
+    }
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFFW6ftcenI5Zs6FxjmwSKwJe0cA852_g&callback=initMap">
+</script>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crosthwaite</title>
+
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/external/css.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/genericons.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/style.css" type="text/css" media="all">
+
+    <script src="js/external/jquery.min.js"></script>
+    <script src="js/external/nanoscroller.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!--<script src="js/external/jquery-ui.js"></script>-->
+    <script src="js/external/jquery.panzoom.js"></script>
+    <script src="js/external/jquery.lazyload.js"></script>
+    <script src="js/external/modernizr.js"></script>
+    <script src="js/external/PxFacetSearch.js"></script>
+    <script src="js/external/PxLoader.js"></script>
+    <script src="js/external/colResizable-1.6.js"></script>
+    <script src="js/external/foamtree/carrotsearch.foamtree.js"></script>
+
+    <script src="js/MapCommon.js"></script>
+    <script src="js/common/WWMapCommon.js"></script>
+    <script src="js/TextLoader.js"></script>
+    <script src="js/WebService.js"></script>
+    <script src="js/Navigator.js"></script>
+
+    <script src="js/station/StationManager.js"></script>
+    <script src="js/station/StationInstance.js"></script>
+    <script src="js/station/StationRender.js"></script>
+    <script src="js/text/TextManager.js"></script>
+    <script src="js/text/TextRender.js"></script>
+    <script src="js/text/TextInstance.js"></script>
+    <script src="js/text/TextMetaInstance.js"></script>
+
+    <script src="http://worldwindserver.net/webworldwind/worldwindlib.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.19/"></script>
+    <!--<script src="https://js.arcgis.com/4.2/"></script>-->
+    <!--<link rel="stylesheet" href="https://js.arcgis.com/4.2/esri/css/main.css">-->
+</head>
+<body>
+<div class="row">
+    <nav id="site-navigation" class="main-navigation clear" role="navigation">
+        <h1 class="menu-toggle" title="Menu"><span class="screen-reader-text">Menu</span></h1>
+        <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+        <div class="menu-the-project-container">
+            <ul id="menu-the-project" class="menu nav-menu">
+                <li id="menu-item-39" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-39"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/">Home</a></li>
+                <li id="menu-item-36"
+                    class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor current-menu-ancestor current-menu-parent current-page-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-36">
+                    <a href="http://wp.lancs.ac.uk/lakesdeepmap/the-project/">The Project</a>
+                    <ul class="sub-menu">
+                        <li id="menu-item-37"
+                            class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-16 current_page_item menu-item-37">
+                            <a href="http://wp.lancs.ac.uk/lakesdeepmap/the-project/gis-deep-mapping/">Deep Mapping</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="menu-item-34" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-34"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/events/">Events</a></li>
+                <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/training/">Training</a></li>
+                <li id="menu-item-31" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/people/">People</a></li>
+                <li id="menu-item-32" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/gallery/">Gallery</a></li>
+                <li id="menu-item-30"
+                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-30">
+                    <a href="http://wp.lancs.ac.uk/lakesdeepmap/further-reading/">Further Reading</a>
+                    <ul class="sub-menu">
+                        <li id="menu-item-137"
+                            class="menu-item menu-item-type-custom menu-item-object-custom menu-item-137"><a
+                                href="http://www.lancaster.ac.uk/fass/projects/spatialhum.wordpress/">Spatial
+                            Humanities</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div id="mainContainer" >
+    <div id="map"></div>
+    <div id="leftList">
+        <div id="mapSwitch">
+            <button id="showHistMap" onclick="$('#map').hide();$('#map2').show();$('#showHistMap').hide();$('#showModMap').show();">Show Historic Map</button>
+            <button id="showModMap" onclick="$('#map2').hide();$('#map').show();$('#showModMap').hide();$('#showHistMap').show();">Show Modern Map</button>
+        </div>
+        <div id="stationListScroll">
+            <p>Thomas West's Picturesque Viewing Stations</p>
+            <div id="stationList"></div>
+        </div>
+        <div id="textListScroll">
+            <p>Texts that visit the Picturesque Viewing Stations</p>
+            <div id="textList"></div>
+        </div>
+    </div>
+    <div id="text"></div>
+    <div id="fullText"></div>
+    <button id="fullTextBack" onclick="$('#fullText').show();$(this).hide()">Back to Text</button>
+    <script>
+
+        var mainNavigator = new Navigator();
+        var mapCommon = new MapCommon();
+        var wwMapCommon = new WWMapCommon();
+        var textManager = new TextManager();
+        var stationManager = new StationManager();
+
+        var stationRender = new StationRender();
+        var textRender = new TextRender();
+
+        // Register an event listener to be called when the page is loaded.
+        //        window.addEventListener("load", eventWindowLoaded, false);
+
+        // Define the event listener to initialize Web World Wind.
+        //        function eventWindowLoaded() {
+        //            wwMapCommon.init();
+        //
+        //            wwd.addLayer(wwMapCommon.placemarkLayer);
+        //        }
+
+        function initMap() {
+            mapCommon.init();
+
+            stationManager.init();
+            textManager.init();
+
+            // mapCommon.loadKMZ("histMap","https://drive.google.com/file/d/0BwxQ0cBJvl0cbnU0WE9jcFhIbVU/view?usp=sharing");//?dl=0
+//            $("#map").hide();
+        }
+    </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFFW6ftcenI5Zs6FxjmwSKwJe0cA852_g&callback=initMap">
+    </script>
+</div>
+</body>
+</html>

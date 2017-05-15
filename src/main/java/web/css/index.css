@@ -1,0 +1,261 @@
+body{
+    margin: 0px;
+    width:100%;
+    height:100%;
+    padding:0px;
+}
+
+#leftPanel{
+    display:block;
+    position:absolute;
+    top:91.5px;
+    left:0px;
+    height:calc(100vh - 91.5px);
+    width:30vw;
+    background: #363636;
+}
+
+#checkDualTimeline{
+
+}
+#checkHistoricMap{
+
+}
+
+#literaryList{
+    /*width:100%;*/
+    height:80%;
+    margin:5px;
+    border:1px solid #1abc9c;
+}
+
+.listRender{
+    border-bottom:1px solid #1abc9c;
+    font-size: 12px;
+    color:#FFFFFF;
+}
+
+.listLabel{
+    color:#21759b;
+}
+
+#mainPanel{
+    display:block;
+    position:absolute;
+    top:91.5px;
+    left:30vw;
+    height:calc(100vh - 91.5px);
+    width:70vw;
+    right: 0px;
+    bottom: 0px;
+}
+#map{
+    height:100%;
+    width:100%;
+}
+
+#histMap{
+    display:none;
+    height:100%;
+    width:100%;
+}
+
+#histMapContainer{
+    /*background-image: url(../media/maps/6916105.jpg);*/
+    height:100%;
+    width:100%;
+    /*background-size: contain;*/
+    /*background-repeat: no-repeat;*/
+}
+
+#histMapImage{
+    height:100%;
+    width:100%;
+}
+
+.histMarker{
+    position:absolute;
+}
+
+.histMarker img{
+    width:36px;
+    height:35px;
+}
+
+
+#timeline {
+    background: #232629;
+    height:60px;
+    position: absolute;
+    top: 46px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 80;
+}
+
+#timeline #timeRangeSlider {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    bottom: 0;
+    left: 20px
+}
+
+#timeline .ui-slider .ui-slider-handle {
+    position: absolute;
+    width: 1px;
+    height: 54px;
+    background: 0 0;
+    cursor: ew-resize
+}
+
+#timeline .ui-slider .ui-slider-handle:after {
+    position: absolute;
+    left: -17px;
+    top: 0;
+    background-image: url(../media/sprites/sprite.png);
+    background-position: -74px -353px;
+    width: 17px;
+    content: '';
+    height: 100%
+}
+
+#timeline .ui-slider .ui-slider-handle:last-child {
+    width: 2px
+}
+
+#timeline .ui-slider .ui-slider-handle:last-child:after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-image: url(../media/sprites/sprite.png);
+    background-position: -403px -248px;
+    width: 17px;
+    content: '';
+    height: 100%
+}
+
+#timeline .ui-slider .ui-slider-handle:hover:after {
+    background-image: url(../media/sprites/sprite.png);
+    background-position: -37px -353px;
+    width: 17px;
+    height: 54px
+}
+
+#timeline .ui-slider .ui-slider-handle:last-child:hover:after {
+    background-image: url(../media/sprites/sprite.png);
+    background-position: 0 -353px;
+    width: 17px;
+    height: 54px
+}
+
+#timeline:after {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    content: '';
+    height: 15px;
+    /*background: url(../media/sprites/sprite.png)repeat-x*/
+}
+
+#timeline #timelineCanvasHost {
+    position: absolute;
+    top: 12px;
+    right: 19px;
+    bottom: 0;
+    left: 20px;
+    overflow: hidden
+}
+
+#timeline #timelineCanvas {
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+#timeline #timelineLabels {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    bottom: 0;
+    left: 20px;
+    font-size: 10px
+}
+
+#timeline #timelineLabels .timelineLabel {
+    position: absolute;
+    top: 2px;
+    display: block;
+    overflow: visible;
+    color: #6b6f76;
+    font-weight: 700
+}
+
+#timeline #timelineLabels .timelineLabel:before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    width: 2px;
+    height: 22px;
+    background: rgba(255, 102, 0, .5)
+}
+
+#timeline #timelineLabels .timelineLabel .timelineText {
+    position: relative;
+    left: -25px;
+    width: 50px;
+    padding: 3px 0;
+    text-align: center
+}
+
+.rangeGrip{
+    position: absolute;
+    width: 1px;
+    height: 54px;
+    background: 0 0;
+    cursor: ew-resize
+}
+
+.rangeGrip:after{
+    position: absolute;
+    left: -17px;
+    top: 0;
+    background-image: url(../media/sprites/sprite.png);
+    background-position: -74px -353px;
+    width: 17px;
+    content: '';
+    height: 100%
+}
+
+
+.rangeGrip:nth-last-child(2) {
+    width: 2px
+}
+
+.rangeGrip:nth-last-child(2):after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-image: url(../media/sprites/sprite.png);
+    background-position: -403px -248px;
+    width: 17px;
+    content: '';
+    height: 100%
+}
+
+.rangeGrip:hover:after {
+    background-image: url(../media/sprites/sprite.png);
+    background-position: -37px -353px;
+    width: 17px;
+    height: 54px
+}
+
+.rangeGrip:nth-last-child(2):hover:after {
+    background-image: url(../media/sprites/sprite.png);
+    background-position: 0 -353px;
+    width: 17px;
+    height: 54px
+}

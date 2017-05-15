@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NLP Parser</title>
+    <link rel="stylesheet" href="css/nlp.css" type="text/css"/>
+
+    <script src="js/external/jquery.min.js"></script>
+    <script src="js/external/nanoscroller.js"></script>
+    <script src="js/external/jquery-ui.js"></script>
+    <script src="js/external/jquery.panzoom.js"></script>
+    <script src="js/external/modernizr.js"></script>
+    <script src="js/external/PxFacetSearch.js"></script>
+    <script src="js/external/PxLoader.js"></script>
+    <script src="js/external/colResizable-1.6.js"></script>
+
+    <script src="js/WebService.js"></script>
+    <script src="js/NLPNavigator.js"></script>
+    <script src="js/NLP/NLPManager.js"></script>
+    <script src="js/NLP/GazetteerManager.js"></script>
+</head>
+<body>
+<div id="inputSection">
+    <div id="textSection">
+        <span>1) Enter text or Upload File. <br>
+            2) Choose Gazetters. <br>
+            3) Press Submit</span>
+
+        <h3>Text Section:</h3>
+        <!--<button onclick="nlpManager.postText()">Submit</button>-->
+        <form id="textForm">
+            <div id="textInput">
+                <textarea id="textAreaInput">Alex went down to the train station in Lancaster.</textarea>
+            </div>
+            <div id="fileInput">
+                File: <input type="file" accept=".txt,.xml" name="fileUpload"><br>
+            </div>
+            <div id="gazetteer">
+                <h3>Gazetteer Section:<button  type='button' onclick="nlpNavigator.openGazAdd()">Add Gazetteer</button>
+                </h3><div id="gazetteerList">
+                </div>
+            </div>
+            <button  type='button' onclick="nlpNavigator.submitText();" >Submit</button>
+        </form>
+
+    </div>
+</div>
+<div id="addDataSection">
+    <a href="javascript:void(0)" class="closebtn" onclick="nlpNavigator.closeGazAdd()">&times;</a>
+    <h3>Gazetteer Add Section:</h3>
+    <span>Currently this only supports CSV files.</span>
+    <form id="gazetteerForm">
+        <label for="fileUpload">File: </label><input type="file" name="fileUpload" id="fileUpload"><br>
+        <label for="gazName">Gazetteer Name: </label><input type="text" name="gazName" id="gazName"><br>
+        <label for="hasColumnHeaders"> Has Column Headers: </label><input type="checkbox" name="hasColumnHeaders" id="hasColumnHeaders" checked><br>
+        <label for="locationColumn">Location Column: </label><input type="text" name="locationColumn" id="locationColumn"><br>
+        <label for="latColumn">Latitude Column: </label><input type="text" name="latColumn" id="latColumn"><br>
+        <label for="longColumn">Longitude Column: </label><input type="text" name="longColumn" id="longColumn"><br>
+        <label for="lineDelimiter">Line Delimiter: </label><input type="text" name="lineDelimiter" id="lineDelimiter" value="\n"><span>"\n" is Default for CSV</span><br>
+        <label for="columnDelimiter">ColumnDelimiter: </label><input type="text" name="columnDelimiter" id="columnDelimiter" value="\t"><span>"\t" for tab delimited, "," for comma delimited</span><br>
+        <button  type='button' onclick="nlpNavigator.submitGazetteer();" >Submit</button>
+    </form>
+    <progress id="gazAddProgress" style="display:none"></progress>
+</div>
+<div>
+    <div id="locTable"></div>
+</div>
+<script>
+    var nlpManager = new NLPManager();
+    var gazetteerManager = new GazetteerManager();
+    var nlpNavigator = new NLPNavigator();
+    gazetteerManager.init();
+</script>
+</body>
+</html>

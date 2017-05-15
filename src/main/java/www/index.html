@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crosthwaite</title>
+
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/external/css.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/genericons.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/style.css" type="text/css" media="all">
+
+    <script src="js/external/jquery.min.js"></script>
+    <script src="js/external/nanoscroller.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!--<script src="js/external/jquery-ui.js"></script>-->
+    <script src="js/external/jquery.panzoom.js"></script>
+    <script src="js/external/modernizr.js"></script>
+    <script src="js/external/PxFacetSearch.js"></script>
+    <script src="js/external/PxLoader.js"></script>
+    <script src="js/external/colResizable-1.6.js"></script>
+    <script src="js/external/foamtree/carrotsearch.foamtree.js"></script>
+
+    <script src="js/MapCommon.js"></script>
+    <script src="js/common/WWMapCommon.js"></script>
+    <script src="js/TextLoader.js"></script>
+    <script src="js/WebService.js"></script>
+    <script src="js/Navigator.js"></script>
+
+    <script src="js/station/StationManager.js"></script>
+    <script src="js/station/StationInstance.js"></script>
+    <script src="js/station/StationRender.js"></script>
+    <script src="js/text/TextManager.js"></script>
+    <script src="js/text/TextRender.js"></script>
+    <script src="js/text/TextInstance.js"></script>
+    <script src="js/text/TextMetaInstance.js"></script>
+
+    <script src="http://worldwindserver.net/webworldwind/worldwindlib.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.19/"></script>
+    <!--<script src="https://js.arcgis.com/4.2/"></script>-->
+    <!--<link rel="stylesheet" href="https://js.arcgis.com/4.2/esri/css/main.css">-->
+</head>
+<body>
+<!--<div class="row">-->
+    <!--<nav id="site-navigation" class="main-navigation clear" role="navigation">-->
+        <!--<h1 class="menu-toggle" title="Menu"><span class="screen-reader-text">Menu</span></h1>-->
+        <!--<a class="skip-link screen-reader-text" href="#content">Skip to content</a>-->
+
+        <!--<div class="menu-the-project-container">-->
+            <!--<ul id="menu-the-project" class="menu nav-menu">-->
+                <!--<li id="menu-item-39" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-39"><a-->
+                        <!--href="http://wp.lancs.ac.uk/lakesdeepmap/">Home</a></li>-->
+                <!--<li id="menu-item-36"-->
+                    <!--class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor current-menu-ancestor current-menu-parent current-page-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-36">-->
+                    <!--<a href="http://wp.lancs.ac.uk/lakesdeepmap/the-project/">The Project</a>-->
+                    <!--<ul class="sub-menu">-->
+                        <!--<li id="menu-item-37"-->
+                            <!--class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-16 current_page_item menu-item-37">-->
+                            <!--<a href="http://wp.lancs.ac.uk/lakesdeepmap/the-project/gis-deep-mapping/">Deep Mapping</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                <!--<li id="menu-item-34" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-34"><a-->
+                        <!--href="http://wp.lancs.ac.uk/lakesdeepmap/events/">Events</a></li>-->
+                <!--<li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35"><a-->
+                        <!--href="http://wp.lancs.ac.uk/lakesdeepmap/training/">Training</a></li>-->
+                <!--<li id="menu-item-31" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31"><a-->
+                        <!--href="http://wp.lancs.ac.uk/lakesdeepmap/people/">People</a></li>-->
+                <!--<li id="menu-item-32" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32"><a-->
+                        <!--href="http://wp.lancs.ac.uk/lakesdeepmap/gallery/">Gallery</a></li>-->
+                <!--<li id="menu-item-30"-->
+                    <!--class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-30">-->
+                    <!--<a href="http://wp.lancs.ac.uk/lakesdeepmap/further-reading/">Further Reading</a>-->
+                    <!--<ul class="sub-menu">-->
+                        <!--<li id="menu-item-137"-->
+                            <!--class="menu-item menu-item-type-custom menu-item-object-custom menu-item-137"><a-->
+                                <!--href="http://www.lancaster.ac.uk/fass/projects/spatialhum.wordpress/">Spatial-->
+                            <!--Humanities</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</nav>-->
+<!--</div>-->
+<div id="mainContainer" >
+    <div id="map"></div>
+    <div id="leftList">
+        <div id="mapSwitch">
+            <button id="showHistMap" onclick="$('#map').hide();$('#map2').show();$('#showHistMap').hide();$('#showModMap').show();">Show Historic Map</button>
+            <button id="showModMap" onclick="$('#map2').hide();$('#map').show();$('#showModMap').hide();$('#showHistMap').show();">Show Modern Map</button>
+        </div>
+        <div id="stationListScroll">
+            <p>Thomas West's Picturesque Viewing Stations</p>
+        <div id="stationList"></div>
+            </div>
+        <div id="textListScroll">
+            <p>Texts that visit the Picturesque Viewing Stations</p>
+        <div id="textList"></div>
+        </div>
+    </div>
+    <div id="text"></div>
+    <div id="fullText"></div>
+    <button id="fullTextBack" onclick="$('#fullText').show();$(this).hide()">Back to Text</button>
+    <div id="map2"></div>
+    <script>
+        var arcmap;
+        var arcmapLoaded = false;
+        var markerSymbol;
+            require([
+                "esri/map", "esri/layers/KMLLayer", "esri/toolbars/navigation",
+                "dojo/parser", "dojo/dom-style",
+
+                "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!"
+            ], function (Map, KMLLayer, Navigation,
+                         parser, domStyle) {
+                arcmap = new Map("map2", {
+//                basemap: "national-geographic",
+                    basemap: "topo",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+                    center: [-3.15, 54.583333], // longitude, latitude
+                    zoom: 13
+                });
+//                arcmap.on('load',loadedArcmap());
+                var navToolbar = new Navigation(arcmap);
+
+                parser.parse();
+
+                var kmlUrl = "http://archive.cyark.org/test/content/DerwentWaterMap_LayerToKML1.kmz";
+//            var kmlUrl = "https://drive.google.com/file/d/0BwxQ0cBJvl0cbnU0WE9jcFhIbVU";
+                var kml = new KMLLayer(kmlUrl);
+                kml.setVisibility(true);
+                arcmap.addLayer(kml);
+                console.log("KMZ in arcmap loaded");
+//            kml.on("load", function() {
+//                domStyle.set("loading", "display", "none");
+//            });
+                loadedArcmap()
+            });
+
+        function loadedArcmap(){
+
+            arcmapLoaded = true;
+            loadArcmap();
+        }
+        function loadArcmap() {
+
+            if (arcmapLoaded == true && stationManager.loaded == true) {
+                require([
+                    "esri/map", "esri/geometry/Point", "esri/toolbars/draw",
+                    "esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol",
+                    "esri/symbols/PictureFillSymbol", "esri/symbols/CartographicLineSymbol",
+                    "esri/graphic",
+                    "esri/Color",
+                    "dojo/parser", "dojo/dom-style",
+
+                    "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!"
+                ], function (Map, Point, Draw,
+                             SimpleMarkerSymbol, SimpleLineSymbol,
+                             PictureFillSymbol, CartographicLineSymbol,
+                             Graphic,
+                             Color,
+                             parser, domStyle) {
+
+                    markerSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 10,
+                            new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+                                    new Color([0, 0, 0]), 1),
+                            new Color([0, 0, 255]));
+//                        markerSymbol.setPath("M16,4.938c-7.732,0-14,4.701-14,10.5c0,1.981,0.741,3.833,2.016,5.414L2,25.272l5.613-1.44c2.339,1.316,5.237,2.106,8.387,2.106c7.732,0,14-4.701,14-10.5S23.732,4.938,16,4.938zM16.868,21.375h-1.969v-1.889h1.969V21.375zM16.772,18.094h-1.777l-0.176-8.083h2.113L16.772,18.094z");
+//                        markerSymbol.setColor(new Color("#00FFFF"));
+
+                    for (var key in stationManager.mapStationsInstances) {
+                        var instance = stationManager.mapStationsInstances[key];
+                        var pt = new Point(instance.source[2], instance.source[1]);
+                        console.log(pt);
+//                            console.log(arcmap);
+//                            console.log(arcmap.graphics);
+//                            console.log(new Graphic(pt, markerSymbol));
+                        arcmap.graphics.add(new Graphic(pt, markerSymbol));
+                    }
+                });
+            }
+        }
+
+
+    </script>
+    <script>
+
+        var mainNavigator = new Navigator();
+        var mapCommon = new MapCommon();
+        var wwMapCommon = new WWMapCommon();
+        var textManager = new TextManager();
+        var stationManager = new StationManager();
+
+        var stationRender = new StationRender();
+        var textRender = new TextRender();
+
+        // Register an event listener to be called when the page is loaded.
+//        window.addEventListener("load", eventWindowLoaded, false);
+
+        // Define the event listener to initialize Web World Wind.
+//        function eventWindowLoaded() {
+//            wwMapCommon.init();
+//
+//            wwd.addLayer(wwMapCommon.placemarkLayer);
+//        }
+
+        function initMap() {
+            mapCommon.init();
+
+            stationManager.init();
+            textManager.init();
+
+           // mapCommon.loadKMZ("histMap","https://drive.google.com/file/d/0BwxQ0cBJvl0cbnU0WE9jcFhIbVU/view?usp=sharing");//?dl=0
+//            $("#map").hide();
+        }
+        </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFFW6ftcenI5Zs6FxjmwSKwJe0cA852_g&callback=initMap">
+    </script>
+    <script>
+//        var textLoader = new TextLoader();
+//        textLoader.load();
+//
+//
+////        var canvas = document.getElementById('canvas'),
+////                context = canvas.getContext('2d');
+////
+////
+////        make_base();
+////
+////        function make_base()
+////        {
+////            var base_image = new Image();
+////            base_image.src = 'media/maps/DerwentWaterMap.jpg';
+////            base_image.onload = function(){
+////
+////                context.drawImage(base_image, 0, 0, 1000, 700);
+////            }
+////        }
+//
+//        var items = [
+//                //station, long ,lat
+//            [1, -3.142516, 54.596355],
+//            [2, -3.139832, 54.593214],
+//            [3, -3.130067, 54.577624],
+//            [4, -3.143144, 54.545187],
+//            [5, -3.160448, 54.597212],
+//            [6, -3.15695, 54.59487],
+//            [7, -3.143087, 54.607548]
+//        ];
+//
+//
+////        var canvas2 = document.getElementById('canvas2'),
+////                context2 = canvas2.getContext('2d');
+////        context2.globalAlpha   = 0;
+////        context2.globalCompositeOperation = 'source-over';
+//
+//        var image = new Image();
+//        image.src = 'media/sprites/sprite-hotspot-med.png';
+//        for(var i = 0; i < items.length; i++){
+//            var item = items[i];
+//            var x = mapCommon.getX(item[1]);
+//            var y = mapCommon.getY(item[2]);
+//            console.log(x,y);
+//        $('#mainContainer').append('<img src="media/sprites/sprite-hotspot-med.png" onclick="loadPano('+item[0]+')" style="position:absolute;left:'+(1000-y-100)+'px;top:'+(x-200)+'px;z-index:1;">');
+////            image.onload = function () {
+////                context2.drawImage(image, 1000-y, x);
+////            }
+//
+//        }
+//
+//
+//        function loadPano(number){
+//            $("#mainContainer").hide();
+//            $("#map").show();
+//            // station, long of pano, lat of pano, beginning sentence, end sentence
+//            var pano = [[1,54.5943414,-3.1408663, 318, 326],
+//                    [2,54.5924424,-3.1413771,327,340],
+//                    [3,54.5757877,-3.1318764,341,350],
+//                    [4,54.5327539,-3.1618378,427,435],
+//                    [5,54.5971596,-3.15876, 318, 326],
+//                    [6,54.5949718,-3.158791, 318, 326],
+//                    [7,54.6082743,-3.1445488, 318, 326]];
+//
+//            panorama = map.getStreetView();
+//            panorama.setPosition({lat: pano[number-1][1], lng: pano[number-1][2]});
+//            panorama.setVisible(true);
+//            panorama.setPov(({
+//                heading: 25,
+//                pitch: 0
+//            }));
+//            panorama.addListener('visible_changed', function() {
+//                if(panorama.getVisible() == false){
+//                    //$('#mediaViewer').remove();
+//                    $("#mainContainer").show();
+//                    $("#map").hide();
+//                    $('#text').hide();
+//                };
+//            });
+//
+//            $('#text').show();
+//            $('#text').empty();
+//            $('#text').append(textLoader.load(pano[number-1][3],pano[number-1][4]));
+//        }
+        function viewMedia(location){
+            $('#mediaViewer').remove();
+            var div = $('<div id="mediaViewer" style="overflow-y:auto; overflow-x:hidden; width:30vw;height:calc(90vh - 45.5px);top:20px;right:15px;bottom:15px;margin:5vh;position:absolute;z-index: 100;background-color: rgba(36,36,36,.5);color:#ffffff;"></div>');
+            if(location == 3){
+                div.append('<img onclick="showImage(this);" src="media/Catbells/img1.jpg" style="width:100%">');
+                div.append('<div><span>Painter: xxxxxxxxxx</span><br>' +
+                        '<span>Date: xxxxxxxxxx</span></div>');
+                div.append('<img onclick="showImage(this);"  src="media/Catbells/img2.jpg" style="width:100%">');
+                div.append('<div><span>Painter: xxxxxxxxxx</span><br>' +
+                        '<span>Date: xxxxxxxxxx</span></div>');
+        //                            div.append('<img src="../media/Catbells/img3.jpg">');
+                div.append('<img onclick="showImage(this);"  src="media/Catbells/img4.jpg" style="width:100%">');
+                div.append('<div><span>Painter: xxxxxxxxxx</span><br>' +
+                        '<span>Date: xxxxxxxxxx</span></div>');
+                div.append('<img onclick="showImage(this);"  src="media/Catbells/img5.jpg" style="width:100%">');
+                div.append('<div><span>Painter: xxxxxxxxxx</span><br>' +
+                        '<span>Date: xxxxxxxxxx</span></div>');
+            }
+            else{
+                return;
+            }
+//            else{
+//                div.append('<img onclick="showImage(this);"  src="../media/StridingEdge/img1.jpg">');
+//                div.append('<div><span>Painter: xxxxxxxxxx</span><br>' +
+//                        '<span>Date: xxxxxxxxxx</span></div>');
+//        //                            div.append('<img src="../media/Striding Edge/img2.jpg">');
+//                div.append('<img onclick="showImage(this);"  src="../media/StridingEdge/img3.jpg">');
+//                div.append('<div><span>Painter: xxxxxxxxxx</span><br>' +
+//                        '<span>Date: xxxxxxxxxx</span></div>');
+//                div.append('<img onclick="showImage(this);"  src="../media/StridingEdge/img4.jpg">');
+//                div.append('<div><span>Painter: xxxxxxxxxx</span><br>' +
+//                        '<span>Date: xxxxxxxxxx</span></div>');
+//                div.append('<img onclick="showImage(this);"  src="../media/StridingEdge/img5.jpg">');
+//                div.append('<div><span>Painter: xxxxxxxxxx</span><br>' +
+//                        '<span>Date: xxxxxxxxxx</span></div>');
+//                div.append('<img onclick="showImage(this);"  src="../media/StridingEdge/img6.jpg">');
+//                div.append('<div><span>Painter: xxxxxxxxxx</span><br>' +
+//                        '<span>Date: xxxxxxxxxx</span></div>');
+//            }
+            $('#mainContainer').append(div);
+        }
+        function showImage(comp){
+            var src = $(comp).attr('src');
+            var div = $('<div id="imageViewer" onclick="$(this).remove();" style="background: url('+src+') no-repeat center center;    background-size: contain;width:100vw;height:100vh;position:absolute;z-index: 110;background-color: rgba(36,36,36,.5);top:0px;left:0px;"></div>');
+        //                        div.append('<img style="display:block;margin:auto;position:relative;" src="'+src+'">');
+            $('#mainContainer').append(div);
+        //
+        }
+    </script>
+</div>
+</body>
+</html>
