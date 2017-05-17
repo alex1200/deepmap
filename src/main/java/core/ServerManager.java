@@ -3,14 +3,16 @@ package core;
 import Commons.DB.DBConnection;
 import core.crosthwaite.*;
 import core.explorer.Engine;
-import core.explorer.ExplorerSearchResource;
-import core.explorer.ExplorerTextMetaResource;
-import core.explorer.ExplorerTextResource;
+import core.explorer.ExplorerMediaIconResource;
+import core.explorer.concordance.ExplorerSearchResource;
+import core.explorer.location.ExplorerSearchLocationResource;
+import core.explorer.text.ExplorerTextMetaResource;
+import core.explorer.text.ExplorerTextResource;
 import core.geoparse.GeoparsePlaceResource;
 import core.geoparse.GeoparseResource;
 import core.literary.LiteraryLocationsResource;
 import core.literary.LiterarySourceResource;
-import core.media.FlickrResource;
+import core.media.Flickr.FlickrResource;
 import core.nlp.NLPGazetteersResource;
 import core.nlp.NLPTextResource;
 import org.restlet.Component;
@@ -78,6 +80,10 @@ public class ServerManager{
             router.attach("/media/flickr/{lat}/{lon}/{radius}/search.{format}", FlickrResource.class);
 
             router.attach("/explorer/search.{format}", ExplorerSearchResource.class);
+            router.attach("/explorer/search/location.{format}", ExplorerSearchLocationResource.class);
+            router.attach("/explorer/media/icon/{source}.{format}", ExplorerMediaIconResource.class);
+
+
             router.attach("/explorer/textmeta.{format}", ExplorerTextMetaResource.class);
             router.attach("/explorer/{textUID}/text.{format}", ExplorerTextResource.class);
 

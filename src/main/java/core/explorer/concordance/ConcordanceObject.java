@@ -1,4 +1,4 @@
-package core.explorer;
+package core.explorer.concordance;
 
 import Commons.uid.UIDCommons;
 
@@ -104,4 +104,5 @@ public class ConcordanceObject {
     public void setConcordanceStringTrailing(String concordanceStringTrailing) {
         this.concordanceStringTrailing = concordanceStringTrailing;
     }
+
 }

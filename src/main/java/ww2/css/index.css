@@ -47,7 +47,7 @@ s{
 }
 
 #searchHelpClose{
-    display:none;
+    /*display:none;*/
 }
 .searchHelpButton{
     border-radius: 50%;
@@ -97,6 +97,14 @@ s{
 .searchHelpButton .highlight {
      background-color: #1abc9c;
  }
+
+#searchProgressTitle{
+    display:none;
+}
+
+/*.searchProgress{*/
+    /*display:none;*/
+/*}*/
 
 #mapPanel{
     position: absolute;
@@ -186,12 +194,34 @@ s{
     font-size: 16px;
 }
 
+.concordance img{
+    display:inline-block;
+    vertical-align: top;
+}
+
+.concordance h3{
+    /*display: inline-block;*/
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.concordanceInnerDiv{
+    display: inline-block;
+    width: calc(100% - 80px);
+}
+
 .hasLocation{
 
 }
 
 .location{
     color: #acbdef;
+    cursor: pointer;
+}
+
+.locationAlt{
+    color: #ad7301;
     cursor: pointer;
 }
 

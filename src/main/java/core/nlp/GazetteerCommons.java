@@ -70,7 +70,7 @@ public class GazetteerCommons {
         try {
             GazetteerObject object = new GazetteerObject(new File(inFile), inLocationName, inLatColumn, inLongColumn,null, null);
             object.setUid(uid);
-            object.setHasColumnHeaders(Boolean.valueOf(hasColumnHeaders));
+//            object.setHasColumnHeaders(Boolean.valueOf(hasColumnHeaders));
             object.setLineDelimiter(lineDelimiter);
             object.setColumnDelimiter(columnDelimiter);
             object.setFilepath(inFile);

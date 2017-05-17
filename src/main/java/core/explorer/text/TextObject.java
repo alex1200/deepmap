@@ -1,5 +1,6 @@
-package core.explorer;
+package core.explorer.text;
 
+import core.explorer.concordance.TokenObject;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

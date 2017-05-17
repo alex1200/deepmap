@@ -8,6 +8,7 @@ function ConcordanceManager(){
 ConcordanceManager.prototype.search = function(search, altMarker) {
     var self = this;
     this.altMode = altMarker;
+    mainNavigator.startSearchProgress();
     webService.postSearch(search, function (jsonResults)
     {
         // console.log(jsonResults);
@@ -45,6 +46,7 @@ ConcordanceManager.prototype.search = function(search, altMarker) {
 
         timeline.resize();
         timeline.redraw();
+        mainNavigator.endSearchProgress();
     });
 
 

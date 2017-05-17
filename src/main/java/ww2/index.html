@@ -31,14 +31,18 @@
     <script src="js/concordance/ConcordanceManager.js"></script>
     <script src="js/concordance/ConcordanceRender.js"></script>
 
+    <script src="js/location/LocationManager.js"></script>
+    <script src="js/location/LocationRender.js"></script>
+
     <script src="js/text/TextManager.js"></script>
     <script src="js/text/TextRender.js"></script>
     <script src="js/text/TextMetaInstance.js"></script>
 
+    <script type="text/javascript" src="http://nls.tileserver.com/api.js"></script>
 </head>
 <body>
 <div id="mainContainer" >
-    <div id="searchHelpContainer" onclick="if(mainNavigator.hasLoaded == true)mainNavigator.toggleSearchHelp()">
+    <div id="searchHelpContainer" onclick="/*if(mainNavigator.hasLoaded == true)*/mainNavigator.toggleSearchHelp()">
         <div id="searchHelp">
             <h1>Search Help</h1>
             <div>
@@ -59,8 +63,8 @@
                 <br><br>
                 <span><b>Full Text:</b> This view shows the full text for the selected Concordance as well as the meta data for the Text.</span>
                 <br><br>
-                <span id="searchHelpLoading">Loading<br>
-                <progress id="searchHelpProgress" value="0" max="100"></progress></span>
+                <!--<span id="searchHelpLoading">Loading<br>-->
+                <!--<progress id="searchHelpProgress" value="0" max="100"></progress></span>-->
                 <span id="searchHelpClose" ><u>Click to Close</u></span>
             </div>
         </div>
@@ -113,14 +117,17 @@
     <div id="topSearch" >
         <div class="searchHelpButton" onclick="mainNavigator.toggleSearchHelp()"></div>
         <div class="styled-select lightGreen semi-square inline">
-        <select id="searchSelect"  onchange="mainNavigator.searchChange()">
-            <option value="simple" selected>Simple Search</option>
-            <option value="advanced">Advanced Search</option>
-            <option value="comparison">Comparison Search</option>
-            <option value="advancedComparison">Advanced Comparison Search</option>
-            <!--<option value="mediaSearch">Location Search</option>-->
-        </select>
+            <select id="searchSelect"  onchange="mainNavigator.searchChange()">
+                <option value="simple" selected>Simple Search</option>
+                <option value="advanced">Advanced Search</option>
+                <option value="comparison">Comparison Search</option>
+                <option value="advancedComparison">Advanced Comparison Search</option>
+                <option value="mediaSearch">Location Search</option>
+            </select>
         </div>
+        <span id="searchProgressTitle">Searching
+            <progress id="searchProgress"></progress>
+        </span>
         <div id="searchContainer">
 
         </div>
@@ -160,8 +167,8 @@
         <template id="templateMediaSearch">
             <label class="searchLabel" for="chooseLat">Latitude: </label><input id="chooseLat" type="number" min="-180" max="180" value="0">
             <label class="searchLabel" for="chooseLong">Longitude: </label><input id="chooseLong" type="number" min="-180" max="180" value="0">
-            <label class="searchLabel" for="chooseLong">Radius: </label><input id="chooseRadius" type="number" min="0" max="100" value="10" onchange="mapCommon.pickRadius=$(this).val()">
-            <button id="pickButton" onclick="mapCommon.pickEnabled=true;$(this).css('background-color','#1abc9c');">Pick Point</button>
+            <label class="searchLabel" for="chooseRadius">Radius: </label><input id="chooseRadius" type="number" min="0" max="100" value="1" onchange="mapCommon.pickRadius=$(this).val()">
+            <button id="pickButton" onclick="mainNavigator.pickEnabled()">Pick Point</button>
             <label class="searchLabel" for="mediaLimitInput">Concordance Limit: </label><input id="mediaLimitInput" type="number" min="10" max="100" value="10">
             <!--<label class="searchLabel" for="fuzzyInput">Fuzzy Match: </label><input id="fuzzyInput" type="checkbox" checked>-->
             <button onclick="mainNavigator.mediaSearch();">Search</button>
@@ -194,13 +201,14 @@
         </template>
         <template id="templateMediaSummary">
             <div class="styled-select lightGreen semi-square">
-                <select id="mediaTypeSelect" onchange="mainNavigator.mediaSelectChange();">
+                <select id="locationRenderTypeSelect" onchange="mainNavigator.locationRenderSelectChange();">
                     <option value="all" selected>All</option>
-                    <option value="locations">Locations</option>
-                    <option value="images">Images</option>
+                    <option value="location">Locations Only</option>
+                    <option value="media">Media Only</option>
+                    <option value="concordance">Concordance Only</option>
                 </select>
             </div>
-            <div id="summaryMediaCount">Match Count:<span id="summaryMediaCountShown">0</span>/<span id="summaryMediaCountTotal">0</span></div>
+            <div id="locationSummaryCount">Match Count:<span id="locationSummaryCountShown">0</span>/<span id="locationSummaryCountTotal">0</span></div>
         </template>
         <div id="leftScroll"></div>
 
@@ -211,6 +219,8 @@
         var mapCommon = new MapCommon();
         var concordanceManager = new ConcordanceManager();
         var concordanceRender = new ConcordanceRender();
+        var locationManager = new LocationManager();
+        var locationRender = new LocationRender();
         var textManager = new TextManager();
         var textRender = new TextRender();
         var mainNavigator = new Navigator();
@@ -226,6 +236,16 @@
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFFW6ftcenI5Zs6FxjmwSKwJe0cA852_g&callback=initMap">
+    </script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-99002771-1', 'auto');
+        ga('send', 'pageview');
+
     </script>
 </div>
 </body>

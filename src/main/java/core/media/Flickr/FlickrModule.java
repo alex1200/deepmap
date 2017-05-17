@@ -1,12 +1,9 @@
-package core.media;
+package core.media.Flickr;
 
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.REST;
 import com.flickr4java.flickr.photos.*;
-import com.flickr4java.flickr.test.TestInterface;
-import org.eclipse.jetty.util.StringUtil;
-import org.restlet.engine.util.StringUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,7 +28,7 @@ public class FlickrModule {
             SearchParameters searchParameters = new SearchParameters();
             searchParameters.setAccuracy(16);
             searchParameters.setHasGeo(true);
-            searchParameters.setRadius(1);
+            searchParameters.setRadius((int) Math.ceil(radius));
             searchParameters.setExtras(Extras.ALL_EXTRAS);
 //            String[] tags = new String[1];
 //            tags[0] = "geoData";
@@ -72,7 +69,7 @@ public class FlickrModule {
                 }
             }
             bw.close();
-            System.out.println(listPhotos);
+//            System.out.println(listPhotos);
             return listPhotos;
         } catch (Exception e) {
             e.printStackTrace();

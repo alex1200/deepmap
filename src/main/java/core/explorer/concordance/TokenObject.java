@@ -1,4 +1,4 @@
-package core.explorer;
+package core.explorer.concordance;
 
 import org.jsoup.parser.Tag;
 
@@ -11,6 +11,7 @@ public class TokenObject {
     public int index;
     public String xmlTag;
     public Tag tag;
+    public boolean inRadius = true;
 
     public TokenObject(String inFullToken, int inIndex){
         fullToken = inFullToken;
@@ -44,5 +45,14 @@ public class TokenObject {
 
     public Tag getTag() {
         return tag;
+    }
+
+
+    public boolean isInRadius() {
+        return inRadius;
+    }
+
+    public void setInRadius(boolean inRadius) {
+        this.inRadius = inRadius;
     }
 }

@@ -22,17 +22,52 @@ MapCommon.prototype.init = function(){
     // var myLatLng = {lat: 54.583333, lng: -3.15};
     var myLatLng = {lat: 54.57417972892827, lng: -3.1730026245116916};
     //54.57417972892827,-3.1730026245116916
+    var mapMinZoom = 8;
+    var mapMaxZoom = 14;
 
-    this.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
-        center: myLatLng
+    var nlsmap = new google.maps.ImageMapType({
+        getTileUrl:function(tile,zoom) {
+            return NLSTileUrlOS(tile.x,tile.y,zoom);
+        },
+        tileSize:new google.maps.Size(256,256),
+        maxZoom:mapMaxZoom,
+        minZoom:mapMinZoom,
+        isPng:false,
+        name: 'Historic'
     });
 
-    // this.oms = new OverlappingMarkerSpiderfier(this.map, {
-    //     markersWontMove: true,
-    //     markersWontHide: true,
-    //     basicFormatEvents: true
+    var opts = {
+        streetViewControl: false,
+        center: new google.maps.LatLng(54.57417972892827,-3.1730026245116916),
+        zoom: 10,
+        mapTypeControlOptions:{mapTypeIds:[google.maps.MapTypeId.TERRAIN,google.maps.MapTypeId.SATELLITE,google.maps.MapTypeId.ROADMAP,'historic']},
+        mapTypeControl:true,
+        style:google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+    };
+
+    var NLSAPIcredit=document.createElement('h1');
+    NLSAPIcredit.style.color='#444444';
+    NLSAPIcredit.style.font="10px sans-serif";
+    NLSAPIcredit.style.background="rgba(255,255,255,0.5)";
+    NLSAPIcredit.innerHTML='Historical maps from <a href="http://maps.nls.uk/projects/api/">NLS Maps API<\/a> ';
+    var myTextDiv=document.createElement('div');
+    myTextDiv.appendChild(NLSAPIcredit);
+
+    // this.map = new google.maps.Map(document.getElementById('map'), {
+    //     zoom: 10,
+    //     center: myLatLng
     // });
+    this.map = new google.maps.Map(document.getElementById("map"), opts);
+    this.map.mapTypes.set('historic',nlsmap);
+    this.map.setMapTypeId('historic');
+    this.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(myTextDiv);
+    this.oms = new OverlappingMarkerSpiderfier(this.map, {
+        markersWontMove: true,
+        markersWontHide: true,
+        basicFormatEvents: true,
+        keepSpiderfied: true,
+        circleSpiralSwitchover: 15
+    });
     // this.map.setMapTypeId('GoogleEarthAPI');
 
     google.maps.event.addListener(this.map, 'click', function(event) {
@@ -76,8 +111,7 @@ MapCommon.prototype.init = function(){
             $('#chooseLat').val(currentLocation.lat()); //latitude
             $('#chooseLong').val(currentLocation.lng()); //longitude
 
-            mapCommon.pickEnabled=false;
-            $('#pickButton').css('background-color','#000');
+            mainNavigator.pickDisabled();
         }
         if( mapCommon.prev_infowindow ) {
             mapCommon.prev_infowindow.close();
@@ -102,18 +136,25 @@ MapCommon.prototype.loadKMZ = function(layerName, path){
     // this.layers[layerName] = kmlLayer;
 };
 
-MapCommon.prototype.addMarker = function(title, lat, long, contentString, altMarker){
+MapCommon.prototype.addMarker = function(title, lat, long, contentString, altMarker, inIcon){
     // var station = title.replace("Station ","");
-    var icon = 'media/sprites/sprite-hotspot-med.png';
-
+    var icon = 'media/sprites/sprite-hotspot-small.png';
     if(altMarker == true) {
-        icon = 'media/sprites/sprite-hotspot-orange.png';
+        icon = 'media/sprites/sprite-hotspot-orange-small.png';
     }
+    if(inIcon != undefined){
+        icon = inIcon;
+    }
+    var markerImage = new google.maps.MarkerImage(icon,
+        new google.maps.Size(25, 24),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(7, 24));
+
     var marker = new google.maps.Marker({
         position: {lat: parseFloat(lat), lng: parseFloat(long)},
         map: this.map,
         title: title,
-        icon:icon
+        icon:markerImage
     });
 
     var self = this;
@@ -121,7 +162,7 @@ MapCommon.prototype.addMarker = function(title, lat, long, contentString, altMar
         content: contentString
     });
 
-    marker.addListener('click', function() {
+    marker.addListener('spider_click', function() {
         if( mapCommon.prev_infowindow ) {
             mapCommon.prev_infowindow.close();
         }
@@ -129,7 +170,7 @@ MapCommon.prototype.addMarker = function(title, lat, long, contentString, altMar
         mapCommon.prev_infowindow = infowindow;
         infowindow.open(mapCommon.map, marker);
     });
-    // this.oms.addMarker(marker);
+    this.oms.addMarker(marker);
     this.mapMarkers.push(marker);
 
 };

@@ -1,4 +1,4 @@
-package core.media;
+package core.media.Flickr;
 
 import Commons.Server.AbstractServerResource;
 import com.flickr4java.flickr.photos.Photo;

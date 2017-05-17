@@ -3,7 +3,7 @@
 })();
 
 function WebService(){
-    this.host = "http://scc-reinhola.lancs.ac.uk:8182/";
+    this.host = "http://localhost:8182/";
     this.JSON = ".json";
 }
 
@@ -27,6 +27,11 @@ WebService.prototype.getText = function(textUID, callback){
     webService.get(url,callback);
 };
 
+WebService.prototype.postLocationSearch = function(search, callback){
+    var url = webService.buildURL("explorer/search/location",webService.JSON);
+    webService.post(url,search, callback);
+};
+
 // WebService.prototype.getStationText = function(stationUID, callback){
 //     var url = webService.buildURL("crosthwaite/station/"+stationUID+"/text",webService.JSON);
 //     webService.get(url,callback);
@@ -36,6 +41,11 @@ WebService.prototype.getText = function(textUID, callback){
 //     var url = webService.buildURL("crosthwaite/text/"+textUID+"/"+start+"/"+end+"/text",webService.JSON);
 //     webService.get(url,callback);
 // };
+
+WebService.prototype.getIcon = function(source){
+    var url = webService.buildURL("explorer/media/icon/"+source,".png");
+    return url;
+};
 
 WebService.prototype.buildURL = function(path, ext){
     var url = webService.host + path + ext;

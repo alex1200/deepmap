@@ -1,4 +1,4 @@
-package core.explorer;
+package core.explorer.concordance;
 
 /**
  * Created by Alexander Reinhold on 10/05/2017.

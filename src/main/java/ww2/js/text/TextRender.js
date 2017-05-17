@@ -4,13 +4,18 @@ function TextRender(){
 
 TextRender.prototype.loadTextView = function (concordanceUID) {
     $('#textDetailPanel').show();
-
     var concordance = concordanceManager.getInstance(concordanceUID);
     var textInstance = textManager.getInstance(concordance.parentUID);
-    var rawText = textInstance.text.text;
+    textInstance.getText(concordanceUID, this.loadTextCallback);
+};
+
+TextRender.prototype.loadTextCallback = function(concordanceUID, textResonse){
+    var concordance = concordanceManager.getInstance(concordanceUID);
+    var textInstance = textManager.getInstance(concordance.parentUID);
+    var rawText = textResonse.text;
     var meta = textInstance.source;
 
-    rawText = this.replaceEnamex(rawText);
+    rawText = textRender.replaceEnamex(rawText);
     var textDiv = $('#textDetail');
     textDiv.empty();
     textDiv.html(rawText);

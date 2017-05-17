@@ -1,4 +1,4 @@
-package core.explorer;
+package core.explorer.concordance;
 
 import Commons.Server.AbstractServerResource;
 import com.google.gson.Gson;

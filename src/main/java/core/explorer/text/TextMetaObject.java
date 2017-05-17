@@ -1,4 +1,4 @@
-package core.explorer;
+package core.explorer.text;
 
 import Commons.DB.DBRow;
 

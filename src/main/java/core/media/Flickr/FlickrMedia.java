@@ -1,4 +1,4 @@
-package core.media;
+package core.media.Flickr;
 
 public class FlickrMedia {
 }

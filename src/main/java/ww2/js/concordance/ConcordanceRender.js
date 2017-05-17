@@ -16,8 +16,11 @@ ConcordanceRender.prototype.buildLocation = function(token){
     var latStart = text.indexOf('lat="', enamex) + 5;
     var latEnd = text.indexOf('"', latStart);
     var lat = text.slice(latStart, latEnd);
-
-    return $('<div class="location" onclick="mapCommon.goto('+parseFloat(lat)+','+parseFloat(long)+')">'+token.word+'</div>')
+    var alt = '';
+    if(token.inRadius == false){
+        alt = 'locationAlt';
+    }
+    return $('<div class="location '+alt+'" onclick="mapCommon.goto('+parseFloat(lat)+','+parseFloat(long)+')">'+token.word+'</div>')
 };
 
 ConcordanceRender.prototype.addToListView = function(concordance, altMode){
