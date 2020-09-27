@@ -34,7 +34,8 @@ public class GettyModule {
     public GettyWrapper searchLocation(String locationName){
 //        String url = "http://api.harvardartmuseums.org/place?apikey="+apikey+"&q="+ StringEscapeUtils.escapeHtml4(locationName);
 //        String url = "http://api.harvardartmuseums.org/object?apikey="+apikey+"&title="+ URIUtil.encodePath("red pike");
-        String url = baseURI + locationName;
+        String url = baseURI + locationName + "%20UK";
+        url+= "&number_of_people=none";
         try {
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet(url);

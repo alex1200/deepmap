@@ -2,6 +2,12 @@ function Navigator(){
     this.helpShowing = true;
     this.Timeline = false;
     this.hasLoaded = false;
+
+    this.SearchSurvey=1;
+    this.advSearchSurvey=1;
+    this.comSearchSurvey=1;
+    this.advcomSearchSurvey=1;
+    this.locationSearchSurvey=1;
 }
 
 
@@ -95,6 +101,7 @@ Navigator.prototype.search = function() {
     search.fuzzy = $('#fuzzyInput').is(':checked');
     ga('send', 'event', 'search', search.term, 'search', search.concordanceLimit);
     concordanceManager.search(search,false);
+    if(this.SearchSurvey==1){this.SearchSurvey++;loadSurvey(1);}
 };
 
 Navigator.prototype.advancedSearch = function() {
@@ -106,6 +113,7 @@ Navigator.prototype.advancedSearch = function() {
     search.fuzzy = $('#adv_fuzzyInput').is(':checked');
     ga('send', 'event', 'advancedSearch', search.term, search.secondaryTerm, search.concordanceLimit);
     concordanceManager.search(search,false);
+    if(this.advSearchSurvey==1){this.advSearchSurvey++;loadSurvey(2);}
 };
 
 Navigator.prototype.compareSearch = function() {
@@ -117,6 +125,7 @@ Navigator.prototype.compareSearch = function() {
     search.fuzzy = $('#comp1_fuzzyInput').is(':checked');
     ga('send', 'event', 'compareSearch1_'+ time, search.term, 'search', search.concordanceLimit);
     concordanceManager.search(search,false);
+    if(this.comSearchSurvey==1){this.comSearchSurvey++;loadSurvey(3);}
 
     var search = new SearchObject();
     search.term = $('#comp2_termInput').val();
@@ -137,6 +146,7 @@ Navigator.prototype.advancedCompareSearch = function() {
     ga('send', 'event', 'advancedCompareSearch1_'+ time, search.term, search.secondaryTerm, search.concordanceLimit);
 
     concordanceManager.search(search,false);
+    if(this.advcomSearchSurvey==1){this.advcomSearchSurvey++;loadSurvey(4);}
 
     var search = new SearchObject();
     search.term = $('#adv_comp2_termInput').val();
@@ -157,6 +167,7 @@ Navigator.prototype.mediaSearch = function() {
     search.concordanceLimit = $('#mediaLimitInput').val();
 
     locationManager.search(search);
+    if(this.locationSearchSurvey==1){this.locationSearchSurvey++;loadSurvey(5);}
 };
 
 Navigator.prototype.startSearchProgress = function(){

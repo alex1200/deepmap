@@ -1,0 +1,4588 @@
+<!-- 
+	krpano Virtual Tour Demo - Weingut
+		http://krpano.com/tours/weingut/
+	
+	note - this is an reduced example (stronger image compression, only small 
+	images, fewer panos) to keep the download package small
+-->
+<krpano version="1.18.1" onstart="startup();">
+	<!-- vtour.xml template krpano tools version 1.0.8.12 -->
+	<memory maxmem="20"  devices="iOS" />
+	<memory maxmem="25"  devices="iOS7.1" />
+	<action name="startup">
+		<!-- load the first scene -->
+loadscene(get(scenename), null, null); 
+		oninterrupt( break);
+	
+			
+		set(continuespinning,true);
+		set(spincount,0);
+		set(intouchmode,true);
+		set(picname,blah);
+		set(caption,initdefault);
+		
+		spinloop();
+		
+		
+		<!-- build the thumbnails (remove the next line to remove the thumbnails) -->
+		<!-- buildthumbs(); -->
+	</action><action name="spinloop">
+		oninterrupt(break);
+sub(plugin[compass_pointer].rotate, view.hlookat, heading);		
+		add(hlookattemp,get(view.hlookat),1);
+		lookto(get(hlookattemp), get(view.vlookat), get(view.fov), linear(10));
+		if(continuespinning,spinloop())
+	</action>	
+	<!-- disable the progress bar -->
+	<progress showload="none" showwait="none" />
+	
+
+	<!-- hotspot styles (for Flash and HTML5) -->
+	<style name="hotspot_ani_black"
+	       url="../img/hotspot_ani_black_64x64x20.png"
+	       crop="0|0|64|64"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       onloaded="hotspot_animate();"
+	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
+	       />
+
+	<style name="hotspot_ani_white"
+	       url="../img/hotspot_ani_outline_64x64x20.png"
+	       crop="0|0|64|64"
+	       alpha="1"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       onloaded="hotspot_animate();"
+	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
+	       />
+	       
+	<style name="alt_hotspot_ani_black"
+	       alturl="../img/hotspot_ani_black_64x64x20.png"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       altonloaded="set(crop,'0|0|64|64'); resetsize(); set(alpha,1.0); if(isphone, mul(scale,2)); hotspot_animate();"
+	       />
+	       
+	<style name="alt_hotspot_ani_white"
+	       alturl="../img/hotspot_ani_outline_64x64x20.png"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       altonloaded="set(crop,'0|0|64|64'); resetsize(); set(alpha,1.0); if(isphone, mul(scale,2)); hotspot_animate();"
+	       />
+
+		<style name="imagehotspot" 
+		       capture="false" 
+		       zorder="2"
+		       alpha="1"
+		       url="../img/hotspot_photo.png" 
+		       alturl="../img/hotspot_photo.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+40" 
+		       oy="+30" 
+		       />
+		<style name="perspectivehotspot" 
+		       capture="false" 
+		       zorder="2"
+		       alpha="1"
+		       url="../img/hotspot_scanshot.png" 
+		       alturl="../img/hotspot_scanshot.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+40" 
+		       oy="+30" 
+		       />
+		<style name="jshotspot" 
+		       capture="false" 
+		       zorder="2" 
+		       onclick="js(jshotspot(get(pic)));" 
+		       alpha="0"
+		       alturl="../img/pixel-blue.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+40" 
+		       oy="+30" 
+		       />
+		 <style name="transparenthotspot" 
+		       capture="false" 
+		       zorder="2" 
+		       onclick="showpic('');" 
+		       alpha="0"
+		       url="../img/pixel-blue.png" 
+		       alturl="../img/pixel-blue.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+20" 
+		       oy="+15" 
+		       />
+		<style name="videohotspot" 
+		       capture="false" 
+		       zorder="2" 
+		       onclick="showvideo();" 
+		       alpha="1"
+		       url="../img/hotspot_video.png" 
+		       alturl="../img/hotspot_video.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+40" 
+		       oy="+30" 
+		       />
+		       
+	<action name="hotspot_animate">
+		inc(frame,1,get(frames),0);
+		mul(ypos,frame,frameheight);
+		txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight));
+		delayedcall(0.03, hotspot_animate() );
+	</action>
+	
+	
+	<!-- text style for hotspot hovering -->       
+	<textstyle name="hotspottextstyle" 
+	           font="Arial" fontsize="18" bold="true" italic="true" textcolor="0xFFF7EF" background="false" border="false"
+	           alpha="1" blendmode="layer" effect="glow(0x000000,0.5,4,3);dropshadow(4,45,0x000000,4,0.66);" 
+	           origin="cursor" edge="bottom" textalign="center" xoffset="0" yoffset="-3" noclip="true" showtime="0.1" fadetime="0.25" fadeintime="0.1" 
+	           />	
+	<textstyle name="mediacaptiontextstyle" 
+	           font="Arial" 
+	           fontsize="14" 
+	           bold="true" 
+	           textcolor="0x000000" 
+	           background="true"
+	           backgroundcolor="0xFFFFFF"
+	            
+	           border="true"
+	           bordercolor="0x000000"
+	           
+	           alpha=".9" 
+	           blendmode="layer" 
+	           effect="glow(0x000000,0.5,4,3);dropshadow(4,45,0x000000,4,0.66);" 
+	           origin="bottom" 
+	           edge="bottom" 
+	           textalign="center" 
+	           xoffset="0" 
+	           yoffset="5" 
+	           noclip="true" 
+	           showtime="0.1" 
+	           fadetime="0.25" 
+	           fadeintime="0.1" 
+	           />	
+	           
+		<scene name="scene_91" title="scene_91" onstart="" thumburl="../img-rus/panos/VT18/RUS_VT18_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT18/RUS_VT18_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT18/RUS_VT18_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT18/RUS_VT18_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT18/RUS_VT18_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea66"
+				         style="hotspot_ani_white"
+					     ath="332.0" 
+					     atv="0.6" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_66);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(332.0, 0.6, 25);
+					              loadscene(scene_66, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(161.0, 11.5, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(161.0, 11.5, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea110"
+				         style="hotspot_ani_white"
+					     ath="166.0" 
+					     atv="8.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_110);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(166.0, 8.3, 25);
+					              loadscene(scene_110, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(324.0, 4.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(324.0, 4.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea120"
+				         style="hotspot_ani_white"
+					     ath="249.0" 
+					     atv="4.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_120);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(249.0, 4.3, 25);
+					              loadscene(scene_120, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(69.0, 6.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(69.0, 6.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea121"
+				         style="hotspot_ani_white"
+					     ath="59.0" 
+					     atv="1.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_121);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(59.0, 1.8, 25);
+					              loadscene(scene_121, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(207.0, 3.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(207.0, 3.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_146" 
+				pic="h38" 
+				ath="318.6" 
+				atv="-21.1"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of Gutzon Borglum repelling off Mount Rushmore in a Bosun[br]chair');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_147" 
+				pic="h5" 
+				ath="328.8" 
+				atv="-16"
+				style="imagehotspot" 
+				 onclick="showpic('Historic aerial photograph of Washington and Jefferson under construction');" ></hotspot>
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_61" title="scene_61" onstart="" thumburl="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadleft.jpg" />
+			<front url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadfront.jpg" />
+			<right url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadright.jpg" />
+			<back  url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadback.jpg" />
+			<up    url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadup.jpg" />
+			<down  url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadleft.jpg" />
+			<front url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadfront.jpg" />
+			<right url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadright.jpg" />
+			<back  url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadback.jpg" />
+			<up    url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadup.jpg" />
+			<down  url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadleft.jpg" />
+			<front url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadfront.jpg" />
+			<right url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadright.jpg" />
+			<back  url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadback.jpg" />
+			<up    url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipadup.jpg" />
+			<down  url="../img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea66"
+				         style="hotspot_ani_white"
+					     ath="170.0" 
+					     atv="20.6" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_66);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(170.0, 20.6, 25);
+					              loadscene(scene_66, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(339.0, -16.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(339.0, -16.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea82"
+				         style="hotspot_ani_white"
+					     ath="156.0" 
+					     atv="41.7" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_82);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(156.0, 41.7, 25);
+					              loadscene(scene_82, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(334.0, -40.1, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(334.0, -40.1, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea116"
+				         style="hotspot_ani_white"
+					     ath="243.0" 
+					     atv="-54.5" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_116);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(243.0, -54.5, 25);
+					              loadscene(scene_116, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(353.0, 40.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(353.0, 40.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_84" 
+				pic="gw_head" 
+				ath="188" 
+				atv="-4"
+				style="videohotspot" 
+				></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_83" 
+				pic="al_head_large" 
+				ath="-7" 
+				atv="-4"
+				style="videohotspot" 
+				></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_82" 
+				pic="p16" 
+				ath="-149.8" 
+				atv="-11.1"
+				style="imagehotspot" 
+				 onclick="showpic('Photograph of the ropes team performing a scan of Jefferson`s face using the[br]tripod rig');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_117" 
+				pic="p4" 
+				ath="274" 
+				atv="-1.6"
+				style="imagehotspot" 
+				 onclick="showpic('Photograph of the team scanning the presidents near Theodore Roosevelt');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_125" 
+				pic="h35" 
+				ath="216" 
+				atv="-34.8"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of Gutzon Borglum inspecting the face of Thomas Jefferson');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_151" 
+				pic="persp11" 
+				ath="83" 
+				atv="-23.8"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of the carving details of Lincoln`s right eye; created from laser[br]scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_62" title="scene_62" onstart="" thumburl="../img-rus/panos/SS------3/SS------3_cube_front.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/SS------3/SS------3_cube_left.jpg" />
+			<front url="../img-rus/panos/SS------3/SS------3_cube_front.jpg" />
+			<right url="../img-rus/panos/SS------3/SS------3_cube_right.jpg" />
+			<back  url="../img-rus/panos/SS------3/SS------3_cube_back.jpg" />
+			<up    url="../img-rus/panos/SS------3/SS------3_cube_up.jpg" />
+			<down  url="../img-rus/panos/SS------3/SS------3_cube_down.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/SS------3/SS------3_cube_left.jpg" />
+			<front url="../img-rus/panos/SS------3/SS------3_cube_front.jpg" />
+			<right url="../img-rus/panos/SS------3/SS------3_cube_right.jpg" />
+			<back  url="../img-rus/panos/SS------3/SS------3_cube_back.jpg" />
+			<up    url="../img-rus/panos/SS------3/SS------3_cube_up.jpg" />
+			<down  url="../img-rus/panos/SS------3/SS------3_cube_down.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/SS------3/SS------3_cube_left.jpg" />
+			<front url="../img-rus/panos/SS------3/SS------3_cube_front.jpg" />
+			<right url="../img-rus/panos/SS------3/SS------3_cube_right.jpg" />
+			<back  url="../img-rus/panos/SS------3/SS------3_cube_back.jpg" />
+			<up    url="../img-rus/panos/SS------3/SS------3_cube_up.jpg" />
+			<down  url="../img-rus/panos/SS------3/SS------3_cube_down.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_85" 
+				pic="h11" 
+				ath="308" 
+				atv="-4"
+				style="imagehotspot" 
+				 onclick="showpic('Photograph of Borglum working on the model');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_86" 
+				pic="persp1" 
+				ath="31" 
+				atv="-4"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of Lincoln`s Mask; created from close-range scan data');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_129" 
+				pic="" 
+				ath="-7" 
+				atv="-4"
+				style="imagehotspot" 
+				 onclick="showpic('');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_130" 
+				pic="" 
+				ath="-7" 
+				atv="-4"
+				style="imagehotspot" 
+				 onclick="showpic('');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_65" title="scene_65" onstart="" thumburl="../img-rus/panos/VT11/RUS_VT11_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT11/RUS_VT11_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT11/RUS_VT11_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT11/RUS_VT11_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT11/RUS_VT11_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea82"
+				         style="hotspot_ani_white"
+					     ath="316.0" 
+					     atv="-28.1" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_82);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(316.0, -28.1, 25);
+					              loadscene(scene_82, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(187.0, 34.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(187.0, 34.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea85"
+				         style="hotspot_ani_white"
+					     ath="170.0" 
+					     atv="12.6" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_85);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(170.0, 12.6, 25);
+					              loadscene(scene_85, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(2.0, 8.7, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(2.0, 8.7, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea109"
+				         style="hotspot_ani_white"
+					     ath="68.0" 
+					     atv="6.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_109);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(68.0, 6.8, 25);
+					              loadscene(scene_109, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(269.0, 13.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(269.0, 13.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_89" 
+				pic="persp25" 
+				ath="286.8" 
+				atv="-22.6"
+				style="perspectivehotspot" 
+				 onclick="showpic('Mesh of Mount Rushmore; created from photo-textured laser scan data');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_87" 
+				pic="p1" 
+				ath="-79" 
+				atv="-42.3"
+				style="imagehotspot" 
+				 onclick="showpic('Photograph of George Washington with the ropes team ascending the mountain');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_88" 
+				pic="mountrushmoreintensity" 
+				ath="306" 
+				atv="-16.2"
+				style="videohotspot" 
+				></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_92" title="scene_92" onstart="" thumburl="../img-rus/panos/BT16/RUS_BT16_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/BT16/RUS_BT16_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT16/RUS_BT16_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT16/RUS_BT16_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT16/RUS_BT16_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT16/RUS_BT16_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT16/RUS_BT16_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/BT16/RUS_BT16_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT16/RUS_BT16_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT16/RUS_BT16_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT16/RUS_BT16_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT16/RUS_BT16_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT16/RUS_BT16_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/BT16/RUS_BT16_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT16/RUS_BT16_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT16/RUS_BT16_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT16/RUS_BT16_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT16/RUS_BT16_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT16/RUS_BT16_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea87"
+				         style="hotspot_ani_white"
+					     ath="343.0" 
+					     atv="2.0" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_87);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(343.0, 2.0, 25);
+					              loadscene(scene_87, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(115.0, 11.0, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(115.0, 11.0, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea112"
+				         style="hotspot_ani_white"
+					     ath="52.0" 
+					     atv="14.6" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_112);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(52.0, 14.6, 25);
+					              loadscene(scene_112, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(196.0, -0.2, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(196.0, -0.2, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea121"
+				         style="hotspot_ani_white"
+					     ath="234.0" 
+					     atv="4.6" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_121);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(234.0, 4.6, 25);
+					              loadscene(scene_121, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(113.0, 5.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(113.0, 5.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_66" title="scene_66" onstart="" thumburl="../img-rus/panos/VT02/RUS_VT02_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT02/RUS_VT02_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT02/RUS_VT02_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT02/RUS_VT02_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT02/RUS_VT02_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea91"
+				         style="hotspot_ani_white"
+					     ath="161.0" 
+					     atv="11.5" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_91);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(161.0, 11.5, 25);
+					              loadscene(scene_91, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(332.0, 0.6, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(332.0, 0.6, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea61"
+				         style="hotspot_ani_white"
+					     ath="339.0" 
+					     atv="-16.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_61);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(339.0, -16.8, 25);
+					              loadscene(scene_61, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(170.0, 20.6, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(170.0, 20.6, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea122"
+				         style="hotspot_ani_white"
+					     ath="338.0" 
+					     atv="16.5" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_122);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(338.0, 16.5, 25);
+					              loadscene(scene_122, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(134.0, -12.0, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(134.0, -12.0, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_148" 
+				pic="persp4" 
+				ath="-394.2" 
+				atv="-15.5"
+				style="perspectivehotspot" 
+				 onclick="showpic('Transition image of the four presidents of Mount Rushmore and the scanning team;[br]created from photography and laser scan data');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_153" 
+				pic="persp23" 
+				ath="141" 
+				atv="16.2"
+				style="perspectivehotspot" 
+				 onclick="showpic('Aerial view of Mount Rushmore; created from laser scan data overlaid onto aerial[br]imagery');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_67" title="scene_67" onstart="" thumburl="../img-rus/panos/AFSTN--d/AFSTN--d_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadleft.jpg" />
+			<front url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadfront.jpg" />
+			<right url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadright.jpg" />
+			<back  url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadback.jpg" />
+			<up    url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadup.jpg" />
+			<down  url="../img-rus/panos/AFSTN--d/AFSTN--d_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadleft.jpg" />
+			<front url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadfront.jpg" />
+			<right url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadright.jpg" />
+			<back  url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadback.jpg" />
+			<up    url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadup.jpg" />
+			<down  url="../img-rus/panos/AFSTN--d/AFSTN--d_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadleft.jpg" />
+			<front url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadfront.jpg" />
+			<right url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadright.jpg" />
+			<back  url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadback.jpg" />
+			<up    url="../img-rus/panos/AFSTN--d/AFSTN--d_ipadup.jpg" />
+			<down  url="../img-rus/panos/AFSTN--d/AFSTN--d_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea68"
+				         style="hotspot_ani_white"
+					     ath="146.0" 
+					     atv="7.1" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_68);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(146.0, 7.1, 25);
+					              loadscene(scene_68, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(338.0, 3.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(338.0, 3.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea110"
+				         style="hotspot_ani_white"
+					     ath="310.0" 
+					     atv="5.0" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_110);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(310.0, 5.0, 25);
+					              loadscene(scene_110, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(100.0, 10.6, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(100.0, 10.6, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_136" 
+				pic="persp22" 
+				ath="-74.3" 
+				atv="14.8"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of the Avenue of Flags; created from laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_68" title="scene_68" onstart="" thumburl="../img-rus/panos/AFSTH--c/AFSTN--c_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadleft.jpg" />
+			<front url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadfront.jpg" />
+			<right url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadright.jpg" />
+			<back  url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadback.jpg" />
+			<up    url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadup.jpg" />
+			<down  url="../img-rus/panos/AFSTH--c/AFSTN--c_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadleft.jpg" />
+			<front url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadfront.jpg" />
+			<right url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadright.jpg" />
+			<back  url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadback.jpg" />
+			<up    url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadup.jpg" />
+			<down  url="../img-rus/panos/AFSTH--c/AFSTN--c_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadleft.jpg" />
+			<front url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadfront.jpg" />
+			<right url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadright.jpg" />
+			<back  url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadback.jpg" />
+			<up    url="../img-rus/panos/AFSTH--c/AFSTN--c_ipadup.jpg" />
+			<down  url="../img-rus/panos/AFSTH--c/AFSTN--c_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea67"
+				         style="hotspot_ani_white"
+					     ath="338.0" 
+					     atv="3.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_67);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(338.0, 3.8, 25);
+					              loadscene(scene_67, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(146.0, 7.1, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(146.0, 7.1, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_139" 
+				pic="h24" 
+				ath="-35.9" 
+				atv="-11.8"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of a worker descending from Washington`s head in a Bosun[br]chair');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_69" title="scene_69" onstart="" thumburl="../img-rus/panos/BT01/RUS_BT01_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT01/RUS_BT01_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT01/RUS_BT01_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT01/RUS_BT01_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT01/RUS_BT01_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea71"
+				         style="hotspot_ani_white"
+					     ath="256.0" 
+					     atv="-2.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_71);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(256.0, -2.4, 25);
+					              loadscene(scene_71, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(100.0, 3.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(100.0, 3.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea111"
+				         style="hotspot_ani_white"
+					     ath="164.0" 
+					     atv="2.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_111);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(164.0, 2.4, 25);
+					              loadscene(scene_111, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(335.0, 11.5, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(335.0, 11.5, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea123"
+				         style="hotspot_ani_white"
+					     ath="33.0" 
+					     atv="15.6" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_123);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(33.0, 15.6, 25);
+					              loadscene(scene_123, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(251.0, -4.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(251.0, -4.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_158" 
+				pic="persp10" 
+				ath="-167" 
+				atv="-0.3"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of Borglum`s Viewing Terrace; created from laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_70" title="scene_70" onstart="" thumburl="../img-rus/panos/BT06/RUS_BT06_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT06/RUS_BT06_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT06/RUS_BT06_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT06/RUS_BT06_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT06/RUS_BT06_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea71"
+				         style="hotspot_ani_white"
+					     ath="320.0" 
+					     atv="6.7" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_71);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(320.0, 6.7, 25);
+					              loadscene(scene_71, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(156.0, 7.9, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(156.0, 7.9, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_166" 
+				pic="persp26" 
+				ath="447.7" 
+				atv="-3.6"
+				style="perspectivehotspot" 
+				 onclick="showpic('Elevation of the smaller historic fireplace at the Borglum Terrace; created from[br]photo-textured laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_71" title="scene_71" onstart="" thumburl="../img-rus/panos/BT09/RUS_BT09_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT09/RUS_BT09_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT09/RUS_BT09_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT09/RUS_BT09_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT09/RUS_BT09_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea69"
+				         style="hotspot_ani_white"
+					     ath="100.0" 
+					     atv="3.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_69);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(100.0, 3.3, 25);
+					              loadscene(scene_69, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(256.0, -2.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(256.0, -2.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea70"
+				         style="hotspot_ani_white"
+					     ath="156.0" 
+					     atv="7.9" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_70);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(156.0, 7.9, 25);
+					              loadscene(scene_70, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(320.0, 6.7, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(320.0, 6.7, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea117"
+				         style="hotspot_ani_white"
+					     ath="237.0" 
+					     atv="4.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_117);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(237.0, 4.4, 25);
+					              loadscene(scene_117, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(4.0, 19.0, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(4.0, 19.0, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_93" 
+				pic="persp28" 
+				ath="-236.2" 
+				atv="5"
+				style="perspectivehotspot" 
+				 onclick="showpic('Elevation of the Borglum Terrace; created from photo-textured laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_72" title="scene_72" onstart="" thumburl="../img-rus/panos/SS-----/SS-----_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/SS-----/SS-----_ipadleft.jpg" />
+			<front url="../img-rus/panos/SS-----/SS-----_ipadfront.jpg" />
+			<right url="../img-rus/panos/SS-----/SS-----_ipadright.jpg" />
+			<back  url="../img-rus/panos/SS-----/SS-----_ipadback.jpg" />
+			<up    url="../img-rus/panos/SS-----/SS-----_ipadup.jpg" />
+			<down  url="../img-rus/panos/SS-----/SS-----_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/SS-----/SS-----_ipadleft.jpg" />
+			<front url="../img-rus/panos/SS-----/SS-----_ipadfront.jpg" />
+			<right url="../img-rus/panos/SS-----/SS-----_ipadright.jpg" />
+			<back  url="../img-rus/panos/SS-----/SS-----_ipadback.jpg" />
+			<up    url="../img-rus/panos/SS-----/SS-----_ipadup.jpg" />
+			<down  url="../img-rus/panos/SS-----/SS-----_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/SS-----/SS-----_ipadleft.jpg" />
+			<front url="../img-rus/panos/SS-----/SS-----_ipadfront.jpg" />
+			<right url="../img-rus/panos/SS-----/SS-----_ipadright.jpg" />
+			<back  url="../img-rus/panos/SS-----/SS-----_ipadback.jpg" />
+			<up    url="../img-rus/panos/SS-----/SS-----_ipadup.jpg" />
+			<down  url="../img-rus/panos/SS-----/SS-----_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea89"
+				         style="hotspot_ani_white"
+					     ath="59" 
+					     atv="0" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_89);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(59, 0, 25);
+					              loadscene(scene_89, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(233.0, 6.1, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(233.0, 6.1, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_131" 
+				pic="p3" 
+				ath="74.1" 
+				atv="10.8"
+				style="imagehotspot" 
+				 onclick="showpic('Photograph of the team scanning inside the Sculptor`s Studio. The scale model of[br]the Mountain Sculpture can be seen in the background.');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_132" 
+				pic="h40" 
+				ath="13" 
+				atv="-3.6"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of an early scale model in the first studio at Mount[br]Rushmore');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_168" 
+				pic="persp29" 
+				ath="49.5" 
+				atv="-20.3"
+				style="perspectivehotspot" 
+				 onclick="showpic('Elevation of the northern wall inside the Sculptor`s Studio; created from[br]photo-textured laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_73" title="scene_73" onstart="" thumburl="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/SS6__/RUS_SS6_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea74"
+				         style="hotspot_ani_white"
+					     ath="258.0" 
+					     atv="-5.2" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_74);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(258.0, -5.2, 25);
+					              loadscene(scene_74, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(83.0, 15.0, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(83.0, 15.0, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea89"
+				         style="hotspot_ani_white"
+					     ath="353.0" 
+					     atv="6.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_89);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(353.0, 6.3, 25);
+					              loadscene(scene_89, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(170.0, 3.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(170.0, 3.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea125"
+				         style="hotspot_ani_white"
+					     ath="83.0" 
+					     atv="11.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_125);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(83.0, 11.4, 25);
+					              loadscene(scene_125, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(173.0, -2.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(173.0, -2.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_134" 
+				pic="p10" 
+				ath="-32.7" 
+				atv="5.1"
+				style="imagehotspot" 
+				 onclick="showpic('Photograph of the Sculptor`s Studio during the winter season');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_74" title="scene_74" onstart="" thumburl="../img-rus/panos/SS20_/SS20_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/SS20_/SS20_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/SS20_/SS20_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/SS20_/SS20_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/SS20_/SS20_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/SS20_/SS20_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/SS20_/SS20_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/SS20_/SS20_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/SS20_/SS20_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/SS20_/SS20_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/SS20_/SS20_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/SS20_/SS20_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/SS20_/SS20_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/SS20_/SS20_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/SS20_/SS20_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/SS20_/SS20_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/SS20_/SS20_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/SS20_/SS20_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/SS20_/SS20_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea73"
+				         style="hotspot_ani_white"
+					     ath="83.0" 
+					     atv="15.0" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_73);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(83.0, 15.0, 25);
+					              loadscene(scene_73, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(258.0, -5.2, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(258.0, -5.2, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea123"
+				         style="hotspot_ani_white"
+					     ath="193.0" 
+					     atv="-7.2" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_123);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(193.0, -7.2, 25);
+					              loadscene(scene_123, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(14.0, 7.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(14.0, 7.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_165" 
+				pic="h9" 
+				ath="-79" 
+				atv="-17"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of early construction work on the second Jefferson[br]sculpture. An earlier Jefferson sculpture was attempted on the left side of[br]Washington and demolished due to poor granite.');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_77" title="scene_77" onstart="" thumburl="../img-rus/panos/VT2/RUS_VT2_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT2/RUS_VT2_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT2/RUS_VT2_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT2/RUS_VT2_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT2/RUS_VT2_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea118"
+				         style="hotspot_ani_white"
+					     ath="257.0" 
+					     atv="2.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_118);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(257.0, 2.4, 25);
+					              loadscene(scene_118, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(105.0, 13.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(105.0, 13.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea124"
+				         style="hotspot_ani_white"
+					     ath="89.0" 
+					     atv="1.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_124);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(89.0, 1.8, 25);
+					              loadscene(scene_124, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(235.0, 3.5, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(235.0, 3.5, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_138" 
+				pic="h2" 
+				ath="243" 
+				atv="-8.8"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of the Mountain Sculpture with a historic road and car in[br]the foreground');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_159" 
+				pic="persp21" 
+				ath="-105.5" 
+				atv="-17.1"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of Thomas Jefferson; created from laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_79" title="scene_79" onstart="" thumburl="../img-rus/panos/VT10/RUS_VT10_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT10/RUS_VT10_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT10/RUS_VT10_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT10/RUS_VT10_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT10/RUS_VT10_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea82"
+				         style="hotspot_ani_white"
+					     ath="324.0" 
+					     atv="-27.2" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_82);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(324.0, -27.2, 25);
+					              loadscene(scene_82, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(132.0, 40.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(132.0, 40.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea109"
+				         style="hotspot_ani_white"
+					     ath="215.0" 
+					     atv="6.7" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_109);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(215.0, 6.7, 25);
+					              loadscene(scene_109, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(22.0, 8.9, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(22.0, 8.9, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_149" 
+				pic="persp24" 
+				ath="-23.6" 
+				atv="-34.8"
+				style="perspectivehotspot" 
+				 onclick="showpic('Mesh of Thomas Jefferson and Theodore Roosevelt; created from laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_82" title="scene_82" onstart="" thumburl="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadleft.jpg" />
+			<front url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadfront.jpg" />
+			<right url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadright.jpg" />
+			<back  url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadback.jpg" />
+			<up    url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadup.jpg" />
+			<down  url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadleft.jpg" />
+			<front url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadfront.jpg" />
+			<right url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadright.jpg" />
+			<back  url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadback.jpg" />
+			<up    url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadup.jpg" />
+			<down  url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadleft.jpg" />
+			<front url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadfront.jpg" />
+			<right url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadright.jpg" />
+			<back  url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadback.jpg" />
+			<up    url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipadup.jpg" />
+			<down  url="../img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea61"
+				         style="hotspot_ani_white"
+					     ath="334.0" 
+					     atv="-40.1" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_61);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(334.0, -40.1, 25);
+					              loadscene(scene_61, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(156.0, 41.7, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(156.0, 41.7, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea65"
+				         style="hotspot_ani_white"
+					     ath="187.0" 
+					     atv="34.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_65);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(187.0, 34.8, 25);
+					              loadscene(scene_65, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(316.0, -28.1, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(316.0, -28.1, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea79"
+				         style="hotspot_ani_white"
+					     ath="132.0" 
+					     atv="40.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_79);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(132.0, 40.4, 25);
+					              loadscene(scene_79, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(324.0, -27.2, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(324.0, -27.2, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_119" 
+				pic="persp3" 
+				ath="-57.8" 
+				atv="-32.4"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of Mount Rushmore; created from laser scan data');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_120" 
+				pic="h7" 
+				ath="-38.4" 
+				atv="-30.8"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of the Black Hills; prior to the construction of Mount[br]Rushmore. This granite mountain was sacred to the Lakota Native Americans; who[br]called it `Six Grandfathers`.');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_83" title="scene_83" onstart="" thumburl="../img-rus/panos/PT03/RUS_PT03_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/PT03/RUS_PT03_ipadleft.jpg" />
+			<front url="../img-rus/panos/PT03/RUS_PT03_ipadfront.jpg" />
+			<right url="../img-rus/panos/PT03/RUS_PT03_ipadright.jpg" />
+			<back  url="../img-rus/panos/PT03/RUS_PT03_ipadback.jpg" />
+			<up    url="../img-rus/panos/PT03/RUS_PT03_ipadup.jpg" />
+			<down  url="../img-rus/panos/PT03/RUS_PT03_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/PT03/RUS_PT03_ipadleft.jpg" />
+			<front url="../img-rus/panos/PT03/RUS_PT03_ipadfront.jpg" />
+			<right url="../img-rus/panos/PT03/RUS_PT03_ipadright.jpg" />
+			<back  url="../img-rus/panos/PT03/RUS_PT03_ipadback.jpg" />
+			<up    url="../img-rus/panos/PT03/RUS_PT03_ipadup.jpg" />
+			<down  url="../img-rus/panos/PT03/RUS_PT03_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/PT03/RUS_PT03_ipadleft.jpg" />
+			<front url="../img-rus/panos/PT03/RUS_PT03_ipadfront.jpg" />
+			<right url="../img-rus/panos/PT03/RUS_PT03_ipadright.jpg" />
+			<back  url="../img-rus/panos/PT03/RUS_PT03_ipadback.jpg" />
+			<up    url="../img-rus/panos/PT03/RUS_PT03_ipadup.jpg" />
+			<down  url="../img-rus/panos/PT03/RUS_PT03_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea84"
+				         style="hotspot_ani_white"
+					     ath="296.0" 
+					     atv="0.5" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_84);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(296.0, 0.5, 25);
+					              loadscene(scene_84, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(128.0, 4.2, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(128.0, 4.2, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea108"
+				         style="hotspot_ani_white"
+					     ath="118.0" 
+					     atv="6.0" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_108);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(118.0, 6.0, 25);
+					              loadscene(scene_108, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(310.0, 13.9, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(310.0, 13.9, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_124" 
+				pic="h19" 
+				ath="-38" 
+				atv="-27.7"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of the first Jefferson sculpture to the left of Washington.[br]After 18 months of carving the figure of Jefferson had to be blasted off the[br]mountain and restarted to the right of Washington.');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_128" 
+				pic="persp7" 
+				ath="-26" 
+				atv="-19"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of George Washington; created from laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_84" title="scene_84" onstart="" thumburl="../img-rus/panos/PT04/RUS_PT04_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/PT04/RUS_PT04_ipadleft.jpg" />
+			<front url="../img-rus/panos/PT04/RUS_PT04_ipadfront.jpg" />
+			<right url="../img-rus/panos/PT04/RUS_PT04_ipadright.jpg" />
+			<back  url="../img-rus/panos/PT04/RUS_PT04_ipadback.jpg" />
+			<up    url="../img-rus/panos/PT04/RUS_PT04_ipadup.jpg" />
+			<down  url="../img-rus/panos/PT04/RUS_PT04_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/PT04/RUS_PT04_ipadleft.jpg" />
+			<front url="../img-rus/panos/PT04/RUS_PT04_ipadfront.jpg" />
+			<right url="../img-rus/panos/PT04/RUS_PT04_ipadright.jpg" />
+			<back  url="../img-rus/panos/PT04/RUS_PT04_ipadback.jpg" />
+			<up    url="../img-rus/panos/PT04/RUS_PT04_ipadup.jpg" />
+			<down  url="../img-rus/panos/PT04/RUS_PT04_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/PT04/RUS_PT04_ipadleft.jpg" />
+			<front url="../img-rus/panos/PT04/RUS_PT04_ipadfront.jpg" />
+			<right url="../img-rus/panos/PT04/RUS_PT04_ipadright.jpg" />
+			<back  url="../img-rus/panos/PT04/RUS_PT04_ipadback.jpg" />
+			<up    url="../img-rus/panos/PT04/RUS_PT04_ipadup.jpg" />
+			<down  url="../img-rus/panos/PT04/RUS_PT04_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea83"
+				         style="hotspot_ani_white"
+					     ath="128.0" 
+					     atv="4.2" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_83);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(128.0, 4.2, 25);
+					              loadscene(scene_83, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(296.0, 0.5, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(296.0, 0.5, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea85"
+				         style="hotspot_ani_white"
+					     ath="34.0" 
+					     atv="3.2" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_85);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(34.0, 3.2, 25);
+					              loadscene(scene_85, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(175.0, 4.7, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(175.0, 4.7, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_85" title="scene_85" onstart="" thumburl="../img-rus/panos/VT12/RUS_VT12_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT12/RUS_VT12_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT12/RUS_VT12_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT12/RUS_VT12_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT12/RUS_VT12_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea65"
+				         style="hotspot_ani_white"
+					     ath="2.0" 
+					     atv="8.7" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_65);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(2.0, 8.7, 25);
+					              loadscene(scene_65, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(170.0, 12.6, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(170.0, 12.6, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea84"
+				         style="hotspot_ani_white"
+					     ath="175.0" 
+					     atv="4.7" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_84);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(175.0, 4.7, 25);
+					              loadscene(scene_84, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(34.0, 3.2, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(34.0, 3.2, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_121" 
+				pic="p15" 
+				ath="-57.4" 
+				atv="-12.3"
+				style="imagehotspot" 
+				 onclick="showpic('Photograph of George Washington taken from the Talus Slope below the sculpture.[br]The ropes team can be seen ascending the mountain.');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_86" title="scene_86" onstart="" thumburl="../img-rus/panos/VT5/RUS_VT5_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT5/RUS_VT5_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT5/RUS_VT5_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT5/RUS_VT5_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT5/RUS_VT5_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea118"
+				         style="hotspot_ani_white"
+					     ath="37.0" 
+					     atv="9.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_118);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(37.0, 9.4, 25);
+					              loadscene(scene_118, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(287.0, -7.5, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(287.0, -7.5, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea119"
+				         style="hotspot_ani_white"
+					     ath="246.0" 
+					     atv="-5.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_119);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(246.0, -5.4, 25);
+					              loadscene(scene_119, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(39.0, 11.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(39.0, 11.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_123" 
+				pic="h27" 
+				ath="-93.5" 
+				atv="-25"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of Washington; taken from the historic route taken by[br]workers to get to the Mountain Sculpture');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_87" title="scene_87" onstart="" thumburl="../img-rus/panos/BT18/RUS_BT18_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/BT18/RUS_BT18_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT18/RUS_BT18_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT18/RUS_BT18_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT18/RUS_BT18_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT18/RUS_BT18_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT18/RUS_BT18_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/BT18/RUS_BT18_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT18/RUS_BT18_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT18/RUS_BT18_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT18/RUS_BT18_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT18/RUS_BT18_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT18/RUS_BT18_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/BT18/RUS_BT18_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT18/RUS_BT18_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT18/RUS_BT18_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT18/RUS_BT18_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT18/RUS_BT18_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT18/RUS_BT18_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea92"
+				         style="hotspot_ani_white"
+					     ath="115.0" 
+					     atv="11.0" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_92);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(115.0, 11.0, 25);
+					              loadscene(scene_92, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(343.0, 2.0, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(343.0, 2.0, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_140" 
+				pic="h8" 
+				ath="-64.5" 
+				atv="-15.7"
+				style="imagehotspot" 
+				 onclick="showpic('Historic aerial photograph of Mount Rushmore under construction');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_89" title="scene_89" onstart="" thumburl="../img-rus/panos/SSSTN--i/SSSTN--i_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadleft.jpg" />
+			<front url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadfront.jpg" />
+			<right url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadright.jpg" />
+			<back  url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadback.jpg" />
+			<up    url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadup.jpg" />
+			<down  url="../img-rus/panos/SSSTN--i/SSSTN--i_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadleft.jpg" />
+			<front url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadfront.jpg" />
+			<right url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadright.jpg" />
+			<back  url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadback.jpg" />
+			<up    url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadup.jpg" />
+			<down  url="../img-rus/panos/SSSTN--i/SSSTN--i_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadleft.jpg" />
+			<front url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadfront.jpg" />
+			<right url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadright.jpg" />
+			<back  url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadback.jpg" />
+			<up    url="../img-rus/panos/SSSTN--i/SSSTN--i_ipadup.jpg" />
+			<down  url="../img-rus/panos/SSSTN--i/SSSTN--i_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea72"
+				         style="hotspot_ani_white"
+					     ath="233.0" 
+					     atv="6.1" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_72);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(233.0, 6.1, 25);
+					              loadscene(scene_72, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(59, 0, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(59, 0, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea73"
+				         style="hotspot_ani_white"
+					     ath="170.0" 
+					     atv="3.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_73);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(170.0, 3.8, 25);
+					              loadscene(scene_73, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(353.0, 6.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(353.0, 6.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_133" 
+				pic="h3" 
+				ath="-84.8" 
+				atv="0.2"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of an early scale model in the first studio at Mount[br]Rushmore');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_141" 
+				pic="persp1" 
+				ath="725" 
+				atv="6.3"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of Lincoln`s Mask; created from close-range scan data');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_156" 
+				pic="persp2" 
+				ath="-99.9" 
+				atv="0.4"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of mesh data from the 1/12 scale model found within the Sculptor`s[br]Studio; created from laser scan data');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_167" 
+				pic="persp27" 
+				ath="-133.4" 
+				atv="-12.5"
+				style="perspectivehotspot" 
+				 onclick="showpic('Elevation of the eastern wall inside the Sculptor`s Studio; created from[br]photo-textured laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_90" title="scene_90" onstart="" thumburl="../img-rus/panos/VT16/RUS_VT16_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT16/RUS_VT16_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT16/RUS_VT16_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/VT16/RUS_VT16_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/VT16/RUS_VT16_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea108"
+				         style="hotspot_ani_white"
+					     ath="310.0" 
+					     atv="6.2" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_108);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(310.0, 6.2, 25);
+					              loadscene(scene_108, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(130.0, -6.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(130.0, -6.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea120"
+				         style="hotspot_ani_white"
+					     ath="143.0" 
+					     atv="-2.0" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_120);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(143.0, -2.0, 25);
+					              loadscene(scene_120, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(298.0, 12.2, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(298.0, 12.2, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_142" 
+				pic="h4" 
+				ath="688" 
+				atv="-13.9"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of Washington under construction');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_108" title="scene_108" onstart="" thumburl="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea83"
+				         style="hotspot_ani_white"
+					     ath="310.0" 
+					     atv="13.9" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_83);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(310.0, 13.9, 25);
+					              loadscene(scene_83, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(118.0, 6.0, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(118.0, 6.0, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea90"
+				         style="hotspot_ani_white"
+					     ath="130.0" 
+					     atv="-6.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_90);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(130.0, -6.3, 25);
+					              loadscene(scene_90, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(310.0, 6.2, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(310.0, 6.2, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_154" 
+				pic="h42" 
+				ath="-71.8" 
+				atv="19.2"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of President Coolidge delivering the dedication speech on[br]August 10; 1927');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_109" title="scene_109" onstart="" thumburl="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea65"
+				         style="hotspot_ani_white"
+					     ath="269.0" 
+					     atv="13.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_65);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(269.0, 13.3, 25);
+					              loadscene(scene_65, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(68.0, 6.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(68.0, 6.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea79"
+				         style="hotspot_ani_white"
+					     ath="22.0" 
+					     atv="8.9" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_79);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(22.0, 8.9, 25);
+					              loadscene(scene_79, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(215.0, 6.7, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(215.0, 6.7, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea119"
+				         style="hotspot_ani_white"
+					     ath="32.0" 
+					     atv="7.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_119);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(32.0, 7.8, 25);
+					              loadscene(scene_119, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(244.0, -8.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(244.0, -8.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_143" 
+				pic="h14" 
+				ath="-65" 
+				atv="-26.8"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of Gutzon Borglum and two drillers working on Mount Rushmore');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_161" 
+				pic="tj_head" 
+				ath="-52" 
+				atv="-23.5"
+				style="videohotspot" 
+				></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_110" title="scene_110" onstart="" thumburl="../img-rus/panos/AFSTN--h/AFSTN--h_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadleft.jpg" />
+			<front url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadfront.jpg" />
+			<right url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadright.jpg" />
+			<back  url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadback.jpg" />
+			<up    url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadup.jpg" />
+			<down  url="../img-rus/panos/AFSTN--h/AFSTN--h_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadleft.jpg" />
+			<front url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadfront.jpg" />
+			<right url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadright.jpg" />
+			<back  url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadback.jpg" />
+			<up    url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadup.jpg" />
+			<down  url="../img-rus/panos/AFSTN--h/AFSTN--h_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadleft.jpg" />
+			<front url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadfront.jpg" />
+			<right url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadright.jpg" />
+			<back  url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadback.jpg" />
+			<up    url="../img-rus/panos/AFSTN--h/AFSTN--h_ipadup.jpg" />
+			<down  url="../img-rus/panos/AFSTN--h/AFSTN--h_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea91"
+				         style="hotspot_ani_white"
+					     ath="324.0" 
+					     atv="4.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_91);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(324.0, 4.8, 25);
+					              loadscene(scene_91, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(166.0, 8.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(166.0, 8.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea67"
+				         style="hotspot_ani_white"
+					     ath="100.0" 
+					     atv="10.6" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_67);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(100.0, 10.6, 25);
+					              loadscene(scene_67, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(310.0, 5.0, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(310.0, 5.0, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_111" title="scene_111" onstart="" thumburl="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT03_/RUS_BT03_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea69"
+				         style="hotspot_ani_white"
+					     ath="335.0" 
+					     atv="11.5" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_69);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(335.0, 11.5, 25);
+					              loadscene(scene_69, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(164.0, 2.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(164.0, 2.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_112" title="scene_112" onstart="" thumburl="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/BT14_/RUS_BT14_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea92"
+				         style="hotspot_ani_white"
+					     ath="196.0" 
+					     atv="-0.2" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_92);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(196.0, -0.2, 25);
+					              loadscene(scene_92, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(52.0, 14.6, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(52.0, 14.6, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea117"
+				         style="hotspot_ani_white"
+					     ath="344.0" 
+					     atv="13.7" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_117);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(344.0, 13.7, 25);
+					              loadscene(scene_117, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(173.0, 1.5, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(173.0, 1.5, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_113" title="scene_113" onstart="" thumburl="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea114"
+				         style="hotspot_ani_white"
+					     ath="291.0" 
+					     atv="5.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_114);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(291.0, 5.4, 25);
+					              loadscene(scene_114, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(138.0, 21.1, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(138.0, 21.1, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea116"
+				         style="hotspot_ani_white"
+					     ath="122.0" 
+					     atv="-25.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_116);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(122.0, -25.4, 25);
+					              loadscene(scene_116, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(314.0, 20.9, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(314.0, 20.9, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_114" 
+				pic="persp6" 
+				ath="-120.6" 
+				atv="-41.5"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of the honeycomb pattern inside the Hall of Records; created from[br]photo-textured laser scan data');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_150" 
+				pic="persp8" 
+				ath="-90" 
+				atv="-1.4"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of the Hall of Records; created from laser scan data');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_155" 
+				pic="hall_of_records" 
+				ath="281" 
+				atv="-13.1"
+				style="videohotspot" 
+				></hotspot>
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+	</scene>
+		<scene name="scene_114" title="scene_114" onstart="" thumburl="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea113"
+				         style="hotspot_ani_white"
+					     ath="138.0" 
+					     atv="21.1" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_113);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(138.0, 21.1, 25);
+					              loadscene(scene_113, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(291.0, 5.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(291.0, 5.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea115"
+				         style="hotspot_ani_white"
+					     ath="304.0" 
+					     atv="-9.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_115);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(304.0, -9.3, 25);
+					              loadscene(scene_115, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(119.0, 32.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(119.0, 32.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_112" 
+				pic="p8" 
+				ath="-31.7" 
+				atv="-5.5"
+				style="imagehotspot" 
+				 onclick="showpic('Photograph of the team scanning inside the Hall of Records');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_113" 
+				pic="persp9" 
+				ath="159.6" 
+				atv="-3.3"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of the honeycomb pattern inside the Hall of Records; created from[br]laser scan data');" ></hotspot>
+
+		<!-- show info, set heading, create hotpots -->
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		
+			</scene>
+		<scene name="scene_115" title="scene_115" onstart="" thumburl="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea114"
+				         style="hotspot_ani_white"
+					     ath="119.0" 
+					     atv="32.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_114);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(119.0, 32.3, 25);
+					              loadscene(scene_114, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(304.0, -9.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(304.0, -9.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_115" 
+				pic="persp13" 
+				ath="308" 
+				atv="5.1"
+				style="perspectivehotspot" 
+				 onclick="showpic('Section of the Hall of Records; created from photo-textured laser scan data');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_116" title="scene_116" onstart="" thumburl="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadleft.jpg" />
+			<front url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadfront.jpg" />
+			<right url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadright.jpg" />
+			<back  url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadback.jpg" />
+			<up    url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadup.jpg" />
+			<down  url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadleft.jpg" />
+			<front url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadfront.jpg" />
+			<right url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadright.jpg" />
+			<back  url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadback.jpg" />
+			<up    url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadup.jpg" />
+			<down  url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadleft.jpg" />
+			<front url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadfront.jpg" />
+			<right url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadright.jpg" />
+			<back  url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadback.jpg" />
+			<up    url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipadup.jpg" />
+			<down  url="../img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea61"
+				         style="hotspot_ani_white"
+					     ath="353.0" 
+					     atv="40.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_61);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(353.0, 40.4, 25);
+					              loadscene(scene_61, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(243.0, -54.5, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(243.0, -54.5, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea113"
+				         style="hotspot_ani_white"
+					     ath="314.0" 
+					     atv="20.9" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_113);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(314.0, 20.9, 25);
+					              loadscene(scene_113, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(122.0, -25.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(122.0, -25.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_118" 
+				pic="h29" 
+				ath="124.6" 
+				atv="24.4"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of a driller `honeycombing` the mountain');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_110" 
+				pic="h1" 
+				ath="-3.6" 
+				atv="24.6"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of early construction work on the Lincoln sculpture; showing[br]dust from the dynamite blasts');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_116" 
+				pic="p7" 
+				ath="-69.3" 
+				atv="11.1"
+				style="imagehotspot" 
+				 onclick="showpic('Photograph of the entrance to the Hall of Records');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_126" 
+				pic="h39" 
+				ath="-176.2" 
+				atv="8"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of Borglum mounting an American flag on Mount Rushmore');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_164" 
+				pic="persp12" 
+				ath="-231.6" 
+				atv="5.6"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of the ropes team performing a scan of Washington`s head');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_117" title="scene_117" onstart="" thumburl="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea71"
+				         style="hotspot_ani_white"
+					     ath="4.0" 
+					     atv="19.0" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_71);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(4.0, 19.0, 25);
+					              loadscene(scene_71, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(237.0, 4.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(237.0, 4.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea112"
+				         style="hotspot_ani_white"
+					     ath="173.0" 
+					     atv="1.5" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_112);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(173.0, 1.5, 25);
+					              loadscene(scene_112, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(344.0, 13.7, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(344.0, 13.7, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_118" title="scene_118" onstart="" thumburl="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea77"
+				         style="hotspot_ani_white"
+					     ath="105.0" 
+					     atv="13.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_77);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(105.0, 13.4, 25);
+					              loadscene(scene_77, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(257.0, 2.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(257.0, 2.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea86"
+				         style="hotspot_ani_white"
+					     ath="287.0" 
+					     atv="-7.5" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_86);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(287.0, -7.5, 25);
+					              loadscene(scene_86, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(37.0, 9.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(37.0, 9.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_144" 
+				pic="h13" 
+				ath="-84.8" 
+				atv="-26.4"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of Gutzon Borglum and a worker ascending the mountain in[br]front of Thomas Jefferson');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_145" 
+				pic="h33" 
+				ath="-97.5" 
+				atv="-24.6"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph showing early construction work on the second Jefferson[br]sculpture. An earlier Jefferson sculpture was attempted on the left side of[br]Washington and demolished due to poor granite.');" ></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_119" title="scene_119" onstart="" thumburl="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea86"
+				         style="hotspot_ani_white"
+					     ath="39.0" 
+					     atv="11.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_86);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(39.0, 11.3, 25);
+					              loadscene(scene_86, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(246.0, -5.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(246.0, -5.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea109"
+				         style="hotspot_ani_white"
+					     ath="244.0" 
+					     atv="-8.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_109);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(244.0, -8.8, 25);
+					              loadscene(scene_109, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(32.0, 7.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(32.0, 7.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_122" 
+				pic="persp19" 
+				ath="293" 
+				atv="-29.7"
+				style="perspectivehotspot" 
+				 onclick="showpic('Perspective of Theodore Roosevelt; created from laser scan data');" ></hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_160" 
+				pic="tr_head" 
+				ath="-82.7" 
+				atv="-29.5"
+				style="videohotspot" 
+				></hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_120" title="scene_120" onstart="" thumburl="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea91"
+				         style="hotspot_ani_white"
+					     ath="69.0" 
+					     atv="6.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_91);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(69.0, 6.8, 25);
+					              loadscene(scene_91, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(249.0, 4.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(249.0, 4.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea90"
+				         style="hotspot_ani_white"
+					     ath="298.0" 
+					     atv="12.2" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_90);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(298.0, 12.2, 25);
+					              loadscene(scene_90, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(143.0, -2.0, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(143.0, -2.0, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_121" title="scene_121" onstart="" thumburl="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea91"
+				         style="hotspot_ani_white"
+					     ath="207.0" 
+					     atv="3.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_91);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(207.0, 3.3, 25);
+					              loadscene(scene_91, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(59.0, 1.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(59.0, 1.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea92"
+				         style="hotspot_ani_white"
+					     ath="113.0" 
+					     atv="5.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_92);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(113.0, 5.3, 25);
+					              loadscene(scene_92, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(234.0, 4.6, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(234.0, 4.6, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_122" title="scene_122" onstart="" thumburl="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadleft.jpg" />
+			<front url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadfront.jpg" />
+			<right url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadright.jpg" />
+			<back  url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadback.jpg" />
+			<up    url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipadup.jpg" />
+			<down  url="../img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea66"
+				         style="hotspot_ani_white"
+					     ath="134.0" 
+					     atv="-12.0" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_66);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(134.0, -12.0, 25);
+					              loadscene(scene_66, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(338.0, 16.5, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(338.0, 16.5, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_123" title="scene_123" onstart="" thumburl="../img-rus/panos/SS23_/SS23__ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/SS23_/SS23__ipadleft.jpg" />
+			<front url="../img-rus/panos/SS23_/SS23__ipadfront.jpg" />
+			<right url="../img-rus/panos/SS23_/SS23__ipadright.jpg" />
+			<back  url="../img-rus/panos/SS23_/SS23__ipadback.jpg" />
+			<up    url="../img-rus/panos/SS23_/SS23__ipadup.jpg" />
+			<down  url="../img-rus/panos/SS23_/SS23__ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/SS23_/SS23__ipadleft.jpg" />
+			<front url="../img-rus/panos/SS23_/SS23__ipadfront.jpg" />
+			<right url="../img-rus/panos/SS23_/SS23__ipadright.jpg" />
+			<back  url="../img-rus/panos/SS23_/SS23__ipadback.jpg" />
+			<up    url="../img-rus/panos/SS23_/SS23__ipadup.jpg" />
+			<down  url="../img-rus/panos/SS23_/SS23__ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/SS23_/SS23__ipadleft.jpg" />
+			<front url="../img-rus/panos/SS23_/SS23__ipadfront.jpg" />
+			<right url="../img-rus/panos/SS23_/SS23__ipadright.jpg" />
+			<back  url="../img-rus/panos/SS23_/SS23__ipadback.jpg" />
+			<up    url="../img-rus/panos/SS23_/SS23__ipadup.jpg" />
+			<down  url="../img-rus/panos/SS23_/SS23__ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea69"
+				         style="hotspot_ani_white"
+					     ath="251.0" 
+					     atv="-4.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_69);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(251.0, -4.4, 25);
+					              loadscene(scene_69, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(33.0, 15.6, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(33.0, 15.6, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea74"
+				         style="hotspot_ani_white"
+					     ath="14.0" 
+					     atv="7.8" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_74);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(14.0, 7.8, 25);
+					              loadscene(scene_74, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(193.0, -7.2, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(193.0, -7.2, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+		</scene>
+		<scene name="scene_124" title="scene_124" onstart="" thumburl="../img-rus/panos/SS15_/SS15__ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/SS15_/SS15__ipadleft.jpg" />
+			<front url="../img-rus/panos/SS15_/SS15__ipadfront.jpg" />
+			<right url="../img-rus/panos/SS15_/SS15__ipadright.jpg" />
+			<back  url="../img-rus/panos/SS15_/SS15__ipadback.jpg" />
+			<up    url="../img-rus/panos/SS15_/SS15__ipadup.jpg" />
+			<down  url="../img-rus/panos/SS15_/SS15__ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/SS15_/SS15__ipadleft.jpg" />
+			<front url="../img-rus/panos/SS15_/SS15__ipadfront.jpg" />
+			<right url="../img-rus/panos/SS15_/SS15__ipadright.jpg" />
+			<back  url="../img-rus/panos/SS15_/SS15__ipadback.jpg" />
+			<up    url="../img-rus/panos/SS15_/SS15__ipadup.jpg" />
+			<down  url="../img-rus/panos/SS15_/SS15__ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/SS15_/SS15__ipadleft.jpg" />
+			<front url="../img-rus/panos/SS15_/SS15__ipadfront.jpg" />
+			<right url="../img-rus/panos/SS15_/SS15__ipadright.jpg" />
+			<back  url="../img-rus/panos/SS15_/SS15__ipadback.jpg" />
+			<up    url="../img-rus/panos/SS15_/SS15__ipadup.jpg" />
+			<down  url="../img-rus/panos/SS15_/SS15__ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea77"
+				         style="hotspot_ani_white"
+					     ath="235.0" 
+					     atv="3.5" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_77);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(235.0, 3.5, 25);
+					              loadscene(scene_77, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(89.0, 1.8, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(89.0, 1.8, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea125"
+				         style="hotspot_ani_white"
+					     ath="72.0" 
+					     atv="1.7" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_125);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(72.0, 1.7, 25);
+					              loadscene(scene_125, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(293.0, 7.3, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(293.0, 7.3, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+			<!-- polygonal hotspots for the pictures on the side -->
+			<hotspot 
+				name="hs_162" 
+				pic="h16" 
+				ath="-105.6" 
+				atv="-20.6"
+				style="imagehotspot" 
+				 onclick="showpic('Historic photograph of Mount Rushmore under construction');" ></hotspot>
+			
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+
+		<!-- show info, set heading, create hotpots -->
+
+	</scene>
+		<scene name="scene_125" title="scene_125" onstart="" thumburl="../img-rus/panos/SS9__/SS9___ipadfront.jpg">
+		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="100" fovmin="30" fovmax="120" />
+		
+		<image>
+			<left  url="../img-rus/panos/SS9__/SS9___ipadleft.jpg" />
+			<front url="../img-rus/panos/SS9__/SS9___ipadfront.jpg" />
+			<right url="../img-rus/panos/SS9__/SS9___ipadright.jpg" />
+			<back  url="../img-rus/panos/SS9__/SS9___ipadback.jpg" />
+			<up    url="../img-rus/panos/SS9__/SS9___ipadup.jpg" />
+			<down  url="../img-rus/panos/SS9__/SS9___ipaddown.jpg" />
+			<mobile>
+			<left  url="../img-rus/panos/SS9__/SS9___ipadleft.jpg" />
+			<front url="../img-rus/panos/SS9__/SS9___ipadfront.jpg" />
+			<right url="../img-rus/panos/SS9__/SS9___ipadright.jpg" />
+			<back  url="../img-rus/panos/SS9__/SS9___ipadback.jpg" />
+			<up    url="../img-rus/panos/SS9__/SS9___ipadup.jpg" />
+			<down  url="../img-rus/panos/SS9__/SS9___ipaddown.jpg" />
+			</mobile>
+			<tablet>
+			<left  url="../img-rus/panos/SS9__/SS9___ipadleft.jpg" />
+			<front url="../img-rus/panos/SS9__/SS9___ipadfront.jpg" />
+			<right url="../img-rus/panos/SS9__/SS9___ipadright.jpg" />
+			<back  url="../img-rus/panos/SS9__/SS9___ipadback.jpg" />
+			<up    url="../img-rus/panos/SS9__/SS9___ipadup.jpg" />
+			<down  url="../img-rus/panos/SS9__/SS9___ipaddown.jpg" />
+			</tablet>
+		</image>
+
+
+	
+		<!-- invisible polygonal hotsppot as "hit area" for the door hotspot
+			(for HTML5 an animated gif is used as alternative) -->
+		
+				<hotspot name="door_hitarea73"
+				         style="hotspot_ani_white"
+					     ath="173.0" 
+					     atv="-2.4" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_73);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(173.0, -2.4, 25);
+					              loadscene(scene_73, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(83.0, 11.4, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(83.0, 11.4, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+				<hotspot name="door_hitarea124"
+				         style="hotspot_ani_white"
+					     ath="293.0" 
+					     atv="7.3" 
+				         alpha="0"
+				         capture="false"
+				         onhover="showtext(go there);"
+				         onclick="set(enabled,false);
+					              set(scenename,scene_124);
+					              set(view.maxpixelzoom,null);
+					              set(view.fovmin,28);
+					              lookto(293.0, 7.3, 25);
+					              loadscene(scene_124, null, MERGE, BLEND(2));
+					              
+					              if(get(intouchmode), lookat(72.0, 1.7, 25));
+						          if(get(intouchmode), wait(LOAD));
+						          if(get(intouchmode), oninterrupt(break));
+						          if(get(intouchmode), wait(BLEND));
+						          if(get(intouchmode), lookto(72.0, 1.7, 108, smooth(45,45,60), false));
+
+						          ifnot(get(intouchmode), lookat(0, 0, 108, smooth(45,45,60), false));
+						          
+						           "
+					>
+				</hotspot>
+		<!-- show info, set heading, create hotpots -->
+
+		<events onxmlcomplete="action(onstart);"
+		    onviewchange= "action(onviewchange);"
+		/>
+	</scene>
+	<!-- actions -->
+	<action name="onstart">
+		set(heading, 0);
+		delayedcall(1.0, sub(plugin[compass_pointer].rotate, view.hlookat, heading));
+		<!-- action(add_compass_spots); -->
+	</action>
+	
+	
+	<action name="onviewchange">
+		sub(plugin[compass_pointer].rotate, view.hlookat, heading);
+	</action>
+	
+	<!-- compass with rotating pointer -->
+	<plugin name="compass" url="../img/compass.png" keep="true" zorder="0" children="true"
+	align="lefttop" x="10" y="10"
+	scalechildren="true"
+	scale=".7"
+	heading="0"
+	alpha=".6"
+	onloaded="if(isphone, mul(scale,2));"
+	/>
+	
+	<!-- compass pointer, the rotation will be changed in the "onviewchange" action -->
+	<plugin name="compass_pointer" url="../img/compass_pointer.png" keep="true" handcursor="false"
+	parent="compass" zorder="0"
+	align="center"
+	onloaded="if(isphone, mul(scale,2));"
+	/>
+	
+	<!-- calc the max. flyout size of a hotspot for the current screen size -->
+	<action name="calc_flyout_size">
+		div(screen_sideaspect, stagewidth, stageheight);
+		div(hotspot_sideaspect, hotspot[%1].width, hotspot[%1].height);
+		
+		if(screen_sideaspect LT hotspot_sideaspect,
+			<!-- align at screen width -->
+			div(hotspot[%1].width,stagewidth,stageheight);
+			mul(hotspot[%1].width,80);
+			txtadd(hotspot[%1].width,'%');
+			set(hotspot[%1].height,prop);
+		  ,
+		  <!-- align at screen height -->
+			set(hotspot[%1].width,prop);
+			set(hotspot[%1].height,80%);
+		  );
+	</action>
+
+	<!-- fly in a hotspot = show hotspot fixed at screen -->
+	<action name="flyin">
+		if(hotspot[%1].flying == 0.0, hotspot[%1].resetsize(); calc_flyout_size(%1); );
+		if(hotspot[%1].oldscale === null, copy(hotspot[%1].oldscale, hotspot[%1].scale) );
+		if(hotspot[%1].oldrx === null, copy(hotspot[%1].oldrx, hotspot[%1].rx) );
+		if(hotspot[%1].oldry === null, copy(hotspot[%1].oldry, hotspot[%1].ry) );
+		if(hotspot[%1].oldrz === null, copy(hotspot[%1].oldrz, hotspot[%1].rz) );
+		set(hotspot[%1].zorder,3);
+		set(hotspot[%1].enabled,true);
+		set(hotspot[%1].visible,true);
+		tween(hotspot[%1].alpha,  1.0);
+		tween(hotspot[%1].flying, 1.0);
+		tween(hotspot[%1].scale,  1.0);
+		tween(hotspot[%1].rx, 0.0);
+		tween(hotspot[%1].ry, 0.0);
+		tween(hotspot[%1].rz, 0.0);
+	</action>
+
+	<!-- fly the hotspot out/back -->
+	<action name="flyout">
+		set(hotspot[%1].enabled,false);
+		tween(hotspot[%1].alpha,  0.0, 0.5, default, set(hotspot[%1].visible,false); );
+		tween(hotspot[%1].flying, 0.0);
+		tween(hotspot[%1].scale,  get(hotspot[%1].oldscale));
+		tween(hotspot[%1].rx,  get(hotspot[%1].oldrx));
+		tween(hotspot[%1].ry,  get(hotspot[%1].oldry));
+		tween(hotspot[%1].rz,  get(hotspot[%1].oldrz));
+		set(picname,);
+	</action>	       
+	       
+	<action name="showpic">
+		<!-- creates a new hotspot and fly it out -->
+		if(hotspot[get(pic)] === null,
+			txtadd(picfilename,'img-rus/media/',get(pic),'.jpg');
+			set(picname,get(name));
+			set(picpath,get(picfilename));
+		,
+			set(picname,get(name));
+		);
+	</action>
+
+	<action name="showvideo">
+		set(videoname,get(name));
+	</action>
+
+
+
+
+
+
+
+</krpano>
+	

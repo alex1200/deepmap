@@ -1,5 +1,7 @@
 function Navigator(){
     this.selectedStation;
+
+    this.survey= 1;
 }
 
 Navigator.prototype.setStation = function(station){
@@ -89,6 +91,15 @@ Navigator.prototype.loadStation = function(station){
     $('#fullText').hide();
     var instance = stationManager.getInstance(station);
     mapCommon.loadPanorama(instance.source[3], instance.source[4], station)
+
+    if(this.survey ==1){
+        this.survey++;
+        loadSurvey(3);
+    }
+    else if(this.survey ==2){
+        this.survey++;
+        loadSurvey(4);
+    }
 };
 
 Navigator.prototype.overMarker = function(station){

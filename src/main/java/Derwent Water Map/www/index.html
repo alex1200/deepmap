@@ -1,0 +1,1454 @@
+
+
+<!DOCTYPE html>
+<html>
+ <head>
+ <title>Mount Rushmore</title>
+ <link rel="stylesheet" href="jqtouch/jqtouch.css" type="text/css" media="screen" title="no title" charset="utf-8">
+ <link rel="stylesheet" href="jqtouchthemes/apple/theme.css" type="text/css" media="screen" title="no title" charset="utf-8">
+ <link rel="stylesheet" href="includes/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		
+
+<style type="text/css">
+
+body{
+    background:#000;
+}
+a{
+	
+}
+body > * {
+ min-height: 320px !important;
+}
+
+.current{
+	height:320px;
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+);
+}
+
+body.fullscreen > * {
+ min-height: 320px !important;
+}
+body.fullscreen.black-translucent > * {
+ min-height: 320px !important;
+}
+body.landscape > * {
+ min-height: 320px;
+}
+.viewportportrait{
+	width: 320px;
+	height: 350px;/*change this to control the height, should be -60 for export*/
+}
+.viewportlandscape{
+	width: 480px;
+	height: 190px;/*change this to control the height, should be -60 for export*/
+}
+
+
+
+
+
+
+#mapholder{
+
+ position:relative;
+ z-index:1;
+ width:100%;/* your desired width, auto and 100% are fine */;
+ height:290px;/* element height */;
+ overflow:auto;/* hidden|auto|scroll */;
+
+	/*overflow: auto;*//*this is good for browsers*/
+}
+
+#mapholderinner{
+	width:2048px;/*set these two vars based on the size of the tiled images*/
+	height:1966px;
+}
+.panoloading{
+	position:absolute;
+	top:120px;
+	width:100%;
+	text-align:center;
+	font-size:48px;
+}
+
+.mapimg{
+	position:absolute;
+/*
+ -webkit-transition-property: width;
+ -webkit-transition-duration: 0.01s;
+ -webkit-transition-timing-function: default;
+ */
+}
+
+.wideimgportrait{
+	width:320px;
+}
+.wideimglandscape{
+	width:480px;
+}
+.widemovportrait{
+	width:320px;
+	height:336px;
+}
+.widemov{/*landscape*/
+	width:480px;
+	height:192px;
+}
+
+
+
+
+#mapinstructions{
+	position:absolute;
+	z-index:200;
+	width:300px;
+	height:230px;
+	margin-left:90px;/*half of 480-300*/
+	margin-top:45px;/*half of 290-250*/
+	font-size:20px;
+	text-align:center;
+	color:#000;
+
+  -webkit-border-radius:50px; /* all corners */
+  border:3px solid #000; /* border color, per usual */
+  	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, #ffd),
+	color-stop(0.64, #ffe)
+);
+}
+
+.hotspot{
+	position:absolute;
+	z-index:2;
+}
+
+.bottombar{
+	background:url('img/background-green.jpg');
+	background-repeat:repeat-x;
+	height:30px;
+	position:absolute;
+	top:290px;/*this used to be bottom:0, but we need top:768-height(52) for animation reasons*/
+	width:480px;
+	z-index:100;
+}
+.secondbottombar{
+	position:absolute;
+	background:#000;
+	bottom:30px;/*the height of bottombar*/
+	width:1024px;
+	z-index:100;
+	padding:4px;
+	color:#fff;
+	display:none;
+	text-align:center;
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+);
+}
+
+
+#viewport{
+	width: 480px;
+	height: 290px;/*change this to control the height, should be -60 for export*/
+	/*top:45px;*/
+}
+
+
+
+
+.partnertextbox{
+	margin:5px;
+		font-size:10px;	
+	height:171px;
+	width:438px;
+	margin-top:4px;
+	}
+
+.textholder_old{
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, #7e9c82),
+	color-stop(0.64, #6e8c72)
+);
+	color:#fff;
+}
+.textholder{
+	color:#fff;
+}
+.moviecaptions{
+padding-left:32px;
+padding-right:32px;
+}
+.moviecaptions2{
+padding-left:32px;
+padding-right:32px;
+}
+
+#bannerslider{
+	padding-bottom:14px;
+	width:10000px;
+	position:relative;
+	z-index:2;
+}
+#bannerdetector{
+	position:absolute;
+	width:1024px;
+	height:400px;
+	z-index:2;
+}
+.bannerthumb{
+	margin-left:16px;
+	display:inline;
+	padding:5px;
+	padding-bottom:1px;
+	float:left;
+
+}
+.contentslider{
+	width:100000px;
+	position:relative;
+	height:290px;
+}
+.contentwindow{
+	width:456px;
+	margin-left:12px;/*double this plus the width should be 1024*/
+	overflow-x:hidden;
+	height:290px;
+	overflow-y:hidden;
+}
+#photoswipedetector{
+	position:absolute;
+	width:480px;
+	height:252px;
+	z-index:2;
+}
+#photogallery{
+	width:480px;
+	padding-top:10px;
+	height:252px;
+	background:#000;
+	z-index:3;
+	position:absolute;
+	display:none;/*changed to block to show the gallery page first*/
+	/*text-align:center;*/
+	padding-left:14px;
+	
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+	);
+}
+#hphotoswipedetector{
+	position:absolute;
+	width:480px;
+	height:252px;
+	z-index:2;
+}
+#hphotogallery{
+	padding-top:10px;
+	width:480px;
+	height:252px;
+	background:#000;
+	z-index:3;
+	position:absolute;
+	display:none;
+	/*text-align:center;*/
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+);
+}
+
+#cphotoswipedetector{
+	position:absolute;
+	width:480px;
+	height:252px;
+	z-index:2;
+}
+#cphotogallery{
+	padding-top:10px;
+	width:480px;
+	height:252px;
+	background:#000;
+	z-index:3;
+	position:absolute;
+	display:none;
+	text-align:center;
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+);
+}
+
+</style>
+
+
+<script type="text/javascript">
+var isphone=true;
+var iphonetext='_iphone';
+var height=480;
+var width=320;
+var debug=false;
+
+var panocaptions=[];
+var musicfiles=[];
+var hotspotcaptions=[];
+var filepaths=[];
+
+panocaptions[91]='View from the Grand Viewing Terrace. The Grand Viewing Terrace is located directly above the Lincoln Borglum Visitor Center.';
+musicfiles[91]='img-rus/audio/RUS_VT18_Clean.mp3';
+filepaths[91]='img-rus/panos/VT18/RUS_VT18_Clean_ipad#face#.jpg';
+panocaptions[61]='View from the Mountain Sculpture, near the chins of Theodore Roosevelt and Abraham Lincoln.';
+musicfiles[61]='img-rus/audio/MOR_7755.mp3';
+filepaths[61]='img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipad#face#.jpg';
+panocaptions[62]='View near the 1/12 scale model inside the Sculptor\'s Studio. Interpretive talks are held here during the summer months. The talks explain the carving process.';
+musicfiles[62]='img-rus/audio/SS_3.mp3';
+filepaths[62]='img-rus/panos/SS------3/SS------3_cube_#face#.jpg';
+panocaptions[65]='View from one of the four stops along the Presidential Trail where visitors can find exhibits depicting the lives of each of the four Presidents.';
+musicfiles[65]='img-rus/audio/RUS_VT4_Clean.mp3';
+filepaths[65]='img-rus/panos/VT11/RUS_VT11_Clean_ipad#face#.jpg';
+panocaptions[92]='View of the Presidential Trail between the Grand Viewing Terrace and the Borglum Terrace.';
+musicfiles[92]='img-rus/audio/RUS_BT16.mp3';
+filepaths[92]='img-rus/panos/BT16/RUS_BT16_ipad#face#.jpg';
+panocaptions[66]='View from the Grand Viewing Terrace overlooking the Mountain Sculpture.';
+musicfiles[66]='img-rus/audio/RUS_VT02_Clean.mp3';
+filepaths[66]='img-rus/panos/VT02/RUS_VT02_Clean_ipad#face#.jpg';
+panocaptions[67]='View from the Avenue of Flags. Flags are powerful symbols, which remind people of the strength that is found within our nation’s diversity, history and ideals. The 56 flags represent the 50 states, one district, three territories, and two commonwealths of the United States of America. The flags are arranged in alphabetical order with the A’s beginning on the walkway near the concession building.';
+musicfiles[67]='img-rus/audio/AFSTNG_d.mp3';
+filepaths[67]='img-rus/panos/AFSTN--d/AFSTN--d_ipad#face#.jpg';
+panocaptions[68]='View from the Avenue of Flags. There are 56 flags here which represent the 50 states, one district, three territories, and two commonwealths of the United States of America.';
+musicfiles[68]='img-rus/audio/AFSTNG_c.mp3';
+filepaths[68]='img-rus/panos/AFSTH--c/AFSTN--c_ipad#face#.jpg';
+panocaptions[69]='View near the Borglum Terrace, site of the first Sculptor’s Studio at Mount Rushmore.';
+musicfiles[69]='img-rus/audio/RUS_BT01.mp3';
+filepaths[69]='img-rus/panos/BT01/RUS_BT01_Clean_ipad#face#.jpg';
+panocaptions[70]='View in front of the larger of the two historic fireplaces at Borglum Terrace. These two unique fireplaces are all that remain of sculptor Gutzon Borglum’s first studio at Mount Rushmore.';
+musicfiles[70]='img-rus/audio/BT06_.1.mp3';
+filepaths[70]='img-rus/panos/BT06/RUS_BT06_Clean_ipad#face#.jpg';
+panocaptions[71]='View from the Borglum Terrace, site of the first Sculptor’s Studio at Mount Rushmore.';
+musicfiles[71]='img-rus/audio/BT09_.mp3';
+filepaths[71]='img-rus/panos/BT09/RUS_BT09_Clean_ipad#face#.jpg';
+panocaptions[72]='View at the base of the 1/12 original scale model in the Sculptor\'s Studio. The scale model changed nine times to adjust to flaws found within Mount Rushmore.';
+musicfiles[72]='img-rus/audio/SS_.mp3';
+filepaths[72]='img-rus/panos/SS-----/SS-----_ipad#face#.jpg';
+panocaptions[73]='View from outside the Sculptor\'s Studio taken near a historic staircase. These native stone stairs were constructed by the Civilian Conservation Corps.';
+musicfiles[73]='img-rus/audio/SS6__.mp3';
+filepaths[73]='img-rus/panos/SS6__/RUS_SS6_Clean_ipad#face#.jpg';
+panocaptions[74]='View from the landing platform of the historic tram, site of an infamous tram car accident.';
+musicfiles[74]='img-rus/audio/SS20_.mp3';
+filepaths[74]='img-rus/panos/SS20_/SS20_Clean_ipad#face#.jpg';
+panocaptions[77]='View from the Presidential Trail. The Presidential trail was constructed during the late 1990’s. It offers excellent views of the Mountain Sculpture, the sacred Paha Sapa (Lakota for Black Hills), and the plains of western South Dakota.';
+musicfiles[77]='img-rus/audio/RUS_VT2_Clean.mp3';
+filepaths[77]='img-rus/panos/VT2/RUS_VT2_Clean_ipad#face#.jpg';
+panocaptions[79]='View from the Talus Terrace, a lookout near the midpoint along the Presidential Trail. This is as close to Mount Rushmore as visitors to the park can get. Near this point along the trail, one can look into the blast fragments and make out some of the drill holes created by the workers to weaken the rock. These holes provided access for dynamite charges to be placed to blast away the excess rock and further define the sculpture.';
+musicfiles[79]='img-rus/audio/RUS_VT10_Clean.mp3';
+filepaths[79]='img-rus/panos/VT10/RUS_VT10_Clean_ipad#face#.jpg';
+panocaptions[82]='View from the Talus Slope below the Mountain Sculpture. Tool marks are distinguishable on the rock rubble, evidence of the hours of labor from the carving era. The park would like to remind visitors that climbing any portion of Mount Rushmore is a federal offense and the offending parties are subjected to fines and possible imprisonment.';
+musicfiles[82]='img-rus/audio/Main_Talus_Slope_Pano.mp3';
+filepaths[82]='img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipad#face#.jpg';
+panocaptions[83]='View from the portion of the Presidential Trail overlapping with the historic roadbed of Highway 244.  This area has a rich diversity of trees. Aspen, birch, cottonwood, and ponderosa pine can be found here.';
+musicfiles[83]='img-rus/audio/RUS_PT03.mp3';
+filepaths[83]='img-rus/panos/PT03/RUS_PT03_ipad#face#.jpg';
+panocaptions[84]='View from the Presidential Trail, near Heritage Village. The Lakota, Nakota and Dakota Heritage Village is a three tipi encampment displaying the prehistoric, historic, and present-day life and ways of these important Sioux tribes.';
+musicfiles[84]='img-rus/audio/RUS_PT04.mp3';
+filepaths[84]='img-rus/panos/PT04/RUS_PT04_ipad#face#.jpg';
+panocaptions[85]='View from the Presidential Trail near the Lincoln wayside exhibit.';
+musicfiles[85]='img-rus/audio/RUS_VT12_Clean.mp3';
+filepaths[85]='img-rus/panos/VT12/RUS_VT12_Clean_ipad#face#.jpg';
+panocaptions[86]='View from the Presidential Trail near the Jefferson wayside exhibit.';
+musicfiles[86]='img-rus/audio/RUS_VT5_Clean.mp3';
+filepaths[86]='img-rus/panos/VT5/RUS_VT5_Clean_ipad#face#.jpg';
+panocaptions[87]='View from the Historic Overlook which was constructed upon a water catchment (cistern) during the historic carving era.';
+musicfiles[87]='img-rus/audio/RUS_BT18.mp3';
+filepaths[87]='img-rus/panos/BT18/RUS_BT18_ipad#face#.jpg';
+panocaptions[89]='View from inside the Sculptor’s Studio, the second on-site studio for sculptor Gutzon Borglum. Unique plaster models and worker tools related to the sculpting processes are displayed in this studio. Sitting atop the fireplace, the bronze busts sculpted by Gutzon Borglum are (from left to right): Doane Robinson (State Historian and originator of the Mount Rushmore idea), Peter Norbeck (South Dakota Politician and supporter of the Mount Rushmore Sculpture project), William Williamson (South Dakota Politician and supporter of the Mount Rushmore Sculpture project), and John Boland (farm implement dealer in Rapid City, South Dakota, and Financial manager of the Mount Rushmore Sculpture project).';
+musicfiles[89]='img-rus/audio/SSSTN--i.mp3';
+filepaths[89]='img-rus/panos/SSSTN--i/SSSTN--i_ipad#face#.jpg';
+panocaptions[90]='View from the Presidential Trail.  This portion of the trail overlaps with the historic roadbed that President Franklin Delano Roosevelt used to access Mount Rushmore when dedicating the completed Thomas Jefferson sculpture in 1936.';
+musicfiles[90]='img-rus/audio/RUS_VT16_Clean.mp3';
+filepaths[90]='img-rus/panos/VT16/RUS_VT16_Clean_ipad#face#.jpg';
+panocaptions[108]='View from the Presidential Trail.  This portion of the trail overlaps with the historic roadbed of Highway 244.';
+musicfiles[108]='img-rus/audio/RUS_PT02.mp3';
+filepaths[108]='img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipad#face#.jpg';
+panocaptions[109]='View from the midpoint along the Presidential Trail.  The remainder of the trail to the east is not handicapped accessible.';
+musicfiles[109]='img-rus/audio/RUS_VT9_Cleanv2.mp3';
+filepaths[109]='img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipad#face#.jpg';
+panocaptions[110]='View from the end of the Avenue of Flags, near the Grand Viewing Terrace.';
+musicfiles[110]='img-rus/audio/Main_Avenue_of_Flags_Pano.mp3';
+filepaths[110]='img-rus/panos/AFSTN--h/AFSTN--h_ipad#face#.jpg';
+panocaptions[111]='View from the Nature Trail near the Borglum Terrace.';
+musicfiles[111]='img-rus/audio/BT03_.mp3';
+filepaths[111]='img-rus/panos/BT03_/RUS_BT03_Clean_ipad#face#.jpg';
+panocaptions[112]='View of the Presidential Trail between the Grand Viewing Terrace and the Borglum Terrace.';
+musicfiles[112]='img-rus/audio/RUS_BT16.mp3';
+filepaths[112]='img-rus/panos/BT14_/RUS_BT14_Clean_ipad#face#.jpg';
+panocaptions[113]='View taken near the entrance to the Hall of Records. The plaque at the base of the entrance reads:<br><br>"...let us place there, carved high, as close to heaven as we can, the words of our leaders their faces, to show posterity what manner of men they were. Then breathe a prayer that these records will endure until the wind and the <br>rain alone shall wear them away."<br><br>Gutzon Borglum<br>Sculptor';
+musicfiles[113]='img-rus/audio/HRSTN.mp3';
+filepaths[113]='img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipad#face#.jpg';
+panocaptions[114]='View centered inside the Hall of Records. This chamber was to hold the documents and artifacts most central to the history of American democracy. Work was stopped in 1939 when there was a threat of losing funding for the entire sculpture if the money was not used exclusively on the carving of the faces as was intended.';
+musicfiles[114]='img-rus/audio/HRSTN04.mp3';
+filepaths[114]='img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipad#face#.jpg';
+panocaptions[115]='View taken at the end of the unfinished Hall of Records. Originally, the hall was intended to be much larger, up to 80 by 100 feet long.';
+musicfiles[115]='img-rus/audio/HRSTN09.mp3';
+filepaths[115]='img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipad#face#.jpg';
+panocaptions[116]='View from atop the sculpture of Thomas Jefferson, overlooking the park.';
+musicfiles[116]='img-rus/audio/MOR_6805.mp3';
+filepaths[116]='img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipad#face#.jpg';
+panocaptions[117]='View of the Presidential Trail between the Grand Viewing Terrace and the Borglum Terrace.';
+musicfiles[117]='img-rus/audio/RUS_BT16.mp3';
+filepaths[117]='img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipad#face#.jpg';
+panocaptions[118]='View from one of the four stops along the Presidential Trail where visitors can find exhibits depicting the lives of each of the four Presidents.';
+musicfiles[118]='img-rus/audio/RUS_VT4_Clean.mp3';
+filepaths[118]='img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipad#face#.jpg';
+panocaptions[119]='View from the Presidential Trail as it begins to descend toward the Sculptor’s Studio to the east. This descending portion of the Presidential Trail is not handicapped accessible.';
+musicfiles[119]='img-rus/audio/RUS_VT7_Clean.mp3';
+filepaths[119]='img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipad#face#.jpg';
+panocaptions[120]='View along the Presidential Trail near the Grand Viewing Terrace.';
+musicfiles[120]='img-rus/audio/RUS_VT01_Clean.mp3';
+filepaths[120]='img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipad#face#.jpg';
+panocaptions[121]='View from the Grand Viewing Terrace, near the portion of the Presidential Trail that leads to the Sculptor\'s Studio.';
+musicfiles[121]='img-rus/audio/RUS_VT19_Clean.mp3';
+filepaths[121]='img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipad#face#.jpg';
+panocaptions[122]='View near the stage of the Amphitheater. This amphitheater is home to the popular Evening Lighting Ceremony held every night of the summer.';
+musicfiles[122]='img-rus/audio/RUS_VT21_Clean.mp3';
+filepaths[122]='img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipad#face#.jpg';
+panocaptions[123]='View near the Borglum Terrace, site of the first Sculptor’s Studio at Mount Rushmore.';
+musicfiles[123]='img-rus/audio/SS23_1.mp3';
+filepaths[123]='img-rus/panos/SS23_/SS23__ipad#face#.jpg';
+panocaptions[124]='View taken behind the Sculptor\'s Studio near the Presidential Trail.';
+musicfiles[124]='img-rus/audio/RUS_VT1_Clean.mp3';
+filepaths[124]='img-rus/panos/SS15_/SS15__ipad#face#.jpg';
+panocaptions[125]='View taken east of the Sculptor’s Studio.';
+musicfiles[125]='img-rus/audio/SS9__.mp3';
+filepaths[125]='img-rus/panos/SS9__/SS9___ipad#face#.jpg';
+hotspotcaptions[89]='Mesh of Mount Rushmore, created from photo-textured laser scan data';
+hotspotcaptions[87]='Photograph of George Washington with the ropes team ascending the mountain';
+hotspotcaptions[88]='Animation of the Mountain Sculpture, created from laser scan data';
+hotspotcaptions[85]='Photograph of Borglum working on the model';
+hotspotcaptions[86]='Perspective of Lincoln\'s Mask, created from close-range scan data';
+hotspotcaptions[84]='Animation of George Washington, created from laser scan data';
+hotspotcaptions[83]='Animation of Abraham Lincoln, created from laser scan data';
+hotspotcaptions[118]='Historic photograph of a driller "honeycombing" the mountain';
+hotspotcaptions[82]='Photograph of the ropes team performing a scan of Jefferson\'s face using the tripod rig';
+hotspotcaptions[93]='Elevation of the Borglum Terrace, created from photo-textured laser scan data';
+hotspotcaptions[119]='Perspective of Mount Rushmore, created from laser scan data';
+hotspotcaptions[110]='Historic photograph of early construction work on the Lincoln sculpture, showing dust from the dynamite blasts';
+hotspotcaptions[129]='';
+hotspotcaptions[112]='Photograph of the team scanning inside the Hall of Records';
+hotspotcaptions[113]='Perspective of the honeycomb pattern inside the Hall of Records, created from laser scan data';
+hotspotcaptions[114]='Perspective of the honeycomb pattern inside the Hall of Records, created from photo-textured laser scan data';
+hotspotcaptions[115]='Section of the Hall of Records, created from photo-textured laser scan data';
+hotspotcaptions[116]='Photograph of the entrance to the Hall of Records';
+hotspotcaptions[117]='Photograph of the team scanning the presidents near Theodore Roosevelt';
+hotspotcaptions[120]='Historic photograph of the Black Hills, prior to the construction of Mount Rushmore. This granite mountain was sacred to the Lakota Native Americans, who called it "Six Grandfathers".';
+hotspotcaptions[121]='Photograph of George Washington taken from the Talus Slope below the sculpture. The ropes team can be seen ascending the mountain.';
+hotspotcaptions[122]='Perspective of Theodore Roosevelt, created from laser scan data';
+hotspotcaptions[123]='Historic photograph of Washington, taken from the historic route taken by workers to get to the Mountain Sculpture';
+hotspotcaptions[124]='Historic photograph of the first Jefferson sculpture to the left of Washington. After 18 months of carving the figure of Jefferson had to be blasted off the mountain and restarted to the right of Washington.';
+hotspotcaptions[125]='Historic photograph of Gutzon Borglum inspecting the face of Thomas Jefferson';
+hotspotcaptions[126]='Historic photograph of Borglum mounting an American flag on Mount Rushmore';
+hotspotcaptions[166]='Elevation of the smaller historic fireplace at the Borglum Terrace, created from photo-textured laser scan data';
+hotspotcaptions[128]='Perspective of George Washington, created from laser scan data';
+hotspotcaptions[130]='';
+hotspotcaptions[131]='Photograph of the team scanning inside the Sculptor\'s Studio. The scale model of the Mountain Sculpture can be seen in the background.';
+hotspotcaptions[132]='Historic photograph of an early scale model in the first studio at Mount Rushmore';
+hotspotcaptions[133]='Historic photograph of an early scale model in the first studio at Mount Rushmore';
+hotspotcaptions[134]='Photograph of the Sculptor\'s Studio during the winter season';
+hotspotcaptions[136]='Perspective of the Avenue of Flags, created from laser scan data';
+hotspotcaptions[138]='Historic photograph of the Mountain Sculpture with a historic road and car in the foreground';
+hotspotcaptions[139]='Historic photograph of a worker descending from Washington\'s head in a Bosun chair';
+hotspotcaptions[140]='Historic aerial photograph of Mount Rushmore under construction';
+hotspotcaptions[141]='Perspective of Lincoln\'s Mask, created from close-range scan data';
+hotspotcaptions[142]='Historic photograph of Washington under construction';
+hotspotcaptions[143]='Historic photograph of Gutzon Borglum and two drillers working on Mount Rushmore';
+hotspotcaptions[144]='Historic photograph of Gutzon Borglum and a worker ascending the mountain in front of Thomas Jefferson';
+hotspotcaptions[145]='Historic photograph showing early construction work on the second Jefferson sculpture. An earlier Jefferson sculpture was attempted on the left side of Washington and demolished due to poor granite.';
+hotspotcaptions[146]='Historic photograph of Gutzon Borglum repelling off Mount Rushmore in a Bosun chair';
+hotspotcaptions[147]='Historic aerial photograph of Washington and Jefferson under construction';
+hotspotcaptions[148]='Transition image of the four presidents of Mount Rushmore and the scanning team, created from photography and laser scan data';
+hotspotcaptions[149]='Mesh of Thomas Jefferson and Theodore Roosevelt, created from laser scan data';
+hotspotcaptions[150]='Perspective of the Hall of Records, created from laser scan data';
+hotspotcaptions[151]='Perspective of the carving details of Lincoln\'s right eye, created from laser scan data';
+hotspotcaptions[153]='Aerial view of Mount Rushmore, created from laser scan data overlaid onto aerial imagery';
+hotspotcaptions[154]='Historic photograph of President Coolidge delivering the dedication speech on August 10, 1927';
+hotspotcaptions[155]='Animation of the Hall of Records, created from laser scan data';
+hotspotcaptions[156]='Perspective of mesh data from the 1/12 scale model found within the Sculptor\'s Studio, created from laser scan data';
+hotspotcaptions[158]='Perspective of Borglum\'s Viewing Terrace, created from laser scan data';
+hotspotcaptions[159]='Perspective of Thomas Jefferson, created from laser scan data';
+hotspotcaptions[160]='Animation of Theodore Roosevelt, created from laser scan data';
+hotspotcaptions[161]='Animation of Thomas Jefferson, created from laser scan data';
+hotspotcaptions[162]='Historic photograph of Mount Rushmore under construction';
+hotspotcaptions[164]='Perspective of the ropes team performing a scan of Washington\'s head';
+hotspotcaptions[165]='Historic photograph of early construction work on the second Jefferson sculpture. An earlier Jefferson sculpture was attempted on the left side of Washington and demolished due to poor granite.';
+hotspotcaptions[167]='Elevation of the eastern wall inside the Sculptor\'s Studio, created from photo-textured laser scan data';
+hotspotcaptions[168]='Elevation of the northern wall inside the Sculptor\'s Studio, created from photo-textured laser scan data';
+
+
+
+var photolength=66
+var hphotolength=0
+var cphotolength=6
+</script>
+<script type="text/javascript" src="includes/jquerymin.js" charset="utf-8"></script>
+<script type="text/javascript" src="includes/jquery.jmp3.js" charset="utf-8"></script>
+
+<script type="text/javascript" src="includes/phonegap.js" charset="utf-8"></script>
+<script type="text/javascript" src="jqtouch/jqtouch.js" charset="utf-8"></script>
+<script type="text/javascript" src="includes/jquery.rotate.js" charset="utf-8"></script>
+<script type="text/javascript" src="includes/jquery.retina.js" charset="utf-8"></script>
+
+
+<script type="text/javascript" src="includes/iscroll.js" charset="utf-8"></script>
+
+<script src="includes/swfkrpano.js"></script>
+<script src="includes/krpanoiphone.license.js"></script>
+<script src="includes/krpanoiphone.js"></script>
+
+<script type="text/javascript" src="includes/application.js" charset="utf-8"></script>
+
+
+</head>
+ 
+ 
+ 
+ 
+<body>
+	<div id="intro">
+		
+		<div style="height:268px;"><a href="#home" onclick="setUpHomeCarosel();" class="slide"><img class="retina" src="img-rus/Main-Page_banner_iphone.jpg" width="480" height="268" ></a></div><a href="#partners" class="slide" onclick="selectParnter(0);"><img class="retina" src="img-rus/Main-Page_button2_iphone.jpg" width="480" height="52" ></a>
+			
+			
+			 
+		<ul class="edgetoedge" style="display:none;">
+		<li class="arrow"><a id="virtualtourlink" href="#home"  onclick="setUpHomeCarosel();">Mount Rushmore Virtual Tour</a></li>
+		<li class="arrow"><a id="helplink" href="#help">Mount Rushmore Help</a></li>
+		<li class="arrow"><a id="cyarklink" href="#partners" onclick="selectParnter(0);">Mount Rushmore CyArk About</a></li>
+		</ul>
+	</div>
+	
+	
+	
+	
+	
+	
+	<div id="partners">
+		<a href="#" onclick="selectParnter(0);return false;">
+		<img class="retina" src="img-rus/DigitalPreservation_mainbanner_iphone.jpg" width="480" height="58" >		</a>
+		<div class="partnertextbox textholder">
+			<div id="partner0">
+The Digital Preservation of Mount Rushmore National Memorial was undertaken by the National Park service in collaboration with the Kacyra Family Foundation's CyArk project and the Centre for Digital Documentation and Visualisation (CDDV).
+<br><br>
+Field Documentation at Mount Rushmore, including laser scanning and photography, took place in May of 2010.  All the data collected has been used to create a variety of media for digital preservation.  This media will be used for the on-going preservation and conservation of the mountain and for public education and interpretation of the memorial.			
+			</div>
+			<div id="partner3" style="display:none;">
+The National Park Service (NPS) was created by an act of Congress in 1916. Today, it cares for and makes available for public enjoyment, education, and inspiration a nationwide system of parks, monuments, historic sites, and recreational areas.  With the help of partners and the American people, NPS safeguards these special scenic, historic, and cultural places, sharing their stories with hundreds of millions of visitors every year.
+<br><br>
+Mount Rushmore was designated as a National Memorial in 1925 and it has been in the care of the National Park Service since 1933 where its mission has been  to preserve and protect Mount Rushmore National Memorial while providing for the education and enjoyment of the public.
+			</div>
+			<div id="partner2" style="display:none;">
+Originally a project of the Kacyra Family Foundation (KFF), CyArk is now an independent 501c3 nonprofit organization with the mission of digitally preserving cultural heritage sites through collecting, archiving, and providing open access to data created by laser scanning, digital modeling, and other state-of-the-art technologies.
+<br><br>
+KFF/CyArk is working with the National Parks Service at the Mount Rushmore National Memorial in a multi-year project.  The first phase of this project was the digital preservation of Mount Rushmore through laser scanning, High Dynamic Range photography (HDR), and other state-of-the-art technologies.  With the data collected, KFF/CyArk has been working to create a complete digital model of the Mountain, drawings and other multimedia to be used by the park for conservation, and educational content to be used at the park and in classrooms everywhere.  The content within this app, and much more, are available for free online viewing at <a href="http://archive.cyark.org">CyArk website</a>.  If you like this free app, and would like to support us, consider <a href="http://archive.cyark.org/get-involved">donating</a> to our cause. 
+			</div>
+			<div id="partner1" style="display:none;">
+The Centre for Digital Documentation and Visualisation is a new commercial partnership between Historic Scotland and the Glasgow School of Art's Digital Design Studio - using state-of-the-art laser scanning technology and 3D visualisation software to digitally record heritage sites around the globe and enable virtual access.  The Centre grew from the Scottish Ten, a project launched in 2009 to digitally document Scotland's five World Heritage Sites in addition to five international World Heritage Sites.
+			</div>
+		</div>
+		<a href="#" onclick="selectParnter(3);return false;"><img class="retina" src="img-rus/DigitalPreservation_NPS_off_iphone.jpg" width="159" height="47" id="partnerimg3"></a><a href="#" onclick="selectParnter(2);return false;" style="margin-left:1px;"><img class="retina" src="img-rus/DigitalPreservation_CyArk_off_iphone.jpg" width="159" height="47" id="partnerimg2"></a><a href="#" onclick="selectParnter(1);return false;" style="margin-left:1px;"><img class="retina" src="img-rus/DigitalPreservation_CDDV_off_iphone.jpg" width="159" height="47" id="partnerimg1"></a>
+		<div class="bottombar">
+			<a href="#intro" class="goback" id="gotointropage"><img class="retina" src="img/button_start_over_iphone.png" width="147" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >						<div style="float:right;">
+				<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >				<a href="#help" class="flip"><img class="retina" src="img/button_help_iphone.png" width="73" height="30" ></a>
+			</div>
+		</div>
+
+	</div>
+	
+	
+	
+	
+		<div id="help">
+<div style="background:#6e8c72;color:#fff;padding:10px;padding-left:10px;font-size:20px;letter-spacing:22px;font-weight:bold;">
+HELP
+</div>	
+<div class="textholder" style="padding:10px;font-size:10px;height:90%;line-height:110%;">
+
+
+<li><b>Viewing the Historical Slideshow:</b> Touch a slide and drag your finger to the left or right.  You may use the same movements to move through the rest of the Slideshow.</li>
+<br>
+<li><b>Accessing the Digital Archive:</b> Touch the four buttons along the bottom of the screen and you will be taken to that area of the Digital Archive.  For example, if you would like to see the Virtual Tour of Mount Rushmore, touch the button that says "Virtual Tour."  You may explore the areas of the Digital Archive in any order.</li>
+<br>
+<li><b>Navigating the Galleries of "Images" and "Videos":</b> Click the images within the Galleries. For Images, there are three galleries to choose from. When you see the image, click the left and right arrow buttons to flip through the available images</li>
+<br>
+<li><b>Exploring the Virtual Tour:</b> "Double Tap" to zoom in and out on the map. Click the icons to see panoramic images taken at different locations around Mount Rushmore. Within each panoramic image, you can drag your finger around to see the full panorama. You can also jump to other panoramas by clicking the hotspots within each panorama. When you see the panoramic image, you can click <img src="img/touch2_off.png" height="20"> (Touch Mode) and drag your finger to see the full panorama, or click <img src="img/motion2_off.png" height="20"> (Motion Mode), and physically rotate the iPad around your body to see the full panorama.</li>
+<br>
+</div>
+		<div class="bottombar">
+			<a href="#home" class="flip"  onclick="setUpHomeCarosel();"><img class="retina" src="img/button_home_iphone.png" width="83" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<a href="#" class="goback"><img class="retina" src="img/button_back_iphone.png" width="76" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >		</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+		<div id="home">
+		<div style="">
+			<div class="textholder" style="overflow:auto;margin-bottom:0px;">
+				<div class="contentwindow" style="height:187px;margin-left:0px;width:480px;margin-bottom:0px; " id="homesliderwrapper">
+					<div class="contentslider" id="homeslider" style="width:3360px;">
+					<img class="retina" src="img-rus/banner_0_iphone.jpg" width="480" height="187" ><img class="retina" src="img-rus/banner_1_iphone.jpg" width="480" height="187" ><img class="retina" src="img-rus/banner_2_iphone.jpg" width="480" height="187" ><img class="retina" src="img-rus/banner_3_iphone.jpg" width="480" height="187" ><img class="retina" src="img-rus/banner_4_iphone.jpg" width="480" height="187" ><img class="retina" src="img-rus/banner_5_iphone.jpg" width="480" height="187" ><img class="retina" src="img-rus/banner_6_iphone.jpg" width="480" height="187" >					</div>
+				</div>
+							</div>
+				
+			<a href="#virtualtour" class="slide" onclick="loadMap();"><img class="retina" src="img-rus/Main_Buttons_VirtualTour_iphone.jpg" width="119" height="103" ></a><a href="#photos"  class="slide" style="margin-left:1px;" onclick="setUpPhotoCarosel();"><img class="retina" src="img-rus/Main_Buttons_Photos_iphone.jpg" width="119" height="103" ></a><a href="#hphotos"  class="slide" style="margin-left:1px;"><img class="retina" src="img-rus/Main_Buttons_Videos_iphone.jpg" width="118" height="103" ></a><a href="#cphotos"  class="slide" style="margin-left:1px;" onclick="setUpPerspectiveCarosel();"><img class="retina" src="img-rus/Main_Buttons_DigitalPreservationProject_iphone.jpg" width="120" height="103" ></a>
+		</div>
+		
+		<div class="bottombar">
+			<a href="#intro" class="fade" onclick="actuallyDoResetApplication();"><img class="retina" src="img/button_start_over_iphone.png" width="147" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<a href="#" class="goback"><img class="retina" src="img/button_back_iphone.png" width="76" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<div style="float:right;">
+				<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >				<a href="#help" class="flip"><img class="retina" src="img/button_help_iphone.png" width="73" height="30" ></a>
+			</div>
+		</div>	
+	</div>
+	
+							<div id="media_0" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p6.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the carving marks inside the Hall of Records</div>
+			</div>
+					<div id="media_1" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p7.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the entrance to the Hall of Records, located in Monument Valley directly behind the Mountain Sculpture</div>
+			</div>
+					<div id="media_2" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p8.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the team scanning inside the Hall of Records</div>
+			</div>
+					<div id="media_3" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p10.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the Sculptor's Studio during the winter season</div>
+			</div>
+					<div id="media_4" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p11.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of George Washington and the granite mountain taken from below</div>
+			</div>
+					<div id="media_5" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p12.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of Lincoln overlooking the Black Hills landscape</div>
+			</div>
+					<div id="media_6" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p13.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the ropes team performing a scan of Lincoln's face using the tripod rig</div>
+			</div>
+					<div id="media_7" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p14.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph showing the honeycomb pattern on Theodore Roosevelt's moustache</div>
+			</div>
+					<div id="media_8" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p15.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of George Washington taken from the Talus Slope below the sculpture. The ropes team can be seen ascending the Mountain Sculpture.</div>
+			</div>
+					<div id="media_9" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p16.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the ropes team performing a scan of Jefferson's face using the tripod rig</div>
+			</div>
+					<div id="media_10" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p17.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the ropes team performing a scan of Jefferson's face</div>
+			</div>
+					<div id="media_11" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p18.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph looking into the Hall of Records. Workers drilled channels into the rock to place dynamite.</div>
+			</div>
+					<div id="media_12" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p19.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the carving marks inside the Hall of Records</div>
+			</div>
+					<div id="media_13" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p1.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of George Washington with the ropes team ascending the mountain</div>
+			</div>
+					<div id="media_14" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p2.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the carving marks inside the Hall of Records</div>
+			</div>
+					<div id="media_15" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p3.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the team scanning inside the Sculptor's Studio. The scale model of the Mountain Sculpture can be seen in the background.</div>
+			</div>
+					<div id="media_16" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p4.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the team scanning the presidents near Theodore Roosevelt</div>
+			</div>
+					<div id="media_17" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/p5.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Photograph of the ropes team performing a scan of Lincoln's face using the tripod rig</div>
+			</div>
+					<div id="media_18" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h1.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of early construction work on the Lincoln sculpture, showing dust from the dynamite blasts</div>
+			</div>
+					<div id="media_19" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h2.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of the Mountain Sculpture with a historic road and car in the foreground</div>
+			</div>
+					<div id="media_20" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h3.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of an early scale model in the first studio at Mount Rushmore</div>
+			</div>
+					<div id="media_21" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h4.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Washington under construction</div>
+			</div>
+					<div id="media_22" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h5.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic aerial photograph of Washington and Jefferson under construction</div>
+			</div>
+					<div id="media_23" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h6.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Mount Rushmore</div>
+			</div>
+					<div id="media_24" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h7.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of the Black Hills, prior to the construction of Mount Rushmore. This granite mountain was sacred to the Lakota Native Americans, who called it "Six Grandfathers".</div>
+			</div>
+					<div id="media_25" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h8.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic aerial photograph of Mount Rushmore under construction</div>
+			</div>
+					<div id="media_26" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h9.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of early construction work on the second Jefferson sculpture. An earlier Jefferson sculpture was attempted on the left side of Washington and demolished due to poor granite.</div>
+			</div>
+					<div id="media_27" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h11.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Borglum's scale model of Mount Rushmore</div>
+			</div>
+					<div id="media_28" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h13.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Gutzon Borglum and a worker ascending the mountain in front of Thomas Jefferson</div>
+			</div>
+					<div id="media_29" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h14.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Gutzon Borglum and two drillers working on Mount Rushmore</div>
+			</div>
+					<div id="media_30" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h16.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Mount Rushmore under construction</div>
+			</div>
+					<div id="media_31" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h40.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Borglum's scale model of Mount Rushmore</div>
+			</div>
+					<div id="media_32" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h42.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of President Coolidge delivering the dedication speech on August 10, 1927</div>
+			</div>
+					<div id="media_33" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h19.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of the first Jefferson sculpture to the left of Washington</div>
+			</div>
+					<div id="media_34" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h24.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of a worker descending from Washington's head in a Bosun chair</div>
+			</div>
+					<div id="media_35" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h27.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Washington, taken from the historic route taken by workers to get to the Mountain Sculpture</div>
+			</div>
+					<div id="media_36" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h29.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of a driller "honeycombing" the mountain</div>
+			</div>
+					<div id="media_37" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h33.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph showing early construction work on the second Jefferson sculpture. An earlier Jefferson sculpture was attempted on the left side of Washington and demolished due to poor granite.</div>
+			</div>
+					<div id="media_38" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h35.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Gutzon Borglum inspecting the face of Thomas Jefferson</div>
+			</div>
+					<div id="media_39" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h37.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Gutzon Borglum inspecting the face of Thomas Jefferson</div>
+			</div>
+					<div id="media_40" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h38.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Gutzon Borglum repelling off Mount Rushmore in a Bosun chair</div>
+			</div>
+					<div id="media_41" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h39.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of Borglum mounting an American flag on Mount Rushmore</div>
+			</div>
+					<div id="media_42" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/h41.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Historic photograph of drillers working the sculpture in Bosun chairs</div>
+			</div>
+					<div id="media_43" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp1.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of Lincoln's Mask, created from close-range scan data</div>
+			</div>
+					<div id="media_44" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp2.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of mesh data from the 1/12 scale model found within the Sculptor's Studio, created from laser scan data</div>
+			</div>
+					<div id="media_45" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp3.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of Mount Rushmore, created from laser scan data</div>
+			</div>
+					<div id="media_46" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp4.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Transition image of the four presidents of Mount Rushmore and the scanning team, created from photography and laser scan data</div>
+			</div>
+					<div id="media_47" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp6.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the honeycomb pattern inside the Hall of Records, created from photo-textured laser scan data</div>
+			</div>
+					<div id="media_48" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp7.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of George Washington, created from laser scan data</div>
+			</div>
+					<div id="media_49" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp8.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the Hall of Records, created from laser scan data</div>
+			</div>
+					<div id="media_50" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp9.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the honeycomb pattern inside the Hall of Records, created from laser scan data</div>
+			</div>
+					<div id="media_51" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp10.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of Borglum's Viewing Terrace, created from laser scan data</div>
+			</div>
+					<div id="media_52" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp11.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the carving details of Lincoln's right eye, created from laser scan data</div>
+			</div>
+					<div id="media_53" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp12.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the ropes team performing a scan of Washington's head</div>
+			</div>
+					<div id="media_54" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp13.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the Hall of Records, created from photo-textured laser scan data</div>
+			</div>
+					<div id="media_55" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp15.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the Borglum Terrace taken from the northwest, created from photo-textured laser scan data</div>
+			</div>
+					<div id="media_56" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp16.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the Sculptor's Studio created from photo-textured laser scan data</div>
+			</div>
+					<div id="media_57" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp17.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the Avenue of Flags, created from photo-textured laser scan data</div>
+			</div>
+					<div id="media_58" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp18.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of Abraham Lincoln, created from laser scan data</div>
+			</div>
+					<div id="media_59" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp19.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of Theodore Roosevelt, created from laser scan data</div>
+			</div>
+					<div id="media_60" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp20.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of George Washington, created from laser scan data</div>
+			</div>
+					<div id="media_61" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp21.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of Thomas Jefferson, created from laser scan data</div>
+			</div>
+					<div id="media_62" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp22.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Perspective of the Avenue of Flags, created from laser scan data</div>
+			</div>
+					<div id="media_63" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp23.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Aerial view of Mount Rushmore, created from laser scan data overlaid onto aerial imagery</div>
+			</div>
+					<div id="media_64" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp24.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Mesh of Thomas Jefferson and Theodore Roosevelt, created from laser scan data</div>
+			</div>
+					<div id="media_65" class="allowscrolling" style="background:#000;">
+				<div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div>
+				<a href="#" class="goback"><img src="img-rus/media/persp25.jpg" width="480" class="imagelist"></a>
+				<div class="textholder">Mesh of Mount Rushmore, created from photo-textured laser scan data</div>
+			</div>
+				
+	
+		<div id="photos" class="allowscrolling" style="background:#000;">
+				<div id="photogallery_break">
+			<div style="background:url('img-rus/gallery_bar_gradient.png');color:#fff;font-size:24px;font-weight:bold;height:41px;background-repeat:repeat-x;width:100%;margin-bottom:4px;"><div style="padding-top:7px;padding-left:10px;float:left;">Photographs</div><div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div></div>			<div class="photogallerypage" id="photogallerypage0">
+							<a href="#media_0" class="slide"><img class="retina" src="img-rus/media/p6_thumb40.jpg" height="40"></a>
+								<a href="#media_1" class="slide"><img class="retina" src="img-rus/media/p7_thumb40.jpg" height="40"></a>
+								<a href="#media_2" class="slide"><img class="retina" src="img-rus/media/p8_thumb40.jpg" height="40"></a>
+								<a href="#media_3" class="slide"><img class="retina" src="img-rus/media/p10_thumb40.jpg" height="40"></a>
+								<a href="#media_4" class="slide"><img class="retina" src="img-rus/media/p11_thumb40.jpg" height="40"></a>
+								<a href="#media_5" class="slide"><img class="retina" src="img-rus/media/p12_thumb40.jpg" height="40"></a>
+								<a href="#media_6" class="slide"><img class="retina" src="img-rus/media/p13_thumb40.jpg" height="40"></a>
+								<a href="#media_7" class="slide"><img class="retina" src="img-rus/media/p14_thumb40.jpg" height="40"></a>
+								<a href="#media_8" class="slide"><img class="retina" src="img-rus/media/p15_thumb40.jpg" height="40"></a>
+								<a href="#media_9" class="slide"><img class="retina" src="img-rus/media/p16_thumb40.jpg" height="40"></a>
+								<a href="#media_10" class="slide"><img class="retina" src="img-rus/media/p17_thumb40.jpg" height="40"></a>
+								<a href="#media_11" class="slide"><img class="retina" src="img-rus/media/p18_thumb40.jpg" height="40"></a>
+								<a href="#media_12" class="slide"><img class="retina" src="img-rus/media/p19_thumb40.jpg" height="40"></a>
+								<a href="#media_13" class="slide"><img class="retina" src="img-rus/media/p1_thumb40.jpg" height="40"></a>
+								<a href="#media_14" class="slide"><img class="retina" src="img-rus/media/p2_thumb40.jpg" height="40"></a>
+								<a href="#media_15" class="slide"><img class="retina" src="img-rus/media/p3_thumb40.jpg" height="40"></a>
+								<a href="#media_16" class="slide"><img class="retina" src="img-rus/media/p4_thumb40.jpg" height="40"></a>
+								<a href="#media_17" class="slide"><img class="retina" src="img-rus/media/p5_thumb40.jpg" height="40"></a>
+				<div style="background:url('img-rus/gallery_bar_gradient.png');color:#fff;font-size:24px;font-weight:bold;height:41px;background-repeat:repeat-x;width:100%;margin-bottom:4px;"><div style="padding-top:7px;padding-left:10px;float:left;">Historic Photographs</div><div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div></div>				<a href="#media_18" class="slide"><img class="retina" src="img-rus/media/h1_thumb40.jpg" height="40"></a>
+								<a href="#media_19" class="slide"><img class="retina" src="img-rus/media/h2_thumb40.jpg" height="40"></a>
+								<a href="#media_20" class="slide"><img class="retina" src="img-rus/media/h3_thumb40.jpg" height="40"></a>
+								<a href="#media_21" class="slide"><img class="retina" src="img-rus/media/h4_thumb40.jpg" height="40"></a>
+								<a href="#media_22" class="slide"><img class="retina" src="img-rus/media/h5_thumb40.jpg" height="40"></a>
+								<a href="#media_23" class="slide"><img class="retina" src="img-rus/media/h6_thumb40.jpg" height="40"></a>
+								<a href="#media_24" class="slide"><img class="retina" src="img-rus/media/h7_thumb40.jpg" height="40"></a>
+								<a href="#media_25" class="slide"><img class="retina" src="img-rus/media/h8_thumb40.jpg" height="40"></a>
+								<a href="#media_26" class="slide"><img class="retina" src="img-rus/media/h9_thumb40.jpg" height="40"></a>
+								<a href="#media_27" class="slide"><img class="retina" src="img-rus/media/h11_thumb40.jpg" height="40"></a>
+								<a href="#media_28" class="slide"><img class="retina" src="img-rus/media/h13_thumb40.jpg" height="40"></a>
+								<a href="#media_29" class="slide"><img class="retina" src="img-rus/media/h14_thumb40.jpg" height="40"></a>
+								<a href="#media_30" class="slide"><img class="retina" src="img-rus/media/h16_thumb40.jpg" height="40"></a>
+								<a href="#media_31" class="slide"><img class="retina" src="img-rus/media/h40_thumb40.jpg" height="40"></a>
+								<a href="#media_32" class="slide"><img class="retina" src="img-rus/media/h42_thumb40.jpg" height="40"></a>
+								<a href="#media_33" class="slide"><img class="retina" src="img-rus/media/h19_thumb40.jpg" height="40"></a>
+								<a href="#media_34" class="slide"><img class="retina" src="img-rus/media/h24_thumb40.jpg" height="40"></a>
+								<a href="#media_35" class="slide"><img class="retina" src="img-rus/media/h27_thumb40.jpg" height="40"></a>
+								<a href="#media_36" class="slide"><img class="retina" src="img-rus/media/h29_thumb40.jpg" height="40"></a>
+								<a href="#media_37" class="slide"><img class="retina" src="img-rus/media/h33_thumb40.jpg" height="40"></a>
+								<a href="#media_38" class="slide"><img class="retina" src="img-rus/media/h35_thumb40.jpg" height="40"></a>
+								<a href="#media_39" class="slide"><img class="retina" src="img-rus/media/h37_thumb40.jpg" height="40"></a>
+								<a href="#media_40" class="slide"><img class="retina" src="img-rus/media/h38_thumb40.jpg" height="40"></a>
+								<a href="#media_41" class="slide"><img class="retina" src="img-rus/media/h39_thumb40.jpg" height="40"></a>
+								<a href="#media_42" class="slide"><img class="retina" src="img-rus/media/h41_thumb40.jpg" height="40"></a>
+				<div style="background:url('img-rus/gallery_bar_gradient.png');color:#fff;font-size:24px;font-weight:bold;height:41px;background-repeat:repeat-x;width:100%;margin-bottom:4px;"><div style="padding-top:7px;padding-left:10px;float:left;">Perspectives</div><div style="float:right;"><a href="#" class="goback"><img height="41" src="img-rus/gallery_back_button.png"></a></div></div>				<a href="#media_43" class="slide"><img class="retina" src="img-rus/media/persp1_thumb40.jpg" height="40"></a>
+								<a href="#media_44" class="slide"><img class="retina" src="img-rus/media/persp2_thumb40.jpg" height="40"></a>
+								<a href="#media_45" class="slide"><img class="retina" src="img-rus/media/persp3_thumb40.jpg" height="40"></a>
+								<a href="#media_46" class="slide"><img class="retina" src="img-rus/media/persp4_thumb40.jpg" height="40"></a>
+								<a href="#media_47" class="slide"><img class="retina" src="img-rus/media/persp6_thumb40.jpg" height="40"></a>
+								<a href="#media_48" class="slide"><img class="retina" src="img-rus/media/persp7_thumb40.jpg" height="40"></a>
+								<a href="#media_49" class="slide"><img class="retina" src="img-rus/media/persp8_thumb40.jpg" height="40"></a>
+								<a href="#media_50" class="slide"><img class="retina" src="img-rus/media/persp9_thumb40.jpg" height="40"></a>
+								<a href="#media_51" class="slide"><img class="retina" src="img-rus/media/persp10_thumb40.jpg" height="40"></a>
+								<a href="#media_52" class="slide"><img class="retina" src="img-rus/media/persp11_thumb40.jpg" height="40"></a>
+								<a href="#media_53" class="slide"><img class="retina" src="img-rus/media/persp12_thumb40.jpg" height="40"></a>
+								<a href="#media_54" class="slide"><img class="retina" src="img-rus/media/persp13_thumb40.jpg" height="40"></a>
+								<a href="#media_55" class="slide"><img class="retina" src="img-rus/media/persp15_thumb40.jpg" height="40"></a>
+								<a href="#media_56" class="slide"><img class="retina" src="img-rus/media/persp16_thumb40.jpg" height="40"></a>
+								<a href="#media_57" class="slide"><img class="retina" src="img-rus/media/persp17_thumb40.jpg" height="40"></a>
+								<a href="#media_58" class="slide"><img class="retina" src="img-rus/media/persp18_thumb40.jpg" height="40"></a>
+								<a href="#media_59" class="slide"><img class="retina" src="img-rus/media/persp19_thumb40.jpg" height="40"></a>
+								<a href="#media_60" class="slide"><img class="retina" src="img-rus/media/persp20_thumb40.jpg" height="40"></a>
+								<a href="#media_61" class="slide"><img class="retina" src="img-rus/media/persp21_thumb40.jpg" height="40"></a>
+								<a href="#media_62" class="slide"><img class="retina" src="img-rus/media/persp22_thumb40.jpg" height="40"></a>
+								<a href="#media_63" class="slide"><img class="retina" src="img-rus/media/persp23_thumb40.jpg" height="40"></a>
+								<a href="#media_64" class="slide"><img class="retina" src="img-rus/media/persp24_thumb40.jpg" height="40"></a>
+								<a href="#media_65" class="slide"><img class="retina" src="img-rus/media/persp25_thumb40.jpg" height="40"></a>
+							</div>
+		</div>
+		
+			</div>
+
+		<div id="hphotos">
+
+		<div id="movieplayer" style="height:200px;text-align:center;padding-top:4px;">
+		</div>
+		<center>
+		<a href="#" onclick="loadMovie(1);"><img class="retina" src="img-rus/video_1_iphone.png" width="72" height="26" id="moviebutton1"></a>
+		<a href="#" onclick="loadMovie(2);"><img class="retina" src="img-rus/video_2_iphone.png" width="72" height="26" id="moviebutton2"></a>
+		<a href="#" onclick="loadMovie(3);"><img class="retina" src="img-rus/video_3_iphone.png" width="72" height="26" id="moviebutton3"></a>
+		<a href="#" onclick="loadMovie(4);"><img class="retina" src="img-rus/video_4_iphone.png" width="72" height="26" id="moviebutton4"></a>
+		<a href="#" onclick="loadMovie(5);"><img class="retina" src="img-rus/video_5_iphone.png" width="72" height="25" id="moviebutton5"></a>
+		<a href="#" onclick="loadMovie(6);"><img class="retina" src="img-rus/video_6_iphone.png" width="72" height="26" id="moviebutton6"></a>
+		
+				<br><a href="#" onclick="showIphoneMovieCaption();return false;" class="grayButton" style="width:100px;font-size:14px;margin-top:6px;">Show Caption</a>
+				
+		</center>
+<div id="moviecaptionholders" style="display:block;font-size:15px;position:absolute;bottom:30px;left:0px;display:none;background:#555;margin:15px;padding-top:10px;padding-bottom:10px;border-radius:5px;  " >
+		<div id="moviecaptions1" class="moviecaptions textholder" style="display:block;">
+Mount Rushmore, also known as the Shrine of Democracy, is a National Memorial depicting four of the most prominent presidents of the first 150 years of the United States - George Washington, Abraham Lincoln, Theodore Roosevelt, and Thomas Jefferson. Mount Rushmore was carved into South Dakota's Black Hills from 1927 to 1941 under the direction of sculptor Gutzon Borglum. The project took a team of 400 drillers and assistant carvers fourteen years to complete. Over 1.7 billion pounds of stone were removed using dynamite, detailed drilling, and finishing processes.		
+		</div>
+		<div id="moviecaptions2" class="moviecaptions textholder">
+George Washington, first president of the United States, led the early colonists in the American Revolutionary War to win independence from Great Britain. He was the father of the new country and laid the foundation of American democracy. Because of his importance, Washington is the most prominent figure on the mountain (1732-1799). George Washington's sculpture was started first on the mountain and dedicated on Independence Day in 1934.		
+		</div>
+		<div id="moviecaptions3" class="moviecaptions textholder">
+Thomas Jefferson, third president of the United States, was the author of the Declaration of Independence, a document which inspires democracies around the world. He also purchased the Louisiana Territory from France in 1803 which doubled the size of our country, adding all or part of fifteen present-day states (1743-1826). Thomas Jefferson's sculpture was started second on the mountain. Originally, the sculpture was started to the left of Washington but was later blasted off because of poor rock quality. A second Jefferson sculpture was started to the right of Washington and dedicated in 1936.
+		</div>
+		<div id="moviecaptions4" class="moviecaptions textholder">
+Abraham Lincoln, the 16th president of the United States, held the nation together during its greatest trial, the Civil War. Lincoln believed his most sacred duty was the preservation of the union. It was his firm conviction that slavery must be abolished (1809-1865). Abraham Lincoln's sculpture was started third on the mountain and was placed on the far right side of the cliff. The dedication ceremony took place on September 17, 1937, the 150th anniversary of the signing of the Constitution of the United States in 1787.
+		</div>
+		<div id="moviecaptions5" class="moviecaptions textholder">
+Theodore Roosevelt, 26th president of the United States, provided leadership when America experienced rapid economic growth as it entered the 20th Century. He was instrumental in negotiating the construction of the Panama Canal, linking the east and the west. He was known as the "trust buster" for his work to end large corporate monopolies and ensure the rights of the common working man (1858-1919). Theodore Roosevelt's sculpture was started fourth and had to be cut deeper into the mountain where there was better granite. The dedication ceremony took place on July 2, 1939.
+		</div>
+		<div id="moviecaptions6" class="moviecaptions textholder">
+Located along the small canyon behind the Mountain Sculpture, the Hall of Records is an unfinished chamber which was intended by sculptor Gutzon Borglum to be a repository of the American Story. Construction of the hall took place between July 1938 and July 1939, when a 70-foot tunnel was blasted into the mountain. It remains very roughly cut, and tapers to a point at the back. Work halted in 1939 when Congress directed that construction should be executed only on the faces. With Borglum's death in 1941 and American involvement in World War II, all work on the memorial came to a close on October 31, 1941.
+		</div>
+				<center><a href="#" onclick="showIphoneMovieCaption();return false;" style="color:#ff5;font-weight:bold;font-size:18px;text-align:center;text-decoration:none;">Close Caption</a></center>
+		</div>
+
+		
+		<div class="bottombar">
+			<a href="#intro" class="fade" onclick="actuallyDoResetApplication();"><img class="retina" src="img/button_start_over_iphone.png" width="147" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<a href="#" class="goback"><img class="retina" src="img/button_back_iphone.png" width="76" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<div style="float:right;">
+				<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >				<a href="#help" class="flip"><img class="retina" src="img/button_help_iphone.png" width="73" height="30" ></a>
+			</div>
+		</div>
+	</div>
+
+	
+	
+		<div id="cphotos">
+		<!--div style="font-size:42px;text-align:center;color:#fff;margin-top:300px;"><b><i>Page Coming Soon</i></b></div> -->
+		
+		<div id="movieplayer2" style="height:200px;text-align:center;padding-top:4px;"></div>
+		
+		<a href="#" onclick="loadMovie2(1);"><img class="retina" src="img-rus/DigitalPreservationProject_buttons_1_iphone.jpg" width="159" height="26" id="moviebutton21"></a><a href="#" onclick="loadMovie2(2);" style="margin-left:1px;margin-right:1px;"><img class="retina" src="img-rus/DigitalPreservationProject_buttons_2_iphone.jpg" width="159" height="26" id="moviebutton22"></a><a href="#" onclick="loadMovie2(3);"><img class="retina" src="img-rus/DigitalPreservationProject_buttons_3_iphone.jpg" width="159" height="26" id="moviebutton23"></a>
+
+		
+				<center><a href="#" onclick="showIphoneMovieCaption2();return false;" class="grayButton" style="width:100px;font-size:14px;margin-top:6px;">Show Caption</a></center>
+				
+		</center>
+<div id="moviecaptionholders2" style="display:block;font-size:15px;position:absolute;bottom:30px;left:0px;display:none;background:#555;margin:15px;padding-top:10px;padding-bottom:10px;border-radius:5px;  " >
+		<div id="moviecaptions21" class="moviecaptions2 textholder">
+CyArk founder, Ben Kacyra, speaks from the Sculptor's Studio at Mount Rushmore National Memorial about the importance of safeguarding our collective history by digitally preserving imporant cultural heritage monuments. Film by Mike Brooks of Historic Scotland. Music: <div xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" about="http://freemusicarchive.org/music/Jahzzar/The_Crowd_excerpt/6_am_taxi"><span property="dct:title">6 a.m taxi</span> (<a rel="cc:attributionURL" property="cc:attributionName" href="http://freemusicarchive.org/music/Jahzzar/"  style="color:#ff5;">Jahzzar</a>) / <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"  style="color:#ff5;">CC BY-SA 3.0</a></div>
+		</div>
+		<div id="moviecaptions22" class="moviecaptions2 textholder">
+Digital Preservation is a process that utilizes new technologies in surveying and imaging to document heritage sites in 3D and to accuracies that were never-before possible. The core technology is the portable 3D laser scanner, which was developed by CyArk founder, Ben Kacyra. Music: <div xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" about="http://freemusicarchive.org/music/Alastair_Cameron/Free_Film_Music_cameronmusiccouk/gentle_marimba"><span property="dct:title">gentle marimba</span> (<a rel="cc:attributionURL" property="cc:attributionName" href="http://freemusicarchive.org/music/Alastair_Cameron/"  style="color:#ff5;">Alastair Cameron</a>) / <a rel="license" href="http://creativecommons.org/licenses/by/3.0/"  style="color:#ff5;">CC BY 3.0</a></div>
+		</div>
+		<div id="moviecaptions23" class="moviecaptions2 textholder">
+In May of 2010, the National Park Service collaborated with CyArk and the Centre for Digital Documentation and Visualisation to laser scan the entire Mount Rushmore sculpture in order to create the most accurate model of it to-date. The resulting materials also allow for virtual tourism and new educational content which is freely accessible at <a href="http://archive.cyark.org/mount-rushmore-national-memorial-intro" style="color:#ff5;">CyArk's Mount Rushmore Portal</a>. <br>Music: <div style="display:inline;" xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" about="http://freemusicarchive.org/music/Black_Twig_Pickers_and_Steve_Gunn/NATCH_1/Old_Strange_1598"><span property="dct:title">Old Strange</span> (<a rel="cc:attributionURL" property="cc:attributionName" href="http://freemusicarchive.org/music/Black_Twig_Pickers_and_Steve_Gunn/"  style="color:#ff5;">Black Twig Pickers and Steve Gunn</a>) / <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/" style="color:#ff5;">CC BY-NC 3.0</a></div>and <div xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" about="http://freemusicarchive.org/music/Alastair_Cameron/Free_Film_Music_cameronmusiccouk/gentle_marimba"><span property="dct:title">gentle marimba</span> (<a rel="cc:attributionURL" property="cc:attributionName" href="http://freemusicarchive.org/music/Alastair_Cameron/"  style="color:#ff5;">Alastair Cameron</a>) / <a rel="license" href="http://creativecommons.org/licenses/by/3.0/"  style="color:#ff5;">CC BY 3.0</a></div>
+		</div>
+				<center><a href="#" onclick="showIphoneMovieCaption2();return false;" style="color:#ff5;font-weight:bold;font-size:18px;text-align:center;text-decoration:none;">Close Caption</a></center>
+		
+</div>
+
+		
+		<div class="bottombar">
+			<a href="#intro" class="fade" onclick="actuallyDoResetApplication();"><img class="retina" src="img/button_start_over_iphone.png" width="147" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<a href="#" class="goback"><img class="retina" src="img/button_back_iphone.png" width="76" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<div style="float:right;">
+				<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >				<a href="#help" class="flip"><img class="retina" src="img/button_help_iphone.png" width="73" height="30" ></a>
+			</div>
+		</div>
+	</div>
+
+	
+	
+	
+	
+	<div id="virtualtour">
+		<div id="mapinstructions" onclick="hideMapInstructions();"><div style="padding:25px;">
+			"Double Tap" to zoom in/out<br><br>
+			Tap a <img src="img/hotspot1_pano.png" height="25"> to view the Panoramic Image<br>
+			<span style="font-size:18px;">(Tap to close)</span><br>
+			<span style="font-size:12px;">Virtual tour audio narration by Brian W. Roberts</span>
+		</div></div>
+		<div id="mapholder">
+			<div id="mapholderinner">
+
+				<img id="img0" class="tileimg" src="img-rus/rushmore_basemap_0_0.png" style="position:absolute;top:0px;left:0px;">
+				<img id="img1" class="tileimg" src="img-rus/rushmore_basemap_1_0.png" style="position:absolute;top:0px;left:1024px;">
+
+				<img id="img2" class="tileimg" src="img-rus/rushmore_basemap_0_1.png" style="position:absolute;top:983px;left:0px;">
+				<img id="img3" class="tileimg" src="img-rus/rushmore_basemap_1_1.png" style="position:absolute;top:983px;left:1024px;">
+<a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(91);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:902px;top:892px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(61);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:161px;top:241px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(65);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:409px;top:567px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(92);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1018px;top:842px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(66);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:856px;top:849px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(67);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1022px;top:982px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(68);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1057px;top:1035px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(69);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1154px;top:623px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(71);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1078px;top:630px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(73);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1244px;top:467px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(77);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1036px;top:377px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(79);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:478px;top:484px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(82);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:326px;top:387px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(83);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:407px;top:776px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(84);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:330px;top:720px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(85);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:386px;top:607px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(86);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:643px;top:314px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(87);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:969px;top:773px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(89);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1224px;top:414px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(90);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:747px;top:919px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(108);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:587px;top:842px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(110);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:934px;top:936px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(111);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1150px;top:676px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(112);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1050px;top:756px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(113);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:60px;top:205px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(115);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:13px;top:175px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(116);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:150px;top:288px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(117);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1055px;top:703px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(118);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:802px;top:337px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(119);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:543px;top:450px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(120);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:851px;top:945px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(121);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:944px;top:839px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(122);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:752px;top:746px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(123);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1180px;top:557px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(124);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1173px;top:391px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" class="slide" href="#pano" onclick="selectpano(125);">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1291px;top:387px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a>
+
+			</div>
+		</div>
+		
+		<div class="bottombar">
+			<a href="#intro" class="fade" onclick="actuallyDoResetApplication();"><img class="retina" src="img/button_start_over_iphone.png" width="147" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<a href="#" class="goback"><img class="retina" src="img/button_back_iphone.png" width="76" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<span id="latlonoutput"></span>
+						<div style="float:right;">
+				<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >				<a href="#help" class="slide"><img class="retina" src="img/button_help_iphone.png" width="73" height="30" ></a>
+			</div>
+		</div>
+		
+	</div>
+ 
+ 
+
+	<div id="pano">
+		<!-- div class="toolbar">
+			<h1>Mount Rushmore Virtual Tour</h1>
+			<a class="button back" href="#">Back</a>
+		</div-->
+		<div class="panoloading" style="color:#fff;">Loading ...</div>
+		<div id="viewport"></div>
+		<div style="display:none;position:absolute;top:10px;right:10px;border:1px solid #000;opacity:0.7;filter:alpha(opacity=70);" onclick="hideShowPanoRadarMap(false)" id="radarmap"></div>
+		<div style="display:none;position:absolute;top:10px;right:10px;"><a href="#" onclick="hideShowPanoRadarMap(true)" id="showradarmap"  class="grayButton" style="display:inline;opacity:.8;font-weight:normal;font-size:16px;">show keymap</a></div>
+
+		
+				
+				<div style="position:absolute;width:28px;height:28px;left:28px;top:0px;" onclick="setHeading(0,0);"></div>
+		<div style="position:absolute;width:28px;height:28px;left:28px;top:51px;" onclick="setHeading(180,0);"></div>
+
+		<div style="position:absolute;width:28px;height:28px;left:0px;top:23px;" onclick="setHeading(270,0);"></div>
+		<div style="position:absolute;width:28px;height:28px;left:56px;top:23px;" onclick="setHeading(90,0);"></div>
+		
+		<div class="secondbottombar" id="panocaption" style="opacity:.8;padding-left:10px;padding-right:10px;width:460px;font-size:11px;"></div>
+
+		<div class="bottombar">
+			<a href="#" class="goback"><img class="retina" src="img/button_map_iphone.png" width="75" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<a href="#home" class="slide"><img class="retina" src="img/button_home_iphone.png" width="83" height="30" ></a>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<span id="playpause">
+				<a href="#" onclick="pause();return false;"><img class="retina" src="img/VirtualTour_buttons_spin_on_iphone.png" width="53" height="30" ></a>
+			</span>
+			<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >			<span id="touchmode">				
+			</span>
+			
+			<span id="restartmusic">
+				<img class="retina" src="img/button_divider_iphone.png" width="2" height="30" >				<img class="retina" src="img/replay_audio_iphone.png" width="96" height="30" id="replayaudioimg" onclick="restartMusic(0);">			</span>
+			
+			
+			<span id="output"></span>
+			<span id="mp3"></span>
+
+
+		</div>
+		<a href="#hotspot" class="flip" id="gotohotspotpage"></a>
+	</div>
+
+
+ 
+ 
+ 
+ 
+ <div id="hotspot">
+	 <div class="toolbar">
+	 <h1>Mount Rushmore Media Element</h1>
+	 <a class="button back" href="#">Back</a>
+	 	</div>
+<div id="hotspot88" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/mountrushmoreintensity.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of the Mountain Sculpture, created from laser scan data</div><div id="hotspot84" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/gw_head.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of George Washington, created from laser scan data</div><div id="hotspot83" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/al_head_large.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of Abraham Lincoln, created from laser scan data</div><div id="hotspot155" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/hall_of_records.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of the Hall of Records, created from laser scan data</div><div id="hotspot160" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/tr_head.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of Theodore Roosevelt, created from laser scan data</div><div id="hotspot161" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/tj_head.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of Thomas Jefferson, created from laser scan data</div> </div>
+ </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

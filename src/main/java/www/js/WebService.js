@@ -3,7 +3,8 @@
 })();
 
 function WebService(){
-    this.host = "http://scc-reinhola.lancs.ac.uk:8182/";
+    this.host = "http://localhost:8182/";
+    //this.host = "http://scc-reinhola.lancs.ac.uk:8182/";
     this.JSON = ".json";
 }
 
@@ -37,6 +38,22 @@ WebService.prototype.buildURL = function(path, ext){
     return url;
 };
 
+WebService.prototype.getSurvey = function(page, callback){
+    console.log("getSurvey");
+    var url = webService.buildURL("survey/questions/"+page, webService.JSON);
+    webService.get(url, callback);
+};
+
+WebService.prototype.postSurvey = function(question, answer, user, callback){
+    var url = webService.buildURL("survey/answer", webService.JSON);
+    webService.post(url,{question:question,answer:answer,user:user}, callback);
+};
+
+WebService.prototype.postSurveyUser = function(user, type, callback){
+    var url = webService.buildURL("survey/user", webService.JSON);
+    webService.post(url,{user:user,type:type}, callback);
+};
+
 WebService.prototype.get = function(url, callback){
     $.get(url, function(response) {
         //console.log(response);
@@ -54,7 +71,8 @@ WebService.prototype.post = function(url, post, callback)
     $.post(url,jsonPost,function(response)
     {
         //console.log(response);
-        callback(response);
+        var jsonResults = JSON.parse(response);
+        callback(jsonResults);
     }).fail(function(){
         console.log("Error with POST for: " + url);
     });

@@ -39,18 +39,18 @@ public class ExplorerSearchLocationResource  extends AbstractServerResource {
             List<ConcordanceObject> concordanceList = new ArrayList<>();
             SearchLocationResponse response = new SearchLocationResponse();
 
-            concordanceList = ServerManager.getEngine().search(search.getLat(),search.getLng(),search.getRadius(),search.getConcordanceLimit(),search.isFuzzy());
+            concordanceList = ServerManager.getEngine().search(search.getLat(),search.getLng(),search.getRadius(),search.getConcordanceLimit(),search.isFuzzy(),search.getTextSelection());
 
 
             List<MediaObject> mediaList = new ArrayList<>();
 
-            ServerManager.getEngine().getFlickr(search.getLat(),search.getLng(),search.getRadius(), mediaList);
-            ServerManager.getEngine().getEuropeana(search.getLat(),search.getLng(),search.getRadius(), mediaList);
-            List<String> locations = ServerManager.getEngine().processLocations(concordanceList, search.getLat(),search.getLng(),search.getRadius());
-            for(String location : locations){
-                ServerManager.getEngine().getHarvardArt(location, mediaList);
-                ServerManager.getEngine().getGetty(location, mediaList);
-            }
+//            ServerManager.getEngine().getFlickr(search.getLat(),search.getLng(),search.getRadius(), mediaList);
+//            ServerManager.getEngine().getEuropeana(search.getLat(),search.getLng(),search.getRadius(), mediaList);
+//            List<String> locations = ServerManager.getEngine().processLocations(concordanceList, search.getLat(),search.getLng(),search.getRadius());
+//            for(String location : locations){
+//                ServerManager.getEngine().getHarvardArt(location, mediaList);
+//                ServerManager.getEngine().getGetty(location, mediaList);
+//            }
 
             response.setConcordanceList(concordanceList);
             response.setMediaList(mediaList);

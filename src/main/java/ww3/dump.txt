@@ -1,0 +1,29 @@
+
+
+//        $('#pageView').bind("scroll", function () {
+//            clearMarkers();
+//            //clear all active class
+//            $('s').removeClass('inview');
+//
+//            //add active class to timeline
+//            inViewEnamex = new Array();
+//            //$("s").withinviewport().each(function () {
+//            var elem = $("s").withinviewport()[0];
+//            if (elem != undefined) {
+//                $(elem).addClass('inview');
+//                inViewEnamex = getEnamex($(elem).html(), inViewEnamex);
+//
+//                if (inViewEnamex[0] != undefined) {
+//                    var enamex = inViewEnamex[0];
+////                    $(elem).find('enamex').addClass('selectedEnamex');
+//                    if (lastPano != new google.maps.LatLng(enamex.lat, enamex.lng)) {
+//                        lastPano = new google.maps.LatLng(enamex.lat, enamex.lng);
+//                        map.panTo(new google.maps.LatLng(enamex.lat, enamex.lng));
+//                        panoHeading = new google.maps.LatLng(enamex.lat, enamex.lng);
+//                        panorama.setPosition(panoHeading);
+//                        //sv.getPanoramaByLocation(new google.maps.LatLng(enamex.lat, enamex.lng), 2000, processSVData);
+//                    }
+//                }
+//            }
+//            //});
+//        });

@@ -1,0 +1,50 @@
+body{
+    background-image:url('../media/book2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+s{
+    text-decoration: none;
+}
+
+#book{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100vw;
+    height:69.38vw;
+
+    font-family: Walter Turncoat;
+}
+#page1{
+    position: absolute;
+    top: 2.5vw;
+    left: 6vw;
+    right: 52vw;
+    height: 65vw;
+}
+
+#page1 p{
+    float: left;
+    clear: left;
+}
+
+#page2{
+    position: absolute;
+    top: 2.5vw;
+    left: 51vw;
+    right: 6vw;
+    height: 65vw;
+}
+
+#pictureLoc1{
+    float: right;
+    width: 20vw;
+    margin: 5px;
+    display: block;
+}
+
+#pictureLoc1 img{
+    width:100%;
+}
+

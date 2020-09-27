@@ -12,6 +12,7 @@
     // percentage from neighboring bins used when smoothing
     // out histogram. total must equal 1
     var SMOOTH_MASK = [ 0.05, 0.10, 0.20, 0.3, 0.20, 0.10, 0.05 ];
+    var timeSurvey = 1;
 
     function Timeline() {
 
@@ -44,7 +45,10 @@
                     max: this.currentMax,
                     includeNulls: true
                 });
-
+                // if(timeSurvey ==1){
+                //     timeSurvey++;
+                //     loadSurvey(8);
+                // }
                 //console.log('Time range min:' + this.currentMin + ' max:' + this.currentMax);
 
             }, this)

@@ -63,9 +63,8 @@ public class TextObject {
                     Element element = (Element) child;
                     String textBlock = element.text();
                     Tag tag = element.tag();
-                        tokenList.add(new TokenObject(element.toString(),textBlock,tag.toString(),tag,index));
-                        index++;
-
+                    tokenList.add(new TokenObject(element.toString(),textBlock,tag.toString(),tag,index));
+                    index++;
                 }
             }
         }

@@ -1,5 +1,8 @@
 package core.explorer.concordance;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Alexander Reinhold on 10/05/2017.
  */
@@ -8,6 +11,7 @@ public class SearchObject {
     public String secondaryTerm = "";
     public int concordanceLimit = 0;
     public boolean fuzzy = false;
+    public List<String> textSelection = new ArrayList<>();
 
     public SearchObject(){
 
@@ -43,5 +47,13 @@ public class SearchObject {
 
     public void setFuzzy(boolean fuzzy) {
         this.fuzzy = fuzzy;
+    }
+
+    public List<String> getTextSelection() {
+        return textSelection;
+    }
+
+    public void setTextSelection(List<String> listTextUID) {
+        this.textSelection = listTextUID;
     }
 }

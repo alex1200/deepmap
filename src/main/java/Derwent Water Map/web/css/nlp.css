@@ -1,0 +1,101 @@
+body{
+    background-color: #6b6f76;
+    margin: 8px;
+    width:100vw;
+    height:100vh;
+    overflow-x: hidden;
+}
+#textAreaInput{
+    width:100%;
+    height:300px;
+}
+
+#locTable{
+
+}
+
+.locHeading{
+
+}
+
+.subLocTable{
+
+}
+
+.subLocTable table, tr, td{
+    border-collapse: collapse;
+}
+
+.subLocTable td{
+    border: 1px solid #000000;
+}
+
+#inputSection{
+    width: calc(100% - 16px);
+    display: inline-block;
+    border: 1px solid #000;
+}
+
+#textSection{
+    width: 100%;
+    display: inline-block;
+}
+
+#textInput{
+    padding:5px;
+    width: 100%;
+    /*display: inline-block;*/
+}
+
+#fileInput{
+    width: 100%;
+    /*display: inline-block;*/
+}
+#gazetteer{
+    width:100%;
+}
+#gazetteerList{
+    width:100%;
+    overflow: auto;
+}
+
+#gazetteerTable{
+    width:100%;
+    overflow-x:auto;
+    border-collapse: collapse;
+}
+
+#gazetteerTable table{
+    width:100%;
+    overflow-x:auto;
+    border-collapse: collapse;
+}
+
+#gazetteerTable tr:nth-child(even) {background-color: #f2f2f2}
+#gazetteerTable th {
+    background-color: #4CAF50;
+    color: white;
+}
+#gazetteerTable table, th, td {
+    border: 1px solid black;
+}
+
+#addDataSection{
+    position:absolute;
+    border: 1px solid #000;
+    background-color: #6b6f76;
+    display: none;
+    width: 0px;
+    top:0;
+    right:0;
+}
+
+#gazetteerForm label{
+    display: inline-block;
+    width:48%;
+}
+
+#gazetteerForm input{
+    display: inline-block;
+    width:48%;
+}

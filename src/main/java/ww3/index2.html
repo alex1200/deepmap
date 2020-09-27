@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/index2.css" type="text/css"/>
+    <link rel="stylesheet" href="../www/css/survey.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Walter+Turncoat" />
+
+    <script src="js/WebService.js"></script>
+    <script src="js/text.js"></script>
+    <script src="js/external/jquery.min.js"></script>
+    <script src="js/external/withinviewport.js"></script>
+    <script src="js/external/jquery.withinviewport.js"></script>
+    <script type="text/javascript" src="http://nls.tileserver.com/api.js"></script>
+
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
+</head>
+<body>
+    <div id="loadingPanel">
+        <div id="loadingDisplay">
+            <div class="closeButton" onclick="$('#loadingDisplay').hide();"></div>
+            <div id="loadingTitle">Loading Text...</div>
+            <progress id="loadingIndicator" ></progress><!--value="0" max="100"-->
+        </div>
+    </div>
+    <div id="surveyViewer"></div>
+    <div id="mediaButton" onclick="$('#mediaPanel').show()"></div>
+    <div id="pageViewBook">
+        <div id="prevPage" onclick="changePage(-1);"></div>
+        <script>
+            var pageSurvey=1;
+            var locSurvey=1;
+        </script>
+        <div id="nextPage" onclick="changePage(1);if(pageSurvey==1){pageSurvey++;loadSurvey(2);}else if(pageSurvey==2){pageSurvey++;loadSurvey(4)}"></div>
+        <div id="options">
+            <select id="textSelect" onchange="changeText();"></select>
+            <div id="pageTurn">
+                <div id="prevLocation" onclick="changeLocation(-1);">Prev Loc </div>|
+                <div id="nextLocation" onclick="changeLocation(1);if(locSurvey==1){locSurvey++;loadSurvey(1);}else if(locSurvey==2){locSurvey++;loadSurvey(3)}">Next Loc </div>
+            </div>
+        </div>
+
+        <div id="pageText">
+            <div id="pageNumLeft">1</div>
+            <div id="pageNumRight">2</div>
+            <div class="col pageView page0" id="pageView0">
+
+            </div>
+        </div>
+    </div>
+    <div id="pageViewHandBottom"></div>
+    <div id="pageViewHandTop"></div>
+    <!--<div id="mapHandTop"></div>-->
+    <div id="map">
+
+    </div>
+    <div id="mediaPanel">
+        <div class="closeButton" onclick="$('#mediaPanel').hide();"></div>
+    </div>
+    <div id="pano">
+
+    </div>
+<script>
+    var self = this;
+    var arrayQuestions = new Array();
+    webService.getSurvey(3, function(results){
+        if(results.status == "SUCCESS"){
+            self.arrayQuestions = results.list;
+            console.log(self.arrayQuestions);
+            loadSurvey(0);
+        }
+    });
+
+    function loadSurvey(question){
+        var questionText = arrayQuestions[question][1];
+        var type = arrayQuestions[question][2];
+        var div = $('<div id="surveyQuestion">'+questionText+'</div>');
+        $('#surveyViewer').show();
+        $('#surveyViewer').empty();
+        $('#surveyViewer').append(div);
+        if(type == "1"){
+            var div = $('<div id="surveyRadio">' +
+                '<div id="radioHead"><span style="margin-left: 5px;">Very Negative</span><span style="right: 5px;position: absolute;">Very Positive</span></div>'+
+                '<div id="radioGroup"><span class="radioUnit"><input type="radio" name="radio" value="1"> 1</span>' +
+                '<span class="radioUnit"><input type="radio" name="radio" value="2"> 2</span>' +
+                '<span class="radioUnit"><input type="radio" name="radio" value="3" checked="checked"> 3</span>' +
+                '<span class="radioUnit"><input type="radio" name="radio" value="4"> 4</span>' +
+                '<span class="radioUnit"><input type="radio" name="radio" value="5"> 5</span></div></div>');
+            $('#surveyViewer').append(div);
+        }
+        else if(type == "2"){
+            var div = $('<div id="surveyText"><textarea id="textarea" placeholder="Enter text here"></textarea></div>');
+            $('#surveyViewer').append(div);
+        }
+        var div = $('<div id="surveyButton"><button onclick="submitSurvey(\''+question+'\')">Submit</button></div>');
+        $('#surveyViewer').append(div);
+    }
+
+    function submitSurvey(question){
+        var type = arrayQuestions[question][2];
+        var answer;
+        if(type == "1") {
+            answer = $("input[name='radio']:checked").val();
+        }
+        else if(type == "2"){
+            answer = $('#textarea').val();
+        }
+        var user = "undefined";
+        if (typeof(Storage) !== "undefined") {
+            user = localStorage.getItem("userID");
+        } else {
+            // Sorry! No Web Storage support..
+        }
+        webService.postSurvey(question, answer, user, function(results){
+            console.log(results);
+            if(results.status == "SUCCESS"){
+                $('#surveyViewer').hide();
+            }
+            else{
+                console.log("SurveyError");
+            }
+        });
+    }
+</script>
+
+    <div id="introContainer" onclick="$('#introContainer').hide()">
+        <div id="introCenter">
+            <div id="introClose">&times;</div>
+            <div id="introText">
+                This Deep Map allows for reading of texts from the Corpus of Lake District Writing, a collection of works composed between 1622 and 1900.
+                Controls will allow you to flip through the pages of the notebook, and through the locations mentioned on the visible pages,
+                changing the location of the Panorama and the center point of the map.
+            <br><br>
+                This Map can take some time to load.
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    var markers = [];
+    var webService = new WebService();
+    var inViewEnamex = new Array();
+    var panoHeading;
+    var textMetas = new Array;
+    var lastPano = null;
+    var currentPage = 0;
+    var maxPage = 0;
+    var currentEnamex = 0;
+
+    function loadText() {
+        webService.getTextMeta(function (jsonResults) {
+            // if(jsonResults.status == "SUCCESS"){
+            //     console.log(jsonResults);
+            var first = true;
+            var listSources = jsonResults;
+            var textUID = gup('text');
+            for (var key in listSources) {
+                var source = listSources[key];
+                //console.log("list row "+i, source);
+                if (null == textMetas[key]) {
+                    textMetas[key] = source;
+                    //Add new instance of source
+                    //console.log("uid is null ", source);
+                    var selected = '';
+                    if ((null == textUID && first == true)||(null != textUID && textUID == key)) {
+                        selected = 'selected';
+                    }
+                    $('#textSelect').append($('<option value="' + key + '" ' + selected + '>' + source.Title_short + '</option>'));
+                    if ((null == textUID && first == true)||(null != textUID && textUID == key)) {
+                        first = false;
+                        changeText();
+                    }
+                }
+            }
+            console.log('finished loading meta');
+        });
+
+
+    }
+
+    function changeText(){
+        var textUID = $('#textSelect').val();
+        var source = textMetas[textUID];
+        if(source != null){
+            $('#loadingPanel').show();
+            webService.getText(source.UID, function(text){
+                console.log(text);
+                var i = 1;
+                var currentCol = $('.col:first');
+                currentCol.html('');
+                var wordArray = text.tokenList;
+
+                $.fn.hasOverflow = function() {
+                    var div= document.getElementById($(this).attr('id'));
+                    return div.scrollHeight>div.clientHeight;
+                };
+                var htmlString = '';
+                var total = wordArray.length;
+                for(var x=0; x<wordArray.length; x++){
+                    var word= wordArray[x].fullToken;
+                    htmlString+=word+' ';
+                    currentCol.html(htmlString);
+//                    currentCol.append(word);
+                    console.log("word-",x);
+//                    if(x%2000==0) {
+//                        console.log('update progress',(x / total) * 100);
+//                        var perc = (x / total) * 100;
+////                        $('#loadingIndicator').val(parseInt(perc));
+//                    }
+                    if (currentCol.hasOverflow()){
+                        maxPage = i;
+                        $('#pageText').append($('<div class="col pageView page'+i+'" id="pageView'+i+'"></div>'));
+                        currentCol = currentCol.next('.col');
+                        i++;
+                        htmlString = '';
+                    }
+
+                }
+                $('.col:nth-child(n+3)').hide();
+//                $('.pageView').hide();
+//                $('.pageView')[0].show();
+//                $('.pageView')[1].show();
+                changeLocation(0);
+//                var elem = $("enamex")[0];
+//                if (elem != undefined) {
+//                    $(elem).addClass('inview');
+//                    inViewEnamex = getEnamex($(elem).get(0).outerHTML, inViewEnamex);
+//
+//                    var i = 0;
+//                    var found = false;
+//                    while (inViewEnamex[i] != undefined && found == false) {
+//                        var enamex = inViewEnamex[0];
+//                        if(enamex.lat != NaN && enamex.lng != NaN){
+////                    if (lastPano != new google.maps.LatLng(enamex.lat, enamex.lng)) {
+//                            lastPano = new google.maps.LatLng(enamex.lat, enamex.lng);
+//                            map.panTo(new google.maps.LatLng(enamex.lat, enamex.lng));
+//                            panoHeading = new google.maps.LatLng(enamex.lat, enamex.lng);
+//                            panorama.setPosition(panoHeading);
+//                            //sv.getPanoramaByLocation(new google.maps.LatLng(enamex.lat, enamex.lng), 2000, processSVData);
+////                    }
+//                            found = true;
+//                        }
+//                        i++;
+//
+//                    }
+//                }
+                $('#loadingPanel').hide();
+            });
+        }
+    }
+
+    var locationMedia = new Array;
+
+    function changeLocation(loc){
+        console.log(loc);
+        $("enamex").removeClass('inview');
+        var elems = $("enamex");
+        var index = loc;
+        if(loc == -1 || loc == 1){
+            index = currentEnamex + loc;
+        }
+        var found = false;
+
+        inViewEnamex = new Array();
+
+        while (elems[index] != undefined && found == false && index < elems.length ) {
+            var elem = elems[index];
+            var enamex = getEnamex($(elem).get(0).outerHTML, inViewEnamex);
+            console.log(inViewEnamex);
+            if(null != enamex) {
+//                var enamex = inViewEnamex[0];
+                if(enamex.lat != NaN && enamex.lng != NaN){
+                    $(elem).addClass('inview');
+                    currentEnamex = index;
+                    if (null == lastPano || lastPano.lat() != enamex.lat || lastPano.lng() != enamex.lng) {
+                        lastPano = new google.maps.LatLng(enamex.lat, enamex.lng);
+                        centerOn(lastPano);
+                        panoHeading = lastPano;
+//                    panorama.setPosition(panoHeading);
+                        sv.getPanoramaByLocation(lastPano, 2000, processSVData);
+                        var location = $(elem).text();
+                        console.log('location = ', location);
+                        // webService.getMediaGetty(location, function(result){
+                        //     console.log(result);
+                        //     locationMedia = result;
+                        //     loadMedia();
+                        // });
+                    }
+                    found = true;
+                    var parent = $(elem).parent();
+                    if(!parent.hasClass('page'+currentEnamex) || !parent.hasClass('page'+(currentEnamex+1))){
+                        var classes = parent.attr('class');
+                        console.log(classes);
+                        classes = classes.replace('col pageView page','');
+                        var index = parseInt(classes);
+                        console.log(index);
+                        changePage(index);
+                    }
+                }
+            }
+            index++;
+        }
+    }
+
+    function loadMedia(){
+        var array = locationMedia;
+        var panel = $('#mediaPanel');
+        panel.empty();
+        panel.append('<div class="closeButton" onclick="$(\'#mediaPanel\').hide();"></div>');
+        for(var i = 0; i < array.length; i++){
+            var media = array[i];
+            var polar = $('<div class="polaroid"></div>');
+            var style = "background-image:url('"+media.url+"')";
+            var image = $('<div class="polaroidImage" style="'+style+'"/>');
+            var caption = $('<div class="polaroidCaption"></div>');
+            var text = media.title;
+            if(media.description != undefined && media.description != ''){
+                text+= '<br>' + media.description;
+            }
+            caption.append(text);
+            polar.append(image);
+            polar.append(caption);
+            panel.append(polar);
+        }
+    }
+
+    function processSVData(data, status) {
+//        console.log(data)
+        if (status == google.maps.StreetViewStatus.OK) {
+            var marker = new google.maps.Marker({
+                position: data.location.latLng,
+                map: map,
+                title: data.location.description
+            });
+
+            panorama.setPano(data.location.pano);
+            panorama.setPov({
+                heading: 270,
+                pitch: 0
+            });
+            panorama.setVisible(true);
+            var heading = google.maps.geometry.spherical.computeHeading(panoHeading,data.location.latLng);
+            google.maps.event.addListener(marker, 'click', function() {
+
+                var markerPanoID = data.location.pano;
+                // Set the Pano to use the passed panoID
+                panorama.setPano(markerPanoID);
+                panorama.setPov({
+                    heading: heading,
+                    pitch: 0
+                });
+                panorama.setVisible(true);
+            });
+        } else {
+            alert('Street View data not found for this location.');
+        }
+    }
+
+    function getEnamex(sentence, array){
+//        console.log(sentence);
+    //<enamex sw="w52093" long="-3.081393270948825" lat="54.19093311473023" type="ppl" gazref="unlock:10880" name="Ulverston" conf="2.6">U
+        var index = 0;
+        if(sentence.indexOf('<enamex', index) != -1 && sentence.indexOf('long="', index) != -1) {
+            var enamex = sentence.indexOf('<enamex', index);
+//            if() {
+                var longStart = sentence.indexOf('long="', enamex) + 6;
+                var longEnd = sentence.indexOf('"', longStart);
+                var long = sentence.slice(longStart, longEnd);
+                var latStart = sentence.indexOf('lat="', enamex) + 5;
+                var latEnd = sentence.indexOf('"', latStart);
+                var lat = sentence.slice(latStart, latEnd);
+                var stringStart = sentence.indexOf('>', enamex) + 1;
+                var stringEnd = sentence.indexOf('</', stringStart);
+                var string = sentence.slice(stringStart, stringEnd);
+                text = sentence.slice(0, enamex + 7) + ' onclick=""' + sentence.slice(enamex + 7);
+                index = sentence.indexOf('</enamex>', enamex);
+//                console.log(lat, long, string);
+                if (null != lat && lat != '' && lat != undefined && lat != NaN && null != long && long != '' && long != undefined && long != NaN) {
+
+                    var marker = new google.maps.Marker({
+                        position: {lat: parseFloat(lat), lng: parseFloat(long)},
+                        map: map,
+                        title: string
+                    });
+                    markers.push(marker);
+
+                    var enamexObject = new Array();
+                    enamexObject.lat = parseFloat(lat);
+                    enamexObject.lng = parseFloat(long);
+                    enamexObject.loc = string;
+
+                    return enamexObject;
+//                    array.push(enamexObject);
+//                }
+            }
+        }
+        return null;
+    }
+
+    function clearMarkers(){
+        for(var i = 0; i < markers.length; i++){
+            var marker = markers[i];
+            marker.setMap(null);
+        }
+    }
+
+    function centerOn(latlng) {
+     var offsetx = 385;
+     var offsety = 0;
+        // latlng is the apparent centre-point
+        // offsetx is the distance you want that point to move to the right, in pixels
+        // offsety is the distance you want that point to move upwards, in pixels
+        // offset can be negative
+        // offsetx and offsety are both optional
+
+        var scale = Math.pow(2, map.getZoom());
+        console.log(map, map.getProjection());
+        if(map != undefined && map.getProjection() != undefined) {
+            var worldCoordinateCenter = map.getProjection().fromLatLngToPoint(latlng);
+            var pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
+
+            var worldCoordinateNewCenter = new google.maps.Point(
+                worldCoordinateCenter.x - pixelOffset.x,
+                worldCoordinateCenter.y + pixelOffset.y
+            );
+
+            var newCenter = map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
+
+            map.setCenter(newCenter);
+        }
+        else{
+            map.setCenter(latlng);
+        }
+
+    }
+
+    function changePage(dir){
+        console.log('change page',dir);
+        $('.pageView').hide();
+        var left = currentPage + (dir * 2);
+        var right = currentPage + (dir * 2) +1;
+        if(dir != -1 && dir != 1){
+           if(dir%2==0){
+               left = dir;
+               right = dir + 1;
+           }
+           else{
+               left = dir - 1;
+               right = dir;
+           }
+        }
+        console.log(left, right);
+        if(left == 0){
+            $('#prevPage').hide();
+        }
+        else{
+            $('#prevPage').show();
+        }
+        $('#pageView'+left).show();
+        $('#pageNumLeft').html(left+1);
+
+        if(right < maxPage) {
+            $('#pageView' + right).show();
+            $('#pageNumRight').html(right+1);
+            $('#nextPage').show();
+        }
+        else if(right == maxPage){
+            $('#pageView' + right).show();
+            $('#pageNumRight').html('');
+            $('#nextPage').hide();
+        }
+        else{
+            $('.pageView:nth-child(2)').hide();
+            $('#pageNumRight').html('');
+            $('#nextPage').hide();
+        }
+        currentPage = left;
+    }
+    function gup( name, url ) {
+        if (!url) url = location.href;
+        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        var regexS = "[\\?&]"+name+"=([^&#]*)";
+        var regex = new RegExp( regexS );
+        var results = regex.exec( url );
+        return results == null ? null : results[1];
+    }
+</script>
+<script>
+    var map;
+    var pano;
+    var sv;
+    function initMap() {
+        sv = new google.maps.StreetViewService();
+        var mapMinZoom = 8;
+        var mapMaxZoom = 14;
+
+        var nlsmap = new google.maps.ImageMapType({
+            getTileUrl: function (tile, zoom) {
+                var image = NLSTileUrlOS(tile.x, tile.y, zoom);
+                if(null == image){
+                    map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
+                }
+                return image;
+            },
+            tileSize: new google.maps.Size(256, 256),
+            maxZoom: mapMaxZoom,
+            minZoom: mapMinZoom,
+            isPng: false,
+            name: 'Historic'
+        });
+
+        var opts = {
+            streetViewControl: false,
+            center: new google.maps.LatLng(54.57417972892827, -3.1730026245116916),
+            zoom: 10,
+            mapTypeControlOptions: {mapTypeIds: [google.maps.MapTypeId.TERRAIN, google.maps.MapTypeId.SATELLITE, google.maps.MapTypeId.ROADMAP, 'historic']},
+            mapTypeControl: true,
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+        };
+
+        var NLSAPIcredit = document.createElement('h1');
+        NLSAPIcredit.style.color = '#444444';
+        NLSAPIcredit.style.font = "10px sans-serif";
+        NLSAPIcredit.style.background = "rgba(255,255,255,0.5)";
+        NLSAPIcredit.innerHTML = 'Historical maps from <a href="http://maps.nls.uk/projects/api/">NLS Maps API<\/a> ';
+        var myTextDiv = document.createElement('div');
+        myTextDiv.appendChild(NLSAPIcredit);
+
+        map = new google.maps.Map(document.getElementById("map"), opts);
+        map.mapTypes.set('historic', nlsmap);
+        map.setMapTypeId('historic');
+        map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(myTextDiv);
+
+
+        var myLatLng = {lat: 54.57417972892827, lng: -3.1730026245116916};
+        //54.57417972892827,-3.1730026245116916
+        panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('pano'), {
+                imageDateControl: true,
+                addressControl: true,
+                linksControl: true,
+                panControl: true,
+                enableCloseButton: true
+            });
+        panorama.setVisible(true);
+
+
+        loadText();
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFFW6ftcenI5Zs6FxjmwSKwJe0cA852_g&callback=initMap">
+</script>
+</html>

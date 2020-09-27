@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lake District Deep Map</title>
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="css/external/css.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/genericons.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/style.css" type="text/css" media="all">
+    <!--<link rel="stylesheet" href="css/dualTimeline.css" type="text/css">-->
+
+    <script src="js/external/jquery.min.js"></script>
+    <script src="js/external/nanoscroller.js"></script>
+    <script src="js/external/jquery-ui.js"></script>
+    <script src="js/external/jquery.panzoom.js"></script>
+    <script src="js/external/modernizr.js"></script>
+    <script src="js/external/PxFacetSearch.js"></script>
+    <script src="js/external/PxLoader.js"></script>
+    <script src="js/external/colResizable-1.6.js"></script>
+
+    <style>
+        #contentPanel{
+            height: calc(100% - 106px);
+            position:absolute;
+            top:106px;
+            width:100%;
+        }
+        #image{
+            background-color: #000;
+            background: url('media/maps/DerwentWaterMap.jpg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            height:100%;
+            width:100%;
+        }
+        #map{
+            height:100%;
+            width:100%;
+        }
+        #mainMap{
+            max-height:100vh;
+            max-width:100vw;
+        }
+        #station1{
+            position: absolute;
+            top: 52%;
+            left: 70%;
+        }
+        #station2{
+            position: absolute;
+            top: 56%;
+            left: 66%;
+        }
+        #station3{
+            position: absolute;
+            top: 69%;
+            left: 47%;
+        }
+        #station4{
+            position: absolute;
+            top: 53%;
+            left: 7%;
+        }
+        #station5{
+            position: absolute;
+            top: 29%;
+            left: 71%;
+        }
+        #station6{
+            position: absolute;
+            top: 33%;
+            left: 68%;
+        }
+        #station7{
+            position: absolute;
+            top: 51%;
+            left: 83.5%;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <nav id="site-navigation" class="main-navigation clear" role="navigation">
+        <h1 class="menu-toggle" title="Menu"><span class="screen-reader-text">Menu</span></h1>
+        <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+        <div class="menu-the-project-container">
+            <ul id="menu-the-project" class="menu nav-menu">
+                <li id="menu-item-39" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-39"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/">Home</a></li>
+                <li id="menu-item-36"
+                    class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor current-menu-ancestor current-menu-parent current-page-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-36">
+                    <a href="http://wp.lancs.ac.uk/lakesdeepmap/the-project/">The Project</a>
+                    <ul class="sub-menu">
+                        <li id="menu-item-37"
+                            class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-16 current_page_item menu-item-37">
+                            <a href="http://wp.lancs.ac.uk/lakesdeepmap/the-project/gis-deep-mapping/">Deep Mapping</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="menu-item-34" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-34"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/events/">Events</a></li>
+                <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/training/">Training</a></li>
+                <li id="menu-item-31" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/people/">People</a></li>
+                <li id="menu-item-32" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32"><a
+                        href="http://wp.lancs.ac.uk/lakesdeepmap/gallery/">Gallery</a></li>
+                <li id="menu-item-30"
+                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-30">
+                    <a href="http://wp.lancs.ac.uk/lakesdeepmap/further-reading/">Further Reading</a>
+                    <ul class="sub-menu">
+                        <li id="menu-item-137"
+                            class="menu-item menu-item-type-custom menu-item-object-custom menu-item-137"><a
+                                href="http://www.lancaster.ac.uk/fass/projects/spatialhum.wordpress/">Spatial
+                            Humanities</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="row">
+    <div id="timeline" class="unit whole">
+        <div id="timelineLabels"></div>
+        <div id="timelineCanvasHost">
+            <canvas id="timelineCanvas"></canvas>
+        </div>
+        <table id="timeRangeSlider">
+            <tr>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%;"></td>
+                <td style="width: 20%;"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="contentPanel">
+<div id="image">
+    <!--<img id="mainMap" src="media/maps/DerwentWaterMap.jpg">-->
+<img id="station1" class="station" src="media/sprites/sprite-hotspot-med.png" onclick="loadPano(54.5943414,-3.1408663)">
+<img id="station2" class="station" src="media/sprites/sprite-hotspot-2.png" onclick="loadPano(54.5924424,-3.1413771)">
+<img id="station3" class="station" src="media/sprites/sprite-hotspot-3.png" onclick="loadPano(54.5757877,-3.1318764)">
+<img id="station4" class="station" src="media/sprites/sprite-hotspot-4.png" onclick="loadPano(54.5327539,-3.1618378)">
+<img id="station5" class="station" src="media/sprites/sprite-hotspot-5.png" onclick="loadPano(54.5971596,-3.15876)">
+<img id="station6" class="station" src="media/sprites/sprite-hotspot-6.png" onclick="loadPano(54.5949718,-3.158791)">
+<img id="station7" class="station" src="media/sprites/sprite-hotspot-7.png" onclick="loadPano(54.6082743,-3.1445488)">
+</div>
+<div id="map"></div>
+</div>
+</body>
+<script>
+    var map;
+    function initMap() {
+        var myLatLng = {lat: 54.54, lng: -3.09};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 11,
+            center: myLatLng
+        });
+    }
+    function loadPano(lat,long){
+        $("#image").hide();
+        $("#map").show();
+        panorama = map.getStreetView();
+        panorama.setPosition({lat: lat, lng: long});
+        panorama.setVisible(true);
+        panorama.setPov(({
+            heading: 25,
+            pitch: 0
+        }));
+        panorama.addListener('visible_changed', function() {
+            if(panorama.getVisible() == false){
+                //$('#mediaViewer').remove();
+                $("#image").show();
+                $("#map").hide();
+            };
+        });
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFFW6ftcenI5Zs6FxjmwSKwJe0cA852_g&callback=initMap">
+</script>
+</html>

@@ -1,0 +1,866 @@
+
+
+<!DOCTYPE html>
+<html>
+ <head>
+ <title>Mount Rushmore</title>
+ <link rel="stylesheet" href="jqtouch/jqtouch.css" type="text/css" media="screen" title="no title" charset="utf-8">
+ <link rel="stylesheet" href="jqtouchthemes/apple/theme.css" type="text/css" media="screen" title="no title" charset="utf-8">
+ <link rel="stylesheet" href="includes/stylesheet.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		
+
+<style type="text/css">
+
+body{
+    background:#000;
+}
+a{
+	
+}
+body > * {
+ min-height: 768px !important;
+}
+
+.current{
+	height:768px;
+	background:#000;
+/*background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+);*/
+}
+
+body.fullscreen > * {
+ min-height: 768px !important;
+}
+body.fullscreen.black-translucent > * {
+ min-height: 768px !important;
+}
+body.landscape > * {
+ min-height: 768px;
+}
+.viewportportrait{
+	width: 768px;
+	height: 894px;/*change this to control the height, should be -60 for export*/
+}
+.viewportlandscape{
+	width: 1024px;
+	height: 638px;/*change this to control the height, should be -60 for export*/
+}
+
+
+
+
+
+
+#mapholder{
+
+ position:relative;
+ z-index:1;
+ width:100%;/* your desired width, auto and 100% are fine */;
+ height:716px;/* element height */;
+ overflow:auto;/* hidden|auto|scroll */;
+
+	/*overflow: auto;*//*this is good for browsers*/
+}
+
+#mapholderinner{
+	width:2048px;/*set these two vars based on the size of the tiled images*/
+	height:1966px;
+}
+.panoloading{
+	position:absolute;
+	top:300px;
+	width:100%;
+	text-align:center;
+	font-size:48px;
+}
+
+.mapimg{
+	position:absolute;
+/*
+ -webkit-transition-property: width;
+ -webkit-transition-duration: 0.01s;
+ -webkit-transition-timing-function: default;
+ */
+}
+
+.wideimgportrait{
+	width:768px;
+}
+.wideimglandscape{
+	width:1024px;
+}
+.widemovportrait{
+	width:768px;
+	height:716.8px;
+}
+.widemov{/*landscape*/
+	width:1024px;
+	height:460.8px;
+}
+
+
+
+
+#mapinstructions{
+	position:absolute;
+	z-index:200;
+	width:500px;
+	height:390px;
+	margin-left:262px;/*half of 1024-500*/
+	margin-top:188px;/*half of 716-300*/
+	font-size:35px;
+	text-align:center;
+	color:#000;
+
+  -webkit-border-radius:50px; /* all corners */
+  border:3px solid #000; /* border color, per usual */
+  	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, #ffd),
+	color-stop(0.64, #ffe)
+);
+}
+
+.hotspot{
+	position:absolute;
+	z-index:2000;
+}
+
+.bottombar{
+	/*background:url('img/background-green.jpg');
+	background-repeat:repeat-x;*/
+	height:650px;
+	position:absolute;
+	top:10px;/*this used to be bottom:0, but we need top:768-height(52) for animation reasons*/
+	margin-right:10px;
+	left:847px;
+	width:167px;
+	z-index:100;
+}
+.secondbottombar{
+	position:absolute;
+	background:#000;
+	bottom:52px;/*the height of bottombar*/
+	width:1024px;
+	z-index:100;
+	padding:4px;
+	color:#fff;
+	display:none;
+	text-align:center;
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+);
+}
+
+
+#viewport{
+	width: 1024px;
+	height: 730px;/*change this to control the height, should be -60 for export*/
+	/*top:45px;*/
+}
+
+
+
+
+.partnertextbox{
+	margin:30px;
+		width:903px;
+	height:258px;
+	padding:30px;
+	}
+
+.textholder_old{
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, #000000),
+	color-stop(0.64, #6e8c72)
+);
+	color:#fff;
+}
+.textholder{
+	color:#fff;
+}
+.moviecaptions{
+padding-left:32px;
+padding-right:32px;
+}
+.moviecaptions2{
+padding-left:32px;
+padding-right:32px;
+}
+
+#bannerslider{
+	padding-bottom:14px;
+	width:10000px;
+	position:relative;
+	z-index:2;
+}
+#bannerdetector{
+	position:absolute;
+	width:1024px;
+	height:400px;
+	z-index:2;
+}
+.bannerthumb{
+	margin-left:16px;
+	display:inline;
+	padding:5px;
+	padding-bottom:1px;
+	float:left;
+
+}
+.contentslider{
+	width:100000px;
+	position:relative;
+	height:716px;
+	overflow:hidden;
+}
+.contentwindow{
+	width:1000px;
+	margin-left:12px;/*double this plus the width should be 1024*/
+	overflow-x:hidden;
+	height:716px;
+	overflow-y:hidden;
+}
+#photoswipedetector{
+	position:absolute;
+	width:1024px;
+	height:700px;
+	z-index:2;
+}
+#photogallery{
+	width:1024px;
+	padding-top:10px;
+	height:700px;
+	background:#000;
+	z-index:3;
+	position:absolute;
+	display:none;/*changed to block to show the gallery page first*/
+	/*text-align:center;*/
+	padding-left:14px;
+	
+	/*background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+	);*/
+}
+#hphotoswipedetector{
+	position:absolute;
+	width:1024px;
+	height:700px;
+	z-index:2;
+}
+#hphotogallery{
+	padding-top:10px;
+	width:1024px;
+	height:700px;
+	background:#000;
+	z-index:3;
+	position:absolute;
+	display:none;
+	/*text-align:center;*/
+	/*background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+);*/
+}
+
+#cphotoswipedetector{
+	position:absolute;
+	width:1024px;
+	height:700px;
+	z-index:2;
+}
+#cphotogallery{
+	padding-top:10px;
+	width:1024px;
+	height:700px;
+	background:#000;
+	z-index:3;
+	position:absolute;
+	display:none;
+	text-align:center;
+	/*background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(60,60,60)),
+	color-stop(0.64, rgb(0,0,0))
+);*/
+}
+::-webkit-scrollbar {
+    display: none;
+}
+#pano{
+	background: #000;
+}
+
+</style>
+
+
+<script type="text/javascript">
+var isphone=false;
+var iphonetext='';
+var height=1024;
+var width=768;
+var debug=false;
+
+var panocaptions=[];
+var musicfiles=[];
+var hotspotcaptions=[];
+var filepaths=[];
+
+panocaptions[91]='View from the Grand Viewing Terrace. The Grand Viewing Terrace is located directly above the Lincoln Borglum Visitor Center.';
+musicfiles[91]='img-rus/audio/RUS_VT18_Clean.mp3';
+filepaths[91]='img-rus/panos/VT18/RUS_VT18_Clean_ipad#face#.jpg';
+panocaptions[61]='View from the Mountain Sculpture, near the chins of Theodore Roosevelt and Abraham Lincoln.';
+musicfiles[61]='img-rus/audio/MOR_7755.mp3';
+filepaths[61]='img-rus/panos/MOR7755/MOR_7755 Panorama_finish_cube_equi_ipad#face#.jpg';
+panocaptions[62]='View near the 1/12 scale model inside the Sculptor\'s Studio. Interpretive talks are held here during the summer months. The talks explain the carving process.';
+musicfiles[62]='img-rus/audio/SS_3.mp3';
+filepaths[62]='img-rus/panos/SS------3/SS------3_cube_#face#.jpg';
+panocaptions[65]='View from one of the four stops along the Presidential Trail where visitors can find exhibits depicting the lives of each of the four Presidents.';
+musicfiles[65]='img-rus/audio/RUS_VT4_Clean.mp3';
+filepaths[65]='img-rus/panos/VT11/RUS_VT11_Clean_ipad#face#.jpg';
+panocaptions[92]='View of the Presidential Trail between the Grand Viewing Terrace and the Borglum Terrace.';
+musicfiles[92]='img-rus/audio/RUS_BT16.mp3';
+filepaths[92]='img-rus/panos/BT16/RUS_BT16_ipad#face#.jpg';
+panocaptions[66]='View from the Grand Viewing Terrace overlooking the Mountain Sculpture.';
+musicfiles[66]='img-rus/audio/RUS_VT02_Clean.mp3';
+filepaths[66]='img-rus/panos/VT02/RUS_VT02_Clean_ipad#face#.jpg';
+panocaptions[67]='View from the Avenue of Flags. Flags are powerful symbols, which remind people of the strength that is found within our nation’s diversity, history and ideals. The 56 flags represent the 50 states, one district, three territories, and two commonwealths of the United States of America. The flags are arranged in alphabetical order with the A’s beginning on the walkway near the concession building.';
+musicfiles[67]='img-rus/audio/AFSTNG_d.mp3';
+filepaths[67]='img-rus/panos/AFSTN--d/AFSTN--d_ipad#face#.jpg';
+panocaptions[68]='View from the Avenue of Flags. There are 56 flags here which represent the 50 states, one district, three territories, and two commonwealths of the United States of America.';
+musicfiles[68]='img-rus/audio/AFSTNG_c.mp3';
+filepaths[68]='img-rus/panos/AFSTH--c/AFSTN--c_ipad#face#.jpg';
+panocaptions[69]='View near the Borglum Terrace, site of the first Sculptor’s Studio at Mount Rushmore.';
+musicfiles[69]='img-rus/audio/RUS_BT01.mp3';
+filepaths[69]='img-rus/panos/BT01/RUS_BT01_Clean_ipad#face#.jpg';
+panocaptions[70]='View in front of the larger of the two historic fireplaces at Borglum Terrace. These two unique fireplaces are all that remain of sculptor Gutzon Borglum’s first studio at Mount Rushmore.';
+musicfiles[70]='img-rus/audio/BT06_.1.mp3';
+filepaths[70]='img-rus/panos/BT06/RUS_BT06_Clean_ipad#face#.jpg';
+panocaptions[71]='View from the Borglum Terrace, site of the first Sculptor’s Studio at Mount Rushmore.';
+musicfiles[71]='img-rus/audio/BT09_.mp3';
+filepaths[71]='img-rus/panos/BT09/RUS_BT09_Clean_ipad#face#.jpg';
+panocaptions[72]='View at the base of the 1/12 original scale model in the Sculptor\'s Studio. The scale model changed nine times to adjust to flaws found within Mount Rushmore.';
+musicfiles[72]='img-rus/audio/SS_.mp3';
+filepaths[72]='img-rus/panos/SS-----/SS-----_ipad#face#.jpg';
+panocaptions[73]='View from outside the Sculptor\'s Studio taken near a historic staircase. These native stone stairs were constructed by the Civilian Conservation Corps.';
+musicfiles[73]='img-rus/audio/SS6__.mp3';
+filepaths[73]='img-rus/panos/SS6__/RUS_SS6_Clean_ipad#face#.jpg';
+panocaptions[74]='View from the landing platform of the historic tram, site of an infamous tram car accident.';
+musicfiles[74]='img-rus/audio/SS20_.mp3';
+filepaths[74]='img-rus/panos/SS20_/SS20_Clean_ipad#face#.jpg';
+panocaptions[77]='View from the Presidential Trail. The Presidential trail was constructed during the late 1990’s. It offers excellent views of the Mountain Sculpture, the sacred Paha Sapa (Lakota for Black Hills), and the plains of western South Dakota.';
+musicfiles[77]='img-rus/audio/RUS_VT2_Clean.mp3';
+filepaths[77]='img-rus/panos/VT2/RUS_VT2_Clean_ipad#face#.jpg';
+panocaptions[79]='View from the Talus Terrace, a lookout near the midpoint along the Presidential Trail. This is as close to Mount Rushmore as visitors to the park can get. Near this point along the trail, one can look into the blast fragments and make out some of the drill holes created by the workers to weaken the rock. These holes provided access for dynamite charges to be placed to blast away the excess rock and further define the sculpture.';
+musicfiles[79]='img-rus/audio/RUS_VT10_Clean.mp3';
+filepaths[79]='img-rus/panos/VT10/RUS_VT10_Clean_ipad#face#.jpg';
+panocaptions[82]='View from the Talus Slope below the Mountain Sculpture. Tool marks are distinguishable on the rock rubble, evidence of the hours of labor from the carving era. The park would like to remind visitors that climbing any portion of Mount Rushmore is a federal offense and the offending parties are subjected to fines and possible imprisonment.';
+musicfiles[82]='img-rus/audio/Main_Talus_Slope_Pano.mp3';
+filepaths[82]='img-rus/panos/MOR_8384/MOR_8384 Panorama_redo_cube_equi_ipad#face#.jpg';
+panocaptions[83]='View from the portion of the Presidential Trail overlapping with the historic roadbed of Highway 244.  This area has a rich diversity of trees. Aspen, birch, cottonwood, and ponderosa pine can be found here.';
+musicfiles[83]='img-rus/audio/RUS_PT03.mp3';
+filepaths[83]='img-rus/panos/PT03/RUS_PT03_ipad#face#.jpg';
+panocaptions[84]='View from the Presidential Trail, near Heritage Village. The Lakota, Nakota and Dakota Heritage Village is a three tipi encampment displaying the prehistoric, historic, and present-day life and ways of these important Sioux tribes.';
+musicfiles[84]='img-rus/audio/RUS_PT04.mp3';
+filepaths[84]='img-rus/panos/PT04/RUS_PT04_ipad#face#.jpg';
+panocaptions[85]='View from the Presidential Trail near the Lincoln wayside exhibit.';
+musicfiles[85]='img-rus/audio/RUS_VT12_Clean.mp3';
+filepaths[85]='img-rus/panos/VT12/RUS_VT12_Clean_ipad#face#.jpg';
+panocaptions[86]='View from the Presidential Trail near the Jefferson wayside exhibit.';
+musicfiles[86]='img-rus/audio/RUS_VT5_Clean.mp3';
+filepaths[86]='img-rus/panos/VT5/RUS_VT5_Clean_ipad#face#.jpg';
+panocaptions[87]='View from the Historic Overlook which was constructed upon a water catchment (cistern) during the historic carving era.';
+musicfiles[87]='img-rus/audio/RUS_BT18.mp3';
+filepaths[87]='img-rus/panos/BT18/RUS_BT18_ipad#face#.jpg';
+panocaptions[89]='View from inside the Sculptor’s Studio, the second on-site studio for sculptor Gutzon Borglum. Unique plaster models and worker tools related to the sculpting processes are displayed in this studio. Sitting atop the fireplace, the bronze busts sculpted by Gutzon Borglum are (from left to right): Doane Robinson (State Historian and originator of the Mount Rushmore idea), Peter Norbeck (South Dakota Politician and supporter of the Mount Rushmore Sculpture project), William Williamson (South Dakota Politician and supporter of the Mount Rushmore Sculpture project), and John Boland (farm implement dealer in Rapid City, South Dakota, and Financial manager of the Mount Rushmore Sculpture project).';
+musicfiles[89]='img-rus/audio/SSSTN--i.mp3';
+filepaths[89]='img-rus/panos/SSSTN--i/SSSTN--i_ipad#face#.jpg';
+panocaptions[90]='View from the Presidential Trail.  This portion of the trail overlaps with the historic roadbed that President Franklin Delano Roosevelt used to access Mount Rushmore when dedicating the completed Thomas Jefferson sculpture in 1936.';
+musicfiles[90]='img-rus/audio/RUS_VT16_Clean.mp3';
+filepaths[90]='img-rus/panos/VT16/RUS_VT16_Clean_ipad#face#.jpg';
+panocaptions[108]='View from the Presidential Trail.  This portion of the trail overlaps with the historic roadbed of Highway 244.';
+musicfiles[108]='img-rus/audio/RUS_PT02.mp3';
+filepaths[108]='img-rus/panos/RUS_PT02/RUS_PT02_Clean_ipad#face#.jpg';
+panocaptions[109]='View from the midpoint along the Presidential Trail.  The remainder of the trail to the east is not handicapped accessible.';
+musicfiles[109]='img-rus/audio/RUS_VT9_Cleanv2.mp3';
+filepaths[109]='img-rus/panos/RUS_VT9_Cleanv2/RUS_VT9_Cleanv2_ipad#face#.jpg';
+panocaptions[110]='View from the end of the Avenue of Flags, near the Grand Viewing Terrace.';
+musicfiles[110]='img-rus/audio/Main_Avenue_of_Flags_Pano.mp3';
+filepaths[110]='img-rus/panos/AFSTN--h/AFSTN--h_ipad#face#.jpg';
+panocaptions[111]='View from the Nature Trail near the Borglum Terrace.';
+musicfiles[111]='img-rus/audio/BT03_.mp3';
+filepaths[111]='img-rus/panos/BT03_/RUS_BT03_Clean_ipad#face#.jpg';
+panocaptions[112]='View of the Presidential Trail between the Grand Viewing Terrace and the Borglum Terrace.';
+musicfiles[112]='img-rus/audio/RUS_BT16.mp3';
+filepaths[112]='img-rus/panos/BT14_/RUS_BT14_Clean_ipad#face#.jpg';
+panocaptions[113]='View taken near the entrance to the Hall of Records. The plaque at the base of the entrance reads:<br><br>"...let us place there, carved high, as close to heaven as we can, the words of our leaders their faces, to show posterity what manner of men they were. Then breathe a prayer that these records will endure until the wind and the <br>rain alone shall wear them away."<br><br>Gutzon Borglum<br>Sculptor';
+musicfiles[113]='img-rus/audio/HRSTN.mp3';
+filepaths[113]='img-rus/panos/HRSTN---/MOR_5465 Panorama_20111108-edit2__clean_ipad#face#.jpg';
+panocaptions[114]='View centered inside the Hall of Records. This chamber was to hold the documents and artifacts most central to the history of American democracy. Work was stopped in 1939 when there was a threat of losing funding for the entire sculpture if the money was not used exclusively on the carving of the faces as was intended.';
+musicfiles[114]='img-rus/audio/HRSTN04.mp3';
+filepaths[114]='img-rus/panos/HRSTN04/MOR_5023 Panorama_20111108__clean_ipad#face#.jpg';
+panocaptions[115]='View taken at the end of the unfinished Hall of Records. Originally, the hall was intended to be much larger, up to 80 by 100 feet long.';
+musicfiles[115]='img-rus/audio/HRSTN09.mp3';
+filepaths[115]='img-rus/panos/HRSTN09/HRSTN09_20111108__clean_ipad#face#.jpg';
+panocaptions[116]='View from atop the sculpture of Thomas Jefferson, overlooking the park.';
+musicfiles[116]='img-rus/audio/MOR_6805.mp3';
+filepaths[116]='img-rus/panos/MOR_6805 Panorama_cube_equi/MOR_6805 Panorama_ipad#face#.jpg';
+panocaptions[117]='View of the Presidential Trail between the Grand Viewing Terrace and the Borglum Terrace.';
+musicfiles[117]='img-rus/audio/RUS_BT16.mp3';
+filepaths[117]='img-rus/panos/RUS_BT13/RUS_BT13_Clean_ipad#face#.jpg';
+panocaptions[118]='View from one of the four stops along the Presidential Trail where visitors can find exhibits depicting the lives of each of the four Presidents.';
+musicfiles[118]='img-rus/audio/RUS_VT4_Clean.mp3';
+filepaths[118]='img-rus/panos/RUS_VT4_Clean/RUS_VT4_Clean_ipad#face#.jpg';
+panocaptions[119]='View from the Presidential Trail as it begins to descend toward the Sculptor’s Studio to the east. This descending portion of the Presidential Trail is not handicapped accessible.';
+musicfiles[119]='img-rus/audio/RUS_VT7_Clean.mp3';
+filepaths[119]='img-rus/panos/RUS_VT7_Clean/RUS_VT7_Clean_ipad#face#.jpg';
+panocaptions[120]='View along the Presidential Trail near the Grand Viewing Terrace.';
+musicfiles[120]='img-rus/audio/RUS_VT01_Clean.mp3';
+filepaths[120]='img-rus/panos/RUS_VT01_Clean/RUS_VT01_Clean_ipad#face#.jpg';
+panocaptions[121]='View from the Grand Viewing Terrace, near the portion of the Presidential Trail that leads to the Sculptor\'s Studio.';
+musicfiles[121]='img-rus/audio/RUS_VT19_Clean.mp3';
+filepaths[121]='img-rus/panos/RUS_VT19_Clean/RUS_VT19_Clean_ipad#face#.jpg';
+panocaptions[122]='View near the stage of the Amphitheater. This amphitheater is home to the popular Evening Lighting Ceremony held every night of the summer.';
+musicfiles[122]='img-rus/audio/RUS_VT21_Clean.mp3';
+filepaths[122]='img-rus/panos/RUS_VT21_Clean/RUS_VT21_Clean_ipad#face#.jpg';
+panocaptions[123]='View near the Borglum Terrace, site of the first Sculptor’s Studio at Mount Rushmore.';
+musicfiles[123]='img-rus/audio/SS23_1.mp3';
+filepaths[123]='img-rus/panos/SS23_/SS23__ipad#face#.jpg';
+panocaptions[124]='View taken behind the Sculptor\'s Studio near the Presidential Trail.';
+musicfiles[124]='img-rus/audio/RUS_VT1_Clean.mp3';
+filepaths[124]='img-rus/panos/SS15_/SS15__ipad#face#.jpg';
+panocaptions[125]='View taken east of the Sculptor’s Studio.';
+musicfiles[125]='img-rus/audio/SS9__.mp3';
+filepaths[125]='img-rus/panos/SS9__/SS9___ipad#face#.jpg';
+hotspotcaptions[89]='Mesh of Mount Rushmore, created from photo-textured laser scan data';
+hotspotcaptions[87]='Photograph of George Washington with the ropes team ascending the mountain';
+hotspotcaptions[88]='Animation of the Mountain Sculpture, created from laser scan data';
+hotspotcaptions[85]='Photograph of Borglum working on the model';
+hotspotcaptions[86]='Perspective of Lincoln\'s Mask, created from close-range scan data';
+hotspotcaptions[84]='Animation of George Washington, created from laser scan data';
+hotspotcaptions[83]='Animation of Abraham Lincoln, created from laser scan data';
+hotspotcaptions[118]='Historic photograph of a driller "honeycombing" the mountain';
+hotspotcaptions[82]='Photograph of the ropes team performing a scan of Jefferson\'s face using the tripod rig';
+hotspotcaptions[93]='Elevation of the Borglum Terrace, created from photo-textured laser scan data';
+hotspotcaptions[119]='Perspective of Mount Rushmore, created from laser scan data';
+hotspotcaptions[110]='Historic photograph of early construction work on the Lincoln sculpture, showing dust from the dynamite blasts';
+hotspotcaptions[129]='';
+hotspotcaptions[112]='Photograph of the team scanning inside the Hall of Records';
+hotspotcaptions[113]='Perspective of the honeycomb pattern inside the Hall of Records, created from laser scan data';
+hotspotcaptions[114]='Perspective of the honeycomb pattern inside the Hall of Records, created from photo-textured laser scan data';
+hotspotcaptions[115]='Section of the Hall of Records, created from photo-textured laser scan data';
+hotspotcaptions[116]='Photograph of the entrance to the Hall of Records';
+hotspotcaptions[117]='Photograph of the team scanning the presidents near Theodore Roosevelt';
+hotspotcaptions[120]='Historic photograph of the Black Hills, prior to the construction of Mount Rushmore. This granite mountain was sacred to the Lakota Native Americans, who called it "Six Grandfathers".';
+hotspotcaptions[121]='Photograph of George Washington taken from the Talus Slope below the sculpture. The ropes team can be seen ascending the mountain.';
+hotspotcaptions[122]='Perspective of Theodore Roosevelt, created from laser scan data';
+hotspotcaptions[123]='Historic photograph of Washington, taken from the historic route taken by workers to get to the Mountain Sculpture';
+hotspotcaptions[124]='Historic photograph of the first Jefferson sculpture to the left of Washington. After 18 months of carving the figure of Jefferson had to be blasted off the mountain and restarted to the right of Washington.';
+hotspotcaptions[125]='Historic photograph of Gutzon Borglum inspecting the face of Thomas Jefferson';
+hotspotcaptions[126]='Historic photograph of Borglum mounting an American flag on Mount Rushmore';
+hotspotcaptions[166]='Elevation of the smaller historic fireplace at the Borglum Terrace, created from photo-textured laser scan data';
+hotspotcaptions[128]='Perspective of George Washington, created from laser scan data';
+hotspotcaptions[130]='';
+hotspotcaptions[131]='Photograph of the team scanning inside the Sculptor\'s Studio. The scale model of the Mountain Sculpture can be seen in the background.';
+hotspotcaptions[132]='Historic photograph of an early scale model in the first studio at Mount Rushmore';
+hotspotcaptions[133]='Historic photograph of an early scale model in the first studio at Mount Rushmore';
+hotspotcaptions[134]='Photograph of the Sculptor\'s Studio during the winter season';
+hotspotcaptions[136]='Perspective of the Avenue of Flags, created from laser scan data';
+hotspotcaptions[138]='Historic photograph of the Mountain Sculpture with a historic road and car in the foreground';
+hotspotcaptions[139]='Historic photograph of a worker descending from Washington\'s head in a Bosun chair';
+hotspotcaptions[140]='Historic aerial photograph of Mount Rushmore under construction';
+hotspotcaptions[141]='Perspective of Lincoln\'s Mask, created from close-range scan data';
+hotspotcaptions[142]='Historic photograph of Washington under construction';
+hotspotcaptions[143]='Historic photograph of Gutzon Borglum and two drillers working on Mount Rushmore';
+hotspotcaptions[144]='Historic photograph of Gutzon Borglum and a worker ascending the mountain in front of Thomas Jefferson';
+hotspotcaptions[145]='Historic photograph showing early construction work on the second Jefferson sculpture. An earlier Jefferson sculpture was attempted on the left side of Washington and demolished due to poor granite.';
+hotspotcaptions[146]='Historic photograph of Gutzon Borglum repelling off Mount Rushmore in a Bosun chair';
+hotspotcaptions[147]='Historic aerial photograph of Washington and Jefferson under construction';
+hotspotcaptions[148]='Transition image of the four presidents of Mount Rushmore and the scanning team, created from photography and laser scan data';
+hotspotcaptions[149]='Mesh of Thomas Jefferson and Theodore Roosevelt, created from laser scan data';
+hotspotcaptions[150]='Perspective of the Hall of Records, created from laser scan data';
+hotspotcaptions[151]='Perspective of the carving details of Lincoln\'s right eye, created from laser scan data';
+hotspotcaptions[153]='Aerial view of Mount Rushmore, created from laser scan data overlaid onto aerial imagery';
+hotspotcaptions[154]='Historic photograph of President Coolidge delivering the dedication speech on August 10, 1927';
+hotspotcaptions[155]='Animation of the Hall of Records, created from laser scan data';
+hotspotcaptions[156]='Perspective of mesh data from the 1/12 scale model found within the Sculptor\'s Studio, created from laser scan data';
+hotspotcaptions[158]='Perspective of Borglum\'s Viewing Terrace, created from laser scan data';
+hotspotcaptions[159]='Perspective of Thomas Jefferson, created from laser scan data';
+hotspotcaptions[160]='Animation of Theodore Roosevelt, created from laser scan data';
+hotspotcaptions[161]='Animation of Thomas Jefferson, created from laser scan data';
+hotspotcaptions[162]='Historic photograph of Mount Rushmore under construction';
+hotspotcaptions[164]='Perspective of the ropes team performing a scan of Washington\'s head';
+hotspotcaptions[165]='Historic photograph of early construction work on the second Jefferson sculpture. An earlier Jefferson sculpture was attempted on the left side of Washington and demolished due to poor granite.';
+hotspotcaptions[167]='Elevation of the eastern wall inside the Sculptor\'s Studio, created from photo-textured laser scan data';
+hotspotcaptions[168]='Elevation of the northern wall inside the Sculptor\'s Studio, created from photo-textured laser scan data';
+
+
+
+var photolength=66
+var hphotolength=0
+var cphotolength=6
+</script>
+<script type="text/javascript" src="includes/jquerymin.js" charset="utf-8"></script>
+<script type="text/javascript" src="includes/jquery.jmp3.js" charset="utf-8"></script>
+
+<script type="text/javascript" src="jqtouch/jqtouch.js" charset="utf-8"></script>
+<script type="text/javascript" src="includes/jquery.rotate.js" charset="utf-8"></script>
+<script type="text/javascript" src="includes/jquery.retina.js" charset="utf-8"></script>
+
+
+<script type="text/javascript" src="includes/iscroll.js" charset="utf-8"></script>
+
+<!--script src="includes/swfkrpano.js"></script>
+<script src="includes/krpanoiphone.license.js"></script>
+<script src="includes/krpanoiphone.js"></script-->
+<script src="includes/embedpano.js"></script>
+
+<script type="text/javascript" src="includes/application.js" charset="utf-8"></script>
+
+
+</head>
+ 
+ 
+ 
+ 
+<body>
+
+	
+	
+	
+	
+
+	<div id="virtualtour">
+		<div id="mapinstructions" ontouchend="hideMapInstructions();"><div style="padding:50px;">
+			"Double Tap" to zoom in/out<br><br>
+			Tap a <img src="img/hotspot1_pano.png" height="45"> to view the Panoramic Image<br>
+			<span style="font-size:18px;">(Tap to close)</span><br>
+			<span style="font-size:12px;">Virtual tour audio narration by Brian W. Roberts</span>
+		</div></div>
+		<div id="mapholder">
+			<div id="mapholderinner">
+
+				<img id="img0" class="tileimg" src="img-rus/rushmore_basemap_0_0.png" style="position:absolute;top:0px;left:0px;">
+				<img id="img1" class="tileimg" src="img-rus/rushmore_basemap_1_0.png" style="position:absolute;top:0px;left:1024px;">
+
+				<img id="img2" class="tileimg" src="img-rus/rushmore_basemap_0_1.png" style="position:absolute;top:983px;left:0px;">
+				<img id="img3" class="tileimg" src="img-rus/rushmore_basemap_1_1.png" style="position:absolute;top:983px;left:1024px;">
+<a id="link_pano_id0" ontouchend="selectpano(91);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:902px;top:892px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(61);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:161px;top:241px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(65);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:409px;top:567px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(92);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1018px;top:842px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(66);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:856px;top:849px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(67);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1022px;top:982px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(68);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1057px;top:1035px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(69);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1154px;top:623px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(71);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1078px;top:630px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(73);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1244px;top:467px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(77);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1036px;top:377px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(79);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:478px;top:484px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(82);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:326px;top:387px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(83);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:407px;top:776px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(84);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:330px;top:720px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(85);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:386px;top:607px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(86);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:643px;top:314px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(87);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:969px;top:773px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(89);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1224px;top:414px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(90);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:747px;top:919px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(108);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:587px;top:842px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(110);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:934px;top:936px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(111);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1150px;top:676px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(112);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1050px;top:756px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(113);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:60px;top:205px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(115);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:13px;top:175px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(116);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:150px;top:288px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(117);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1055px;top:703px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(118);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:802px;top:337px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(119);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:543px;top:450px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(120);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:851px;top:945px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(121);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:944px;top:839px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(122);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:752px;top:746px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(123);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1180px;top:557px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(124);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1173px;top:391px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a><a id="link_pano_id0" ontouchend="selectpano(125);event.preventDefault();">
+		<img class="hotspot" src="img/hotspot1_pano.png" width="80" style="left:1291px;top:387px;"
+		ontouchstart="this.src='img/hotspot1_panored.png'"
+		onmousedown="this.src='img/hotspot1_panored.png'"
+		ontouchend="this.src='img/hotspot1_pano.png'"
+		onmouseup="this.src='img/hotspot1_pano.png'"
+		></a>
+
+			</div>
+		</div>
+	</div>
+ 
+ 
+
+	<div id="pano">
+		<!-- div class="toolbar">
+			<h1>Mount Rushmore Virtual Tour</h1>
+			<a class="button back" href="#">Back</a>
+		</div-->
+		<div class="panoloading" style="color:#fff;">Loading ...</div>
+		<div id="viewport"></div>
+		<!--div style="position:absolute;top:10px;right:10px;border:1px solid #000;opacity:0.7;filter:alpha(opacity=70);" ontouchend="hideShowPanoRadarMap(false)" id="radarmap"></div-->
+		<!--div style="position:absolute;top:10px;right:10px;"><a href="#" ontouchend="hideShowPanoRadarMap(true)" id="showradarmap"  class="grayButton" style="display:inline;opacity:.8;font-weight:normal;font-size:16px;">show keymap</a></div-->
+
+		
+				
+				<div style="position:absolute;width:28px;height:28px;left:28px;top:0px;" ontouchend="setHeading(0,0);"></div>
+		<div style="position:absolute;width:28px;height:28px;left:28px;top:51px;" ontouchend="setHeading(180,0);"></div>
+
+		<div style="position:absolute;width:28px;height:28px;left:0px;top:23px;" ontouchend="setHeading(270,0);"></div>
+		<div style="position:absolute;width:28px;height:28px;left:56px;top:23px;" ontouchend="setHeading(90,0);"></div>
+		
+		<div class="secondbottombar" id="panocaption" style="opacity:.8;padding-left:10px;padding-right:10px;width:1004px;"></div>
+		
+		<img src="img-rus/media/h1.jpg" style="display:none; align:center; z-index:4000; position: absolute;" ontouchend="hideHotSpotImage();" id="hotspotimage"/>
+		<div class="bottombar">
+			
+			<span id="playpause" style="float:right;">
+				<a href="#" ontouchend="pause();return false;"><img class="retina" src="img/VirtualTour_buttons_spin_on.png" width="167" height="52" ></a>
+			</span><br>
+			<!--div id="counter">1</div-->
+			<!--span id="touchmode">
+			</span><br-->
+			<span id="restartmusic" >
+			<img class="retina" src="img/replay_audio.png" width="167" height="52" id="replayaudioimg" ontouchend="restartMusic(0);">			</span>
+			<a href="#" class="goback" ontouchend="stopMusic();goBack()" style="float:right;"><img class="retina" src="img/button_map.png" width="167" height="52" ></a><br>
+			
+			<span id="output"></span>
+			<span id="mp3"><audio id="audioplayer">
+					<source src="img-rus/audio/AFSTNG_b.mp3" type="audio/mpeg">
+			</audio></span>
+
+
+		</div>
+		<a href="#hotspot" class="slide" id="gotohotspotpage"></a><!--old class flip-->
+	</div>
+
+
+ 
+ 
+ 
+ 
+ <div id="hotspot">
+	 <div class="toolbar">
+	 <h1>Mount Rushmore Media Element</h1>
+	 <a class="button back" href="#">Back</a>
+	 	</div>
+<div id="hotspot88" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/mountrushmoreintensity.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of the Mountain Sculpture, created from laser scan data</div><div id="hotspot84" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/gw_head.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of George Washington, created from laser scan data</div><div id="hotspot83" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/al_head_large.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of Abraham Lincoln, created from laser scan data</div><div id="hotspot155" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/hall_of_records.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of the Hall of Records, created from laser scan data</div><div id="hotspot160" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/tr_head.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of Theodore Roosevelt, created from laser scan data</div><div id="hotspot161" class="descpage" style="display:none;text-align:center;color:#fff;"><br><br><EMBED SRC="img-rus/media/tj_head.mov" class="widemov" AUTOPLAY="TRUE" scale="tofit" width="700" height="400"></EMBED><br>Animation of Thomas Jefferson, created from laser scan data</div> </div>
+
+
+
+ </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

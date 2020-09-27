@@ -3,7 +3,8 @@
 })();
 
 function WebService(){
-    this.host = "http://ec2-54-187-57-46.us-west-2.compute.amazonaws.com/";
+    //this.host = "http://ec2-54-187-57-46.us-west-2.compute.amazonaws.com/";
+    this.host = "http://localhost:8182/";
     this.JSON = ".json";
 }
 
@@ -40,6 +41,17 @@ WebService.prototype.getGazetteers = function(callback){
 WebService.prototype.buildURL = function(path, ext){
     var url = webService.host + path + ext;
     return url;
+};
+
+WebService.prototype.getSurvey = function(page, callback){
+    console.log("getSurvey");
+    var url = webService.buildURL("survey/questions/"+page, webService.JSON);
+    webService.get(url, callback);
+};
+
+WebService.prototype.postSurvey = function(question, answer, callback){
+    var url = webService.buildURL("survey/answer", webService.JSON);
+    webService.post(url,{question:question,answer:answer}, callback);
 };
 
 WebService.prototype.get = function(url, callback){

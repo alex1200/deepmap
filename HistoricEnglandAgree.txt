@@ -1,0 +1,47 @@
+test
+Ordnance Survey Open Data Licence Agreement
+
+Historic England is able to license the use of a number of its spatial data sets for use in Geographic Information Systems (GIS) ("Historic England GIS Data") for commercial and non-commercial use.
+
+Subject to the terms below, you are now granted a worldwide, perpetual, non-exclusive licence to use this Historic England GIS Data. You may:
+copy, publish, distribute and transmit the Historic England GIS Data
+adapt or modify the Historic England GIS Data
+exploit the Historic England GIS Data commercially for example by combining it with other information or by including it in your own product or application
+
+You must always use the following attribution statements to acknowledge the source of the information:
+
+© Historic England [year]. Contains Ordnance Survey data © Crown copyright and database right [year] The Historic England GIS Data contained in this material was obtained on [date]. The most publicly available up to date Historic England GIS Data can be obtained from http://www.HistoricEngland.org.uk.
+
+The same requirement for an attribution statement must be contained in any sub-licences of the Historic England GIS Data that you grant, together with a requirement that any further sub-licences do the same.
+
+You must ensure that you do not use the Historic England GIS Data in a way which suggests any official status or that Historic England has endorsed you or your use of the Historic England GIS Data.
+
+The Historic England GIS Data must not be used for purposes which may lead to damage to archaeological sites, historic buildings and landscapes.
+
+You must not mislead others or misrepresent the Historic England GIS Data or its source.
+
+This licence does not give you permission to use any Historic England trade marks or logos.
+
+You must ensure your use of the Historic England GIS Data complies with the Data Protection Act 1998 or the Privacy and Electronic Communications (EC Directive) Regulations 2003.
+
+The Historic England GIS Data is updated on a regular basis. It is current only to the date of the dataset as given on the downloadable data.
+
+All intellectual proprietary rights in this Historic England GIS Data and the documentation remain vested in Historic England and its licensors. Where Ordnance Survey base mapping has been used to create certain Historic England GIS Data, Ordnance Survey claims Intellectual Property Rights in the data. As such, Historic England GIS Data is subject to the terms of the Ordnance Survey Open Data Licence – a copy of which can be found here.
+
+Spatial data is provided solely to indicate the location of the designated area. The spatial data for listed buildings does not indicate the extent of a listing or the curtilage.
+
+The Historic England GIS Data is licensed 'as is' and Historic England excludes all representations, warranties, obligations and liabilities in relation to the Historic England GIS Data to the maximum extent permitted by law.
+
+Historic England will not be liable (whether directly or indirectly) for any loss or damages arising out of or in connection with any use of the Historic England GIS Data, any infringement of third party intellectual property rights or any decisions made on the basis of this data.
+
+Historic England is not liable for any errors or omissions in the Historic England GIS Data and shall not be liable for any loss, injury or damage of any kind caused by its use. Historic England does not guarantee the continued supply of the Historic England GIS Data.
+
+Nothing in this licence shall exclude Historic England's liability for death or personal injury caused by negligence, or for fraud.
+
+Historic England may terminate this licence if you are in material breach of its terms and fail to remedy any breach (if capable of remedy) within 14 days of being notified by Historic England. If Historic England does terminate this licence you must immediately stop all use of the Historic England GIS Data and terminate any sub-licences of the material containing the Historic England GIS Data.
+
+A person who is not a party to this licence shall not have any right under the Contract (Rights of Third Parties) Act 1999 to enforce any of its terms.
+
+This licence (including any non-contractual disputes) is governed by, and will be construed in accordance with, English law and the exclusive jurisdiction of the English courts.
+
+I Decline  I Accept

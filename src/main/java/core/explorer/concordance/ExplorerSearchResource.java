@@ -26,10 +26,10 @@ public class ExplorerSearchResource  extends AbstractServerResource {
             List<ConcordanceObject> concordanceList = new ArrayList<>();
 
             if(null != search.getSecondaryTerm() && search.getSecondaryTerm().equalsIgnoreCase("") == false) {
-                concordanceList = ServerManager.getEngine().search(search.getTerm(),search.getSecondaryTerm(),search.getConcordanceLimit(),search.isFuzzy());
+                concordanceList = ServerManager.getEngine().search(search.getTerm(),search.getSecondaryTerm(),search.getConcordanceLimit(),search.isFuzzy(), search.getTextSelection());
             }
             else{
-                concordanceList = ServerManager.getEngine().search(search.getTerm(),search.getConcordanceLimit(),search.isFuzzy());
+                concordanceList = ServerManager.getEngine().search(search.getTerm(),search.getConcordanceLimit(),search.isFuzzy(), search.getTextSelection());
             }
             String jsonReturn = new Gson().toJson(concordanceList);
             return new StringRepresentation(jsonReturn);

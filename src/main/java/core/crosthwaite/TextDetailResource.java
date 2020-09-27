@@ -33,9 +33,7 @@ public class TextDetailResource extends AbstractServerResource {
             if (null != table) {
                 DBRow row = table.get(0);
                 String fileName = String.valueOf(row.row.get(4).getKey());
-
-                ClassLoader classLoader = getClass().getClassLoader();
-                File file = new File(classLoader.getResource(fileName).getFile());
+                File file = new File("Resources/"+fileName);
                 if(end != 0) {
                     DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

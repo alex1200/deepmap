@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deepmap Home</title>
+    <script src="js/external/jquery.min.js"></script>
+<!--    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+<!--    <link rel="stylesheet" href="css/external/css.css" type="text/css" media="all">-->
+<!--    <link rel="stylesheet" href="css/external/genericons.css" type="text/css" media="all">-->
+<!--    <link rel="stylesheet" href="css/external/style.css" type="text/css" media="all">-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        body{
+            background-image: url('media/maps/DerwentWaterMap.jpg');
+            background-position-x: -50px;
+            background-position-y: -50px;
+
+        }
+        #title{
+            position: absolute;
+            top: 0px;
+            width: 50%;
+            left: 25%;
+            text-align: center;
+            z-index: 100;
+            /*line-height: 70%;*/
+            color: white;
+            text-shadow: 1px 1px #000;
+        }
+        .wrapper{
+            width: 100%;
+            height: 100%;
+            background-color: rgba(20,20,20,0.8);
+            position: absolute;
+            top: 0px;
+            padding-top: 15%;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+        }
+        .tile{
+            width:475px;/*49%;*/
+            height:275px;/*35%;*/
+            display: inline-block;
+            /*float:left;*/
+        }
+        .tile2{
+            width:475px;/*32%;*/
+            height:275px;/*35%;*/
+            display: inline-block;
+            /*float:left;*/
+        }
+        .topleft{
+        }
+        .topright{
+        }
+        .bottomleft{
+        }
+        .bottomright{
+        }
+        .button{
+            width:60%;
+            height:60%;
+            display: inline-block;
+            border: 1px solid #000000;
+            -moz-box-shadow: inset 2px 2px 2px rgba(255, 255, 255, .4), inset -2px -2px 2px rgba(0, 0, 0, .4);
+            -webkit-box-shadow: inset 2px 2px 2px rgba(255, 255, 255, .4), inset -2px -2px 2px rgba(0, 0, 0, .4);
+            box-shadow: inset 5px 5px 5px rgba(255, 255, 255, .4), inset -5px -5px 5px rgba(0, 0, 0, .4);
+            margin: 20%;
+        }
+        .button2{
+            width:80%;
+            height:80%;
+            display: inline-block;
+            border: 1px solid #000000;
+            -moz-box-shadow: inset 2px 2px 2px rgba(255, 255, 255, .4), inset -2px -2px 2px rgba(0, 0, 0, .4);
+            -webkit-box-shadow: inset 2px 2px 2px rgba(255, 255, 255, .4), inset -2px -2px 2px rgba(0, 0, 0, .4);
+            box-shadow: inset 5px 5px 5px rgba(255, 255, 255, .4), inset -5px -5px 5px rgba(0, 0, 0, .4);
+            margin: 20%;
+        }
+        .topleftbutton{
+            background:linear-gradient(
+                    rgba(10, 10, 10, 0.45),
+                    rgba(10, 10, 10, 0.45)
+            ),url('http://wp.lancs.ac.uk/lakesdeepmap/files/2015/11/cropped-Tilberthwaite-painty.jpg');
+            background-size: cover;
+
+        }
+        .toprightbutton{
+            background:linear-gradient(
+                    rgba(10, 10, 10, 0.45),
+                    rgba(10, 10, 10, 0.45)
+            ),url('media/crosth1a.PNG');
+            background-size: cover;
+        }
+        .bottomleftbutton{
+            background:linear-gradient(
+                    rgba(10, 10, 10, 0.45),
+                    rgba(10, 10, 10, 0.45)
+            ),url('media/screen1.PNG');
+            background-size: cover;
+        }
+        .bottommiddlebutton{
+            background:linear-gradient(
+                    rgba(10, 10, 10, 0.45),
+                    rgba(10, 10, 10, 0.45)
+            ),url('media/screen2.PNG');
+            background-size: cover;
+        }
+        .bottomrightbutton{
+            background:linear-gradient(
+                    rgba(10, 10, 10, 0.45),
+                    rgba(10, 10, 10, 0.45)
+            ),url('media/Dual.PNG');
+            background-size: cover;
+            background-position: center;
+        }
+        .text{
+            color: white;
+            text-align: center;
+            /*background-color: rgba(20,20,20,0.5);*/
+            width: 100%;
+            height: 100%;
+            text-shadow: 1px 1px #333;
+
+        }
+        .toplefttext{
+        }
+        .toprighttext{
+        }
+        .bottomlefttext{
+        }
+        .bottomrighttext{
+        }
+    </style>
+    <link rel="stylesheet" href="css/survey.css" type="text/css"/>
+    <script src="js/WebService.js"></script>
+</head>
+<body>
+<div id="title">
+    <h1>Deep Map Case Studies of the English Lake District</h1>
+    <h3>Alexander Reinhold</h3>
+    <h3>a.reinhold1@lancaster.ac.uk</h3>
+    <p>Below are a series of Deep Maps developed as part of my PhD research at Lancaster University, focusing on the Lake District Region in the UK.
+        Deep Mapping is concept based on the spatial representation of the various meanings and experiences of a place over a period time,
+        typically in the form of an interactive map.
+        Please explore these maps and answers the survey questions that appear. Thank you for your participation.
+    </p>
+</div>
+<div class="wrapper">
+<div class="topleft tile">
+    <a href="http://wp.lancs.ac.uk/lakesdeepmap/">
+        <div class="topleftbutton button">
+            <div class="toplefttext text">
+                <h2>GEOSPATIAL INNOVATION IN THE DIGITAL HUMANITIES</h2>
+                <h3>A Deep Map of the English Lake District</h3>
+                <h4>Project Website</h4>
+            </div>
+        </div>
+    </a>
+</div>
+    <div class="topright tile">
+        <a href="../www/index.html">
+            <div class="toprightbutton button">
+            <div class="toprighttext text">
+                <h2>EXPLORING DEEP MAPPING CONCEPTS:</h2>
+                <h3>CROSTHWAITE’S MAP AND WEST’S PICTURESQUE STATIONS</h3>
+            </div>
+            </div>
+        </a>
+    </div>
+    <div class="bottomleft tile2">
+        <a href="../ww2/index.html">
+            <div class="bottomleftbutton button2">
+            <div class="bottomlefttext text">
+                <h2>DEEP MAP OF LAKE DISTRICT WRITING</h2>
+                <h3>Explore Spatial Relations in the Corpus of Lake District Writing</h3>
+            </div>
+            </div>
+        </a>
+    </div>
+    <div class="bottomright tile2">
+        <a href="../ww3/index2.html">
+            <div class="bottommiddlebutton button2">
+            <div class="bottommiddletext text">
+                <h2>JOURNEY THROUGH THE TEXT</h2>
+                <h3>A Spatial Experience of the Lake District Corpus</h3>
+            </div>
+            </div>
+        </a>
+    </div>
+    <div class="bottomright tile2">
+        <a href="../www/unity/index.html">
+            <div class="bottomrightbutton button2">
+                <div class="bottomrighttext text">
+                    <h2>DEEP MAP OF TARN HOWS</h2>
+                    <h3>Automated Generation of 3D Historic Landscapes</h3>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div id="introContainer">
+        <div id="introCenter">
+            <div id="introText">
+                Please choose the category that best fits you:
+                <select id="userType">
+                    <option value="Academic">Academic</option>
+                    <option value="Heritage">Heritage Site Authority</option>
+                    <option value="Public">General Public</option>
+                </select>
+                <div><button onclick="submitUser()">Submit</button></div>
+            </div>
+        </div>
+    </div>
+    <div id="surveyViewer"></div>
+    <script>
+        function randChar(length) {
+            var validChar = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            var sb = '';
+            for(var i = 0; i < length; i++) {
+                var randomChar = validChar.charAt(Math.random() * validChar.length-1);
+                sb += randomChar;
+            }
+
+            return sb;
+        }
+
+        function build20StrongCat(cat) {
+            var d = new Date();
+            var n = d.getTime();
+            var uid = cat + n + randChar(20 - (10 + cat.length));
+            return uid;
+        }
+
+        function buildStrong20() {
+            var d = new Date();
+            var n = d.getTime();
+            return n + randChar(10);
+        }
+
+
+
+
+        var self = this;
+        var arrayQuestions = new Array();
+        webService.getSurvey(0, function(results){
+            if(results.status == "SUCCESS"){
+                self.arrayQuestions = results.list;
+                console.log(self.arrayQuestions);
+                loadSurvey(0);
+            }
+        });
+
+        function loadSurvey(question){
+            var questionText = arrayQuestions[question][1];
+            var type = arrayQuestions[question][2];
+            var div = $('<div id="surveyQuestion">'+questionText+'</div>');
+            $('#surveyViewer').show();
+            $('#surveyViewer').append(div);
+            if(type == "1"){
+                var div = $('<div id="surveyRadio">' +
+                    '<div id="radioHead"><span style="margin-left: 5px;">Very Negative</span><span style="right: 5px;position: absolute;">Very Positive</span></div>'+
+                    '<div id="radioGroup"><span class="radioUnit"><input type="radio" name="radio" value="1"> 1</span>' +
+                    '<span class="radioUnit"><input type="radio" name="radio" value="2"> 2</span>' +
+                    '<span class="radioUnit"><input type="radio" name="radio" value="3" checked="checked"> 3</span>' +
+                    '<span class="radioUnit"><input type="radio" name="radio" value="4"> 4</span>' +
+                    '<span class="radioUnit"><input type="radio" name="radio" value="5"> 5</span></div></div>');
+                $('#surveyViewer').append(div);
+            }
+            else if(type == "2"){
+                var div = $('<div id="surveyText"><textarea id="textarea" placeholder="Enter text here"></textarea></div>');
+                $('#surveyViewer').append(div);
+            }
+            var div = $('<div id="surveyButton"><button onclick="submitSurvey(\''+question+'\')">Submit</button></div>');
+            $('#surveyViewer').append(div);
+        }
+
+        function submitSurvey(question){
+            var type = arrayQuestions[question][2];
+            var answer;
+            if(type == "1") {
+                answer = $("input[name='radio']:checked").val();
+            }
+            else if(type == "2"){
+                answer = $('#textarea').val();
+            }
+            var user = "undefined";
+            if (typeof(Storage) !== "undefined") {
+                user = localStorage.getItem("userID");
+            } else {
+                // Sorry! No Web Storage support..
+            }
+            webService.postSurvey(question, answer, user, function(results){
+                console.log(results);
+                if(results.status == "SUCCESS"){
+                    $('#surveyViewer').hide();
+                }
+                else{
+                    console.log("SurveyError");
+                }
+            });
+        }
+
+        function submitUser(){
+            var user = buildStrong20();
+            var type = $('#userType').val();
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem("userID", user);
+            } else {
+                // Sorry! No Web Storage support..
+            }
+            webService.postSurveyUser(user, type, function(results){
+                console.log(results);
+                if(results.status == "SUCCESS"){
+                    $('#introContainer').hide()
+                }
+                else{
+                    console.log("SurveyError");
+                }
+            });
+        }
+        if (typeof(Storage) !== "undefined") {
+            var user = localStorage.getItem("userID");
+            if(null != user){
+                $('#introContainer').hide()
+            }
+        } else {
+            $('#introContainer').hide()
+        }
+    </script>
+
+
+</div>
+</body>
+</html>

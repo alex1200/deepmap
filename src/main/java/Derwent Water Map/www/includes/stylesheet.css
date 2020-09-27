@@ -1,0 +1,95 @@
+
+.pancontainer{
+position:relative; /*keep this intact*/
+overflow:hidden; /*keep this intact*/
+width:100%;
+height:390px;
+border:1px solid black;
+
+}
+
+
+table, tr, td {
+	border-collapse: collapse;
+	border-spacing: 0px;
+	border: 0px;
+
+}
+
+
+
+/*-----------------------------
+  Panoviewer original: http://www.360cities.net/stylesheets/iphone.css
+-----------------------------*/
+
+/* 3D view (crop rectangle) */
+#viewport {
+	position:absolute;
+  /*width: 320px;
+  height: 375px;*//*change this to control the height, should be 420 for export*/
+  overflow: hidden;
+	z-index:0;
+  top: 0;
+  left: 0;
+  -webkit-perspective: 200;
+  -webkit-transform-style: preserve-3d;
+}
+
+
+
+#cube {
+  width: 100%;
+  height: 100%;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transform: translateZ(200px);    
+	position:absolute;
+	z-index:10;
+}
+
+/* Each side of the 3D cube */
+.panoside {
+  display: block;
+  position: absolute;
+  left: 18px;
+  top: 58px;  /* 18px vertically centres the 283-pixel-tall image in a 320-pixel-tall container */
+  -webkit-backface-visibility: hidden;
+}
+
+/* initial cube setup */
+#side1 { -webkit-transform: translateZ(-141px); }
+#side2 { -webkit-transform: rotateY(-90deg) translateZ(-141px); }
+#side3 { -webkit-transform: rotateY(180deg) translateZ(-141px); }
+#side4 { -webkit-transform: rotateY(90deg) translateZ(-141px);  }
+#side5 { -webkit-transform: rotateX(-90deg) translateZ(-141px); }
+#side6 { -webkit-transform: rotateX(90deg) translateZ(-141px);  }
+
+
+#controls{
+	width:100%;
+	text-align:center;
+	background:url('../img/panonavbar_bg.jpg');
+	background-repeat:repeat-x;
+	display:block;
+}
+#output{
+	background:#aaf;
+}
+
+#navbar{
+	position:absolute;
+	bottom:0px;
+	z-index:10;
+	width:100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+

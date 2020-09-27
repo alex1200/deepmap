@@ -1,5 +1,8 @@
 package core.explorer.location;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Alexander on 5/15/2017.
  */
@@ -9,6 +12,8 @@ public class SearchLocationObject {
     public double radius = 0;
     public int concordanceLimit = 0;
     public boolean fuzzy = false;
+    public String location;
+    public List<String> textSelection = new ArrayList<>();
 
     public SearchLocationObject(){
 
@@ -52,5 +57,21 @@ public class SearchLocationObject {
 
     public void setFuzzy(boolean fuzzy) {
         this.fuzzy = fuzzy;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<String> getTextSelection() {
+        return textSelection;
+    }
+
+    public void setTextSelection(List<String> textSelection) {
+        this.textSelection = textSelection;
     }
 }

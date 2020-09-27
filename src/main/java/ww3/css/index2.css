@@ -1,0 +1,284 @@
+body{
+    overflow: hidden;
+}
+s{
+    text-decoration: none;
+}
+
+#loadingPanel{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: rgba(23,23,23,0.8);
+}
+#loadingDisplay{
+    text-shadow: 3px 2px #1d1d1d;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 800px;
+    color: #d8d8d8;
+    padding: 10px;
+    height: 600px;
+    border-radius: 25px;
+    margin: auto;
+    z-index: 100;
+    background: rgba(52, 52, 52, 0.95);
+    box-shadow: 5px 5px 5px #333333;
+}
+
+#loadingTitle{
+
+}
+
+#pageViewBook{
+    position: absolute;
+    /* top: calc(50vh + 40px); */
+    left: 36px;
+    /* right: 50vw; */
+    /* height: 50vh; */
+    bottom: 25px;
+    width: 670px;
+    height: 504px;
+    overflow: hidden;
+    background-image: url(../media/book4.png);
+    z-index: 4;
+    font-family: Walter Turncoat;
+}
+#options{
+    position: absolute;
+    top: 10px;
+    left: 96px;
+    width:200px;
+    height: 20px;
+}
+#options select{
+    width: 200px;
+}
+
+#pageText{
+
+}
+
+#pageNumLeft{
+    position: absolute;
+    bottom: 22px;
+    left: 22px;
+}
+
+#pageNumRight{
+    position: absolute;
+    bottom: 29px;
+    right: 81px;
+    z-index: 6;
+}
+
+.pageView{
+    position: absolute;
+    top: 53px;
+    left: 96px;
+    right: 350px;
+    height: 418px;
+    overflow: hidden;
+    z-index:5;
+}
+.pageView:nth-child(2n){
+    position: absolute;
+    top: 32px;
+    left: 358px;
+    right: 75px;
+    height: 437px;
+    overflow: hidden;
+    z-index:5;
+}
+.pageView:nth-child(n+3){
+    /*display:none*/
+    z-index: 0;
+}
+
+#pageTurn{
+    display: inline-block;
+}
+#pageTurn div{
+    display: inline-block;
+}
+#prevPage{
+    display: none;
+    position: absolute;
+    left:20px;
+    bottom:200px;
+    width:80px;
+    height:98px;
+    background-image: url('../media/sprite/sprite-theme-prev-arrow.png');
+    z-index: 7;
+    cursor:pointer;
+}
+
+#nextPage{
+    position: absolute;
+    right:20px;
+    bottom:200px;
+    width:80px;
+    height:98px;
+    background-image: url('../media/sprite/sprite-theme-next-arrow.png');
+    z-index: 7;
+    cursor:pointer;
+}
+
+#prevLocation{
+    cursor:pointer;
+    font-weight: 700;
+}
+
+#nextLocation{
+    cursor:pointer;
+    font-weight: 700;
+}
+
+#pageViewHandBottom{
+    position: absolute;
+    bottom: -124px;
+    width: 434px;
+    left: -258px;
+    height: 294px;
+    background-image: url(../media/bottom_hand_left.png);
+    z-index: 2;
+}
+
+#pageViewHandTop{
+    position: absolute;
+    bottom: -131px;
+    width: 434px;
+    left: -275px;
+    height: 294px;
+    background-image: url(../media/top_hand_left.png);
+    z-index: 6;
+}
+
+#mapHandTop{
+    position: absolute;
+    bottom: -131px;
+    width: 434px;
+    right: -190px;
+    height: 294px;
+    background-image: url('../media/top_hand_right.png');
+    z-index:6;
+}
+
+#map{
+    position: absolute;
+    top: calc(50vh - 10px);
+    left: 0;
+    right: 0;
+    height: 50vh;
+    z-index: 1;
+    margin-top: 10px;
+    box-shadow: 8px -3px 5px #000000;
+}
+
+#pano{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50vh;
+    z-index: 0;
+}
+
+#mediaPanel{
+    display:none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    z-index: 6;
+    background-color: rgba(23,23,23,0.8);
+    /*overflow-x: auto;*/
+    overflow-y: auto;
+}
+
+#mediaButton{
+    background-image: url(../media/polaroids1.png);
+    background-repeat: no-repeat;
+    display: none;
+    height: 194px;
+    width: 69px;
+    position: absolute;
+    left: 0px;
+    bottom: 304px;
+    z-index: 5;
+    cursor:pointer;
+}
+
+.polaroid{
+    display: inline-block;
+    width: 30vh;
+    height: 36vh;
+    background-image: url(../media/pola.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 3px 2px 5px #000000;
+    margin: 10vh;
+}
+
+.polaroidImage{
+    position: relative;
+    top: 0%;
+    margin-top: 7%;
+    left: 6%;
+    width: 88%;
+    height: 74%;
+    /*background-position-y: 42px;*/
+    /*background-image: url(https://media.gettyimages.com/photos/lake-windermere-cumbria-picture-id5464…1&k=6&m=546429426&s=170x170&h=0f_3vqmMOp2aTabPP_dVn2f2JfYEdYlSo4DLg0xfZEM=);*/
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.polaroidCaption{
+    position: relative;
+    /* top: 79%; */
+    left: 6%;
+    width: 87%;
+    height: 6%;
+    font-size: 9px;
+ }
+
+.selectedEnamex{
+    color: #ad141c;
+}
+
+.inview{
+    color:#ad7301;
+}
+
+enamex{
+    color:#330033;
+}
+
+.closeButton {
+    border-radius: 50%;
+    background-clip: padding-box;
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    -webkit-transition: background-color 200ms;
+    -moz-transition: background-color 200ms;
+    -ms-transition: background-color 200ms;
+    -o-transition: background-color 200ms;
+    transition: background-color 200ms;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(11, 11, 12, .5);
+    cursor: pointer;
+    background-color: rgba(11,11,12,.5);
+    background-image: url('../media/sprites/sprite-close.png');
+    cursor: pointer;
+    background-position: 12px;
+    background-repeat: no-repeat;
+    z-index: 10;
+}

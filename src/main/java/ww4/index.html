@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Text Explorer</title>
+
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/external/css.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/genericons.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/external/style.css" type="text/css" media="all">
+
+    <script src="js/external/jquery.min.js"></script>
+    <script src="js/external/nanoscroller.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/external/jquery.tablesorter.js"></script>
+    <!--<script src="js/external/jquery-ui.js"></script>-->
+    <script src="js/external/jquery.panzoom.js"></script>
+    <script src="js/external/modernizr.js"></script>
+    <script src="js/external/PxFacetSearch.js"></script>
+    <script src="js/external/PxLoader.js"></script>
+    <script src="js/external/colResizable-1.6.js"></script>
+    <script src="js/external/foamtree/carrotsearch.foamtree.js"></script>
+    <script src="js/external/oms.min.js"></script>
+
+    <script src="js/common/MapCommon.js"></script>
+    <script src="js/common/TimelineCommons.js"></script>
+    <script src="js/CDOCommon.js"></script>
+    <script src="js/WebService.js"></script>
+    <script src="js/Navigator.js"></script>
+
+    <script src="js/concordance/ConcordanceManager.js"></script>
+    <script src="js/concordance/ConcordanceRender.js"></script>
+
+    <script src="js/location/LocationManager.js"></script>
+    <script src="js/location/LocationRender.js"></script>
+
+    <script src="js/feature/FeatureManager.js"></script>
+    <script src="js/feature/FeatureRender.js"></script>
+
+    <script src="js/text/TextManager.js"></script>
+    <script src="js/text/TextRender.js"></script>
+    <script src="js/text/TextMetaInstance.js"></script>
+
+    <script type="text/javascript" src="http://nls.tileserver.com/api.js"></script>
+</head>
+<body>
+<div id="mainContainer" >
+    <!--div id="routeContainer" onclick="">
+        <div id="routeHelp">
+            <h1>Choose Route</h1>
+            <div>
+                <div onclick="mainNavigator.toggleRouteMenu();mainNavigator.toggleSearchHelp()">Go To Explorer</div>
+                <div onclick="mainNavigator.toggleRouteMenu();$('#textDemoContainer').show()">Go To Texts</div>
+                <div onclick="mainNavigator.toggleRouteMenu();$('#heritageDemoContainer').show()">Go To Heritage Sites</div>
+
+                <br>
+                <!--<span id="searchHelpLoading">Loading<br>-->
+                <!--<progress id="searchHelpProgress" value="0" max="100"></progress></span>-->
+                <!--<span id="routeHelpClose" ><u>Click to Close</u></span>->
+            </div>
+        </div>
+    </div>
+    <div id="textDemoContainer" onclick="$(this).hide();">
+        <div id="textHelp">
+            <h1>Choose Text...</h1>
+
+        </div>
+    </div>
+    <div-- id="heritageDemoContainer" onclick="$(this).hide();">
+        <div id="heritageHelp">
+            <h1>Choose Heritage Site...</h1>
+
+        </div>
+    </div-->
+    <div id="searchHelpContainer" onclick="/*if(mainNavigator.hasLoaded == true)*/mainNavigator.toggleSearchHelp()">
+        <div id="searchHelp">
+            <h1>Search Help</h1>
+            <div>
+                <p>This is a Concordance Search Tool. A basic search will take a term, and a concordance limit value (x), and search for it in the
+                    Lancaster Lake District Corpus, returning every instance of that term and (x) words on either side of the term. Each Concordance is then
+                    displayed on the left list, and all those that have a location identified within the (x) number of words will display on the map.
+                </p>
+                <span><b>Concordance Limit:</b> The number of words on each side of the Search Term to return.</span>
+                <br><br>
+                <span><b>Fuzzy Match:</b> Determines the type of search. Enabled: Allows a looser search for the word (ex. Search Term: "waterfall" would match with "waterfall's")
+                Disabled: Requires an Exact Match (ex. Search Term: "waterfall" would not match with "waterfall's")</span>
+                <br><br>
+                <span><b>Second Search Term:</b> Returns Concordance Matches where the Second Search Term is within (x)[concordance limit value] words of the Main Search Term.</span>
+                <br><br>
+                <span><b>Comparison Searches:</b> Two separate searches are performed and added to the map in different colors.</span>
+                <br><br>
+                <span><b>Location Searches:</b> Display all locations in text(s) that fall within search radius. Set radius to 0 for global search.</span>
+                <br><br>
+                <span><b>Table View:</b> This view shows all Concordance Matches as well as Frequency Data</span>
+                <br><br>
+                <span><b>Full Text:</b> This view shows the full text for the selected Concordance as well as the meta data for the Text.</span>
+                <br><br>
+                <!--<span id="searchHelpLoading">Loading<br>-->
+                <!--<progress id="searchHelpProgress" value="0" max="100"></progress></span>-->
+                <span id="searchHelpClose" ><u>Click to Close</u></span>
+            </div>
+        </div>
+    </div>
+    <div id="textDetailPanel">
+        <div class="closeButton" onclick="$('#textDetailPanel').hide();"></div>
+        <div id="textDetailContainer">
+            <div id="textDetailView">
+                <div id="textDetail"></div>
+            </div>
+        </div>
+        <div id="textDetailRightPanel">
+            <div id="textDetailRightContainer">
+                <div id="textDetailSummary">
+                    <table id="textMetaTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="concordanceDetailPanel">
+            <div class="closeButton" onclick="$('#concordanceDetailPanel').hide();"></div>
+            <div id="concordanceTablePanel">
+                <p><b>Concordance Table: </b>This table shows the returned concordance records.</p>
+                <div id="concordanceTableContainer" class="fullFit">
+                <table id="concordanceTable"></table>
+                </div>
+            </div>
+            <div id="concordanceRightList">
+                <div id="concordanceFrequencyContainer">
+                    <ul>
+                        <li><a href="#concordanceFrequencyTab">Frequency Table</a></li>
+                        <li><a href="#concordanceFoamTreeTab">Foam Tree</a></li>
+                    </ul>
+                    <div id="concordanceFrequencyTab" class="tabContent">
+                        <p><b>Frequency Table: </b>This table shows the frequency of each word in the returned concordance matches.</p>
+                        <div id="concordanceFrequencyTableContainer">
+                            <table id="concordanceFrequencyTable" class="tablesorter"></table>
+                        </div>
+                    </div>
+                    <div id="concordanceFoamTreeTab" class="tabContent">
+                        <p><b>Foam Tree: </b>This visualization shows the top 50 most frequent words among all the concordance matches.</p>
+                        <div id="concordanceFoamTree"></div>
+                    </div>
+                    </div>
+                <label class="searchLabel_plain" for="dontUseStopWords">Turn off Stop Words</label>
+                <input id="dontUseStopWords" type="checkbox" onclick="concordanceRender.loadDetailPanel(!($(this).is(':checked')))"/>
+                <button id="showStopWords" onclick="mainNavigator.showStopWords()">Show Stop Words</button>
+
+            </div>
+        </div>
+    <div id="topSearch" >
+        <div id="panoTop">
+            <h3>Panorama View</h3>This panel show the closest available Google Street View Panorama to the location coordinates selected. The left list is populated with concordance matches of this location in the texts.
+            <div class="closeButton" onclick="mainNavigator.closePano();"></div>
+        </div>
+        <div class="searchHelpButton" onclick="mainNavigator.toggleSearchHelp()"></div>
+        <div class="styled-select lightGreen semi-square inline">
+            <select id="searchSelect"  onchange="mainNavigator.searchChange()">
+                <option value="simple" selected>Simple Search</option>
+                <option value="advanced">Advanced Search</option>
+                <option value="comparison">Comparison Search</option>
+                <option value="advancedComparison">Advanced Comparison Search</option>
+                <option value="mediaSearch">Location Search</option>
+                <!--<option value="featureSearch">Feature Search</option>-->
+            </select>
+        </div>
+        <span id="searchProgressTitle">Searching
+            <progress id="searchProgress"></progress>
+        </span>
+        <div id="searchContainer">
+
+        </div>
+        <template id="templateSimpleSearch">
+            <label class="searchLabel" for="termInput">Search: </label><input id="termInput" type="text" value="waterfall">
+            <label class="searchLabel" for="limitInput">Concordance Limit: </label><input id="limitInput" type="number" min="10" max="100" value="10">
+            <label class="searchLabel" for="fuzzyInput">Fuzzy Match: </label><input id="fuzzyInput" type="checkbox" checked>
+            <button onclick="mainNavigator.showTextSelection()">Text Selection</button>
+            <button onclick="mainNavigator.search();">Search</button>
+        </template>
+        <template id="templateAdvancedSearch">
+            <label class="searchLabel" for="adv_termInput">Search: </label><input id="adv_termInput" type="text" value="waterfall">
+            <label class="searchLabel" for="adv_secondaryTermInput">Second Search Term: </label><input id="adv_secondaryTermInput" type="text" value="tourist">
+            <label class="searchLabel" for="adv_limitInput">Concordance Limit: </label><input id="adv_limitInput" type="number" min="10" max="100" value="10">
+            <label class="searchLabel" for="adv_fuzzyInput">Fuzzy Match: </label><input id="adv_fuzzyInput" type="checkbox" checked>
+            <button onclick="mainNavigator.showTextSelection()">Text Selection</button>
+            <button onclick="mainNavigator.advancedSearch();">Search</button>
+        </template>
+        <template id="templateComparisonSearch">
+            <label class="searchLabel" for="comp1_termInput">Search: </label><input id="comp1_termInput" type="text" value="waterfall">
+            <label class="searchLabel" for="comp1_limitInput">Concordance Limit: </label><input id="comp1_limitInput" type="number" min="10" max="100" value="10">
+            <label class="searchLabel" for="comp1_fuzzyInput">Fuzzy Match: </label><input id="comp1_fuzzyInput" type="checkbox" checked><br>
+            <label class="searchLabel" for="comp2_termInput">Search: </label><input id="comp2_termInput" type="text" value="tourist">
+            <label class="searchLabel" for="comp2_limitInput">Concordance Limit: </label><input id="comp2_limitInput" type="number" min="10" max="100" value="10">
+            <label class="searchLabel" for="comp2_fuzzyInput">Fuzzy Match: </label><input id="comp2_fuzzyInput" type="checkbox" checked>
+            <button onclick="mainNavigator.showTextSelection()">Text Selection</button>
+            <button onclick="mainNavigator.compareSearch();">Search</button>
+        </template>
+        <template id="templateAdvancedComparisonSearch">
+            <label class="searchLabel" for="adv_comp1_termInput">Search: </label><input id="adv_comp1_termInput" type="text" value="waterfall">
+            <label class="searchLabel" for="adv_comp1_secondaryTermInput">Second Search Term: </label><input id="adv_comp1_secondaryTermInput" type="text" value="lake">
+            <label class="searchLabel" for="adv_comp1_limitInput">Concordance Limit: </label><input id="adv_comp1_limitInput" type="number" min="10" max="100" value="10">
+            <label class="searchLabel" for="adv_comp1_fuzzyInput">Fuzzy Match: </label><input id="adv_comp1_fuzzyInput" type="checkbox" checked><br>
+            <label class="searchLabel" for="adv_comp2_termInput">Search: </label><input id="adv_comp2_termInput" type="text" value="tourist">
+            <label class="searchLabel" for="adv_comp2_secondaryTermInput">Second Search Term: </label><input id="adv_comp2_secondaryTermInput" type="text" value="guide">
+            <label class="searchLabel" for="adv_comp2_limitInput">Concordance Limit: </label><input id="adv_comp2_limitInput" type="number" min="10" max="100" value="10">
+            <label class="searchLabel" for="adv_comp2_fuzzyInput">Fuzzy Match: </label><input id="adv_comp2_fuzzyInput" type="checkbox" checked>
+            <button onclick="mainNavigator.showTextSelection()">Text Selection</button>
+            <button onclick="mainNavigator.advancedCompareSearch();">Search</button>
+        </template>
+        <template id="templateMediaSearch">
+            <label class="searchLabel" for="chooseLat">Latitude: </label><input id="chooseLat" type="number" min="-180" max="180" value="0">
+            <label class="searchLabel" for="chooseLong">Longitude: </label><input id="chooseLong" type="number" min="-180" max="180" value="0">
+            <label class="searchLabel" for="chooseRadius">Radius: </label><input id="chooseRadius" type="number" min="0" max="100" value="15" onchange="mapCommon.pickRadius=$(this).val()">
+            <button id="pickButton" onclick="mainNavigator.pickEnabled()">Pick Point</button>
+            <label class="searchLabel" for="mediaLimitInput">Concordance Limit: </label><input id="mediaLimitInput" type="number" min="10" max="100" value="10">
+            <!--<label class="searchLabel" for="fuzzyInput">Fuzzy Match: </label><input id="fuzzyInput" type="checkbox" checked>-->
+            <button onclick="mainNavigator.showTextSelection()">Text Selection</button>
+            <button onclick="mainNavigator.mediaSearch();">Search</button>
+        </template>
+        <!--template id="templateFeatureSearch">
+            <!--<label class="searchLabel" for="chooseLat">Latitude: </label><input id="chooseLat" type="number" min="-180" max="180" value="0">-->
+            <!--<label class="searchLabel" for="chooseLong">Longitude: </label><input id="chooseLong" type="number" min="-180" max="180" value="0">-->
+            <!--<label class="searchLabel" for="chooseRadius">Radius: </label><input id="chooseRadius" type="number" min="1" max="100" value="1" onchange="mapCommon.pickRadius=$(this).val()">-->
+            <!--<button id="pickButton" onclick="mainNavigator.pickEnabled()">Pick Point</button>-->
+            <!--<label class="searchLabel" for="mediaLimitInput">Concordance Limit: </label><input id="mediaLimitInput" type="number" min="10" max="100" value="10">-->
+            <!--&lt;!&ndash;<label class="searchLabel" for="fuzzyInput">Fuzzy Match: </label><input id="fuzzyInput" type="checkbox" checked>&ndash;&gt;-->
+            <!--<button onclick="mainNavigator.showTextSelection()">Text Selection</button>->
+            <button onclick="mainNavigator.featureSearch();">Search</button>
+        </template-->
+    </div>
+    <!--<div id="timelineRow" class="row">-->
+        <!--<div id="timeline" class="unit whole">-->
+            <!--<div id="timelineLabels"></div>-->
+            <!--<div id="timelineCanvasHost">-->
+                <!--<canvas id="timelineCanvas"></canvas>-->
+            <!--</div>-->
+            <!--<div id="timeRangeSlider"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div id="mapPanel">
+    <div id="map"></div>
+    <div id="leftList">
+        <div id="leftSummary">
+
+        </div>
+        <template id="templateConcordanceSummary">
+            <div class="styled-select lightGreen semi-square">
+                <select id="renderTypeSelect" onchange="mainNavigator.renderSelectChange();">
+                    <option value="all" selected>All</option>
+                    <option value="locations">Locations Only</option>
+                </select>
+            </div>
+            <div id="summaryCount">Concordance Count:<span id="summaryCountShown">0</span>/<span id="summaryCountTotal">0</span></div>
+            <button onclick="mainNavigator.openConcordanceDetailPanel()">Table View</button>
+            <button onclick="mapCommon.toggleMarkerHeat()">Toggle Heatmap</button>
+        </template>
+        <template id="templateMediaSummary">
+            <div class="styled-select lightGreen semi-square">
+                <select id="locationRenderTypeSelect" onchange="mainNavigator.locationRenderSelectChange();">
+                    <option value="all" selected>All</option>
+                    <option value="location">Locations Only</option>
+                    <option value="media">Media Only</option>
+                    <option value="concordance">Concordance Only</option>
+                </select>
+            </div>
+            <div id="locationSummaryCount">Match Count:<span id="locationSummaryCountShown">0</span>/<span id="locationSummaryCountTotal">0</span></div>
+        </template>
+        <template id="templateFeatureSummary">
+            <!--<div class="styled-select lightGreen semi-square">-->
+                <!--<select id="featureRenderTypeSelect" onchange="mainNavigator.locationRenderSelectChange();">-->
+                    <!--<option value="all" selected>All</option>-->
+                    <!--<option value="location">Locations Only</option>-->
+                    <!--<option value="media">Media Only</option>-->
+                    <!--<option value="concordance">Concordance Only</option>-->
+                <!--</select>-->
+            <!--</div>-->
+            <!--<div id="featureSummaryCount">Match Count:<span id="featureSummaryCountShown">0</span>/<span id="featureSummaryCountTotal">0</span></div>-->
+        </template>
+        <div id="leftScroll"></div>
+
+    </div>
+    </div>
+    <div id="textPanel"></div>
+    <script>
+        var mapCommon = new MapCommon();
+        var concordanceManager = new ConcordanceManager();
+        var concordanceRender = new ConcordanceRender();
+        var locationManager = new LocationManager();
+        var locationRender = new LocationRender();
+        var textManager = new TextManager();
+        var textRender = new TextRender();
+        var featureManager = new FeatureManager();
+        var featureRender = new FeatureRender();
+        var mainNavigator = new Navigator();
+        var timeline;
+
+        function initMap() {
+            mapCommon.init();
+            mainNavigator.init();
+            timeline = new Timeline();
+//            concordanceManager.init();
+            textManager.init();
+            featureManager.load();
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFFW6ftcenI5Zs6FxjmwSKwJe0cA852_g&libraries=visualization&callback=initMap">
+    </script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-99002771-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</div>
+</body>
+</html>

@@ -41,6 +41,21 @@ WebService.prototype.postLocationSearch = function(search, callback){
 //     var url = webService.buildURL("crosthwaite/text/"+textUID+"/"+start+"/"+end+"/text",webService.JSON);
 //     webService.get(url,callback);
 // };
+WebService.prototype.getSurvey = function(page, callback){
+    console.log("getSurvey");
+    var url = webService.buildURL("survey/questions/"+page, webService.JSON);
+    webService.get(url, callback);
+};
+
+WebService.prototype.postSurvey = function(question, answer, user, callback){
+    var url = webService.buildURL("survey/answer", webService.JSON);
+    webService.post(url,{question:question,answer:answer,user:user}, callback);
+};
+
+WebService.prototype.postSurveyUser = function(user, type, callback){
+    var url = webService.buildURL("survey/user", webService.JSON);
+    webService.post(url,{user:user,type:type}, callback);
+};
 
 WebService.prototype.getIcon = function(source){
     var url = webService.buildURL("explorer/media/icon/"+source,".png");

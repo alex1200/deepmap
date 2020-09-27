@@ -15,8 +15,8 @@ public class ExplorerMediaIconResource extends AbstractServerResource {
     protected Representation processGet(Representation representation) {
         String source = getAttribute("source");
         String format = getAttribute("format");
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(source+"."+format).getFile());
+//        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File("Resources/"+source+"."+format);
         FileRepresentation rep = new FileRepresentation(file, MediaType.ALL);
         return rep;
     }

@@ -2,6 +2,7 @@ package core.explorer;
 
 import Commons.DB.DBConnection;
 import Commons.DB.DBRow;
+//import Commons.Geo.GeoCommon;
 import Commons.Geo.GeoCommon;
 import Commons.uid.UIDCommons;
 import NLPCommons.GeoParse.GeoParseCommon;
@@ -11,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import core.explorer.concordance.ConcordanceObject;
 import core.explorer.concordance.TokenObject;
+import core.explorer.feature.FeatureObject;
 import core.explorer.location.MediaObject;
 import core.explorer.text.TextMetaObject;
 import core.explorer.text.TextObject;
@@ -28,6 +30,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+//import uk.me.jstott.jcoord.LatLng;
+//import uk.me.jstott.jcoord.OSRef;
 
 import java.io.*;
 import java.util.*;
@@ -35,8 +39,8 @@ import java.util.*;
 public class Engine {
     public static void main(String[] args) {
         Engine engine = new Engine();
-        List<ConcordanceObject> concordanceObjects = engine.search(54.57417972892827, -3.1730026245116916, 10, 10, false);
-//        List<ConcordanceObject> concordanceObjects = engine.search("waterfall",10,false);
+//        List<ConcordanceObject> concordanceObjects = engine.search(54.57417972892827, -3.1730026245116916, 10, 10, false, null);
+        List<ConcordanceObject> concordanceObjects = engine.search("WINDEBROWE",10,false, null);
 //        List<ConcordanceObject> concordanceObjects2 = engine.search("waterfall","tourist",10,false);
         //System.out.println(concordanceObjects);
         System.out.println(concordanceObjects);
@@ -45,17 +49,25 @@ public class Engine {
     public List<TextObject> textlist;
     public Map<String, TextMetaObject> textMetalist;
 
+    public List<FeatureObject> featureList;
+    public Map<String, FeatureObject> featureMap;
+
+
     public int countHarvard = 0;
 
     public Engine() {
         initialize();
 
         loadTexts();
+//        loadFeatures();
     }
 
     private void initialize() {
         textlist = new ArrayList<>();
         textMetalist = new HashMap<>();
+
+        featureList = new ArrayList<>();
+        featureMap = new HashMap<>();
     }
 
     public List<TextObject> getTextlist() {
@@ -67,11 +79,10 @@ public class Engine {
     }
 
     private void loadTexts() {
-        DBConnection.getInstance().createConnection("root", "root", "127.0.0.1", 3306, "deepmap");
-        DBConnection.getInstance().openConnection();
+//        DBConnection.getInstance().createConnection("root", "", "127.0.0.1", 3306, "deepmap");
+//        DBConnection.getInstance().openConnection();
         List<DBRow> table = DBConnection.getInstance().queryDB("SELECT * FROM `deepmap`.`full_metadata`");
 
-        ClassLoader classLoader = getClass().getClassLoader();
         for (DBRow row : table) {
             String uid = UIDCommons.getInstance().build20StrongCat("TEXT");
             TextObject textObject = new TextObject();
@@ -83,7 +94,7 @@ public class Engine {
             String text = "";
             BufferedReader br = null;
             try {
-                br = new BufferedReader(new FileReader(new File(classLoader.getResource(filename).getFile())));
+                br = new BufferedReader(new FileReader(new File("Resources/"+filename)));
                 StringBuilder sb = new StringBuilder();
                 String line = br.readLine();
 
@@ -103,9 +114,14 @@ public class Engine {
         }
     }
 
-    public List<ConcordanceObject> search(String term, int concordanceLimit, boolean fuzzy) {
+    public List<ConcordanceObject> search(String term, int concordanceLimit, boolean fuzzy, List<String> textSelection) {
         List<ConcordanceObject> concordanceList = new ArrayList<>();
         for (TextObject textObject : textlist) {
+            if(null != textSelection){
+                if(textSelection.contains(textObject.getUID()) == false){
+                    continue;
+                }
+            }
 //            String[] result = textObject.getText().split("\\s");
 
             for (TokenObject token : textObject.getTokenList()) {
@@ -117,9 +133,9 @@ public class Engine {
         return concordanceList;
     }
 
-    public List<ConcordanceObject> search(String term, String secondaryTerm, int concordanceLimit, boolean fuzzy) {
+    public List<ConcordanceObject> search(String term, String secondaryTerm, int concordanceLimit, boolean fuzzy, List<String> textSelection) {
         List<ConcordanceObject> resultList = new ArrayList<>();
-        List<ConcordanceObject> firstTermList = search(term, concordanceLimit, fuzzy);
+        List<ConcordanceObject> firstTermList = search(term, concordanceLimit, fuzzy, textSelection);
         for (ConcordanceObject concordanceObject : firstTermList) {
             if (fuzzy == true) {
                 if (concordanceObject.getConcordanceString().contains(secondaryTerm) == true) {
@@ -137,9 +153,14 @@ public class Engine {
         return resultList;
     }
 
-    public List<ConcordanceObject> search(double lat, double lng, double radius, int concordanceLimit, boolean fuzzy) {
+    public List<ConcordanceObject> search(double lat, double lng, double radius, int concordanceLimit, boolean fuzzy, List<String> textSelection) {
         List<ConcordanceObject> concordanceList = new ArrayList<>();
         for (TextObject textObject : textlist) {
+            if(null != textSelection){
+                if(textSelection.contains(textObject.getUID()) == false){
+                    continue;
+                }
+            }
             for (TokenObject token : textObject.getTokenList()) {
                 if (null != token.getXmlTag() && token.getXmlTag().equalsIgnoreCase("enamex")) {
                     Document doc = Jsoup.parse(token.getFullToken());
@@ -148,7 +169,57 @@ public class Engine {
                         try {
                             double tokenLat = Double.parseDouble(e.attr("lat"));
                             double tokenLng = Double.parseDouble(e.attr("long"));
-                            if (GeoCommon.getInstance().inDistance(lat, lng, tokenLat, tokenLng, radius) == true) {
+//                            if (GeoCommon.getInstance().inDistance(lat, lng, tokenLat, tokenLng, radius) == true) {
+//                                concordanceList.add(createConcordance(token, textObject, concordanceLimit));
+//                            }
+                        } catch (Exception exc) {
+//                            System.out.println(e.attr("lat") + "," + e.attr("long"));
+                        }
+                    }
+                }
+            }
+        }
+        return concordanceList;
+    }
+
+    public List<ConcordanceObject> searchEnamex(String term, int concordanceLimit, boolean fuzzy, List<String> textSelection) {
+        List<ConcordanceObject> concordanceList = new ArrayList<>();
+        for (TextObject textObject : textlist) {
+//            String[] result = textObject.getText().split("\\s");
+            if(null != textSelection){
+                if(textSelection.contains(textObject.getUID()) == false){
+                    continue;
+                }
+            }
+            for (TokenObject token : textObject.getTokenList()) {
+                if (null != token.getXmlTag() && token.getXmlTag().equalsIgnoreCase("enamex")) {
+                    if ((term.equalsIgnoreCase(token.getWord()) == true && fuzzy == false) || (token.getWord().contains(term) == true && fuzzy == true)) {
+                        concordanceList.add(createConcordance(token, textObject, concordanceLimit));
+                    }
+                }
+            }
+        }
+        return concordanceList;
+    }
+
+    public List<ConcordanceObject> searchEnamex(double lat, double lon, int concordanceLimit, boolean fuzzy, List<String> textSelection) {
+        List<ConcordanceObject> concordanceList = new ArrayList<>();
+        for (TextObject textObject : textlist) {
+//            String[] result = textObject.getText().split("\\s");
+            if(null != textSelection){
+                if(textSelection.contains(textObject.getUID()) == false){
+                    continue;
+                }
+            }
+            for (TokenObject token : textObject.getTokenList()) {
+                if (null != token.getXmlTag() && token.getXmlTag().equalsIgnoreCase("enamex")) {
+                    Document doc = Jsoup.parse(token.getFullToken());
+                    Elements e = doc.select("enamex");
+                    if (null != e.get(0)) {
+                        try {
+                            double tokenLat = Double.parseDouble(e.attr("lat"));
+                            double tokenLng = Double.parseDouble(e.attr("long"));
+                            if(lat == tokenLat && lon == tokenLng){
                                 concordanceList.add(createConcordance(token, textObject, concordanceLimit));
                             }
                         } catch (Exception exc) {
@@ -312,12 +383,12 @@ public class Engine {
                         try {
                             double tokenLat = Double.parseDouble(e.attr("lat"));
                             double tokenLng = Double.parseDouble(e.attr("long"));
-                            if (GeoCommon.getInstance().inDistance(lat, lng, tokenLat, tokenLng, radius) == true) {
-                                hs.add(token.getWord().toLowerCase());
-                                token.setInRadius(true);
-                            } else {
-                                token.setInRadius(false);
-                            }
+//                            if (GeoCommon.getInstance().inDistance(lat, lng, tokenLat, tokenLng, radius) == true) {
+//                                hs.add(token.getWord().toLowerCase());
+//                                token.setInRadius(true);
+//                            } else {
+//                                token.setInRadius(false);
+//                            }
                         } catch (Exception exc) {
 //                            System.out.println(e.attr("lat") + "," + e.attr("long"));
                         }
@@ -378,5 +449,83 @@ public class Engine {
             }
         }
         return false;
+    }
+
+//    private void loadFeatures(){
+//        DBConnection.getInstance().createConnection("root", "root", "127.0.0.1", 3306, "deepmap");
+//        DBConnection.getInstance().openConnection();
+//        ClassLoader classLoader = getClass().getClassLoader();
+//
+//        List<DBRow> table =  new ArrayList<>();
+//
+////        table = DBConnection.getInstance().queryDB("SELECT * FROM deepmap.featuregroup_heritageatrisk_2016 INNER JOIN deepmap.featuregroup_listedbuilding_2017 ON deepmap.featuregroup_heritageatrisk_2016.ListEntry = deepmap.featuregroup_listedbuilding_2017.ListEntry;");
+////
+////        for (DBRow row : table) {
+////            String uid = UIDCommons.getInstance().build20StrongCat("FEAT");
+////            FeatureObject featureObject = new FeatureObject(row);
+////            featureObject.setUID(uid);
+////            featureMap.put(uid, featureObject);
+////            featureList.add(featureObject);
+////        }
+//
+//        table = DBConnection.getInstance().queryDB("SELECT * FROM deepmap.featuregroup_listedbuilding_2017;");
+//        for (DBRow row : table) {
+//            String uid = UIDCommons.getInstance().build20StrongCat("FEAT");
+//            FeatureObject featureObject = new FeatureObject();
+//           featureObject.setAltName(row.row.get(1).getKey().toString());
+//            featureObject.setHeritageCategory("Listed Building");
+//            featureObject.setRiskMethod("Not At Risk");
+//            featureObject.setURI("");
+//            featureObject.setLoaction(row.row.get(2).getKey().toString());
+//            featureObject.setGrade(row.row.get(3).getKey().toString());
+//            featureObject.setListDate(row.row.get(4).getKey().toString());
+//            featureObject.setNGR(row.row.get(7).getKey().toString());
+//            featureObject.setEasting(row.row.get(9).getKey().toString());
+//            featureObject.setNorthing(row.row.get(10).getKey().toString());
+//
+//            LatLng latLng = new OSRef(Double.parseDouble(featureObject.getEasting()),Double.parseDouble(featureObject.getNorthing())).toLatLng();
+//            latLng.toWGS84();
+//
+//            featureObject.setLatitude(latLng.getLat());
+//            featureObject.setLongitude(latLng.getLng());
+//            featureObject.setUID(uid);
+//            featureMap.put(uid, featureObject);
+//            featureList.add(featureObject);
+//        }
+//
+//        table = DBConnection.getInstance().queryDB("SELECT * FROM deepmap.featuregroup_worldheritagesite_2017;");
+//        for (DBRow row : table) {
+//            String uid = UIDCommons.getInstance().build20StrongCat("FEAT");
+//            FeatureObject featureObject = new FeatureObject();
+//            featureObject.setAltName(row.row.get(1).getKey().toString());
+//            featureObject.setHeritageCategory("World Heritage Site");
+//            featureObject.setRiskMethod("Not At Risk");
+//            featureObject.setURI("");
+//            featureObject.setLoaction("");
+//            featureObject.setGrade("");
+//            featureObject.setListDate(row.row.get(2).getKey().toString());
+//            featureObject.setNGR(row.row.get(6).getKey().toString());
+//            featureObject.setEasting(row.row.get(8).getKey().toString());
+//            featureObject.setNorthing(row.row.get(9).getKey().toString());
+//
+//            LatLng latLng = new OSRef(Double.parseDouble(featureObject.getEasting()),Double.parseDouble(featureObject.getNorthing())).toLatLng();
+//            latLng.toWGS84();
+//
+//            featureObject.setLatitude(latLng.getLat());
+//            featureObject.setLongitude(latLng.getLng());
+//            featureObject.setUID(uid);
+//            featureMap.put(uid, featureObject);
+//            featureList.add(featureObject);
+//        }
+//    }
+
+    public List<FeatureObject> getFeatureList(){
+        List<FeatureObject> inLakeList = new ArrayList<>();
+        for(FeatureObject feature : featureList){
+            if (GeoCommon.getInstance().inDistance(54.496365074733845, -3.107907772064209, feature.getLatitude(), feature.getLongitude(), 50) == true) {
+                inLakeList.add(feature);
+            }
+        }
+        return inLakeList;
     }
 }

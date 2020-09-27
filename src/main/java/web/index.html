@@ -143,7 +143,23 @@
         literaryRender = new LiteraryRender();
 
         literaryManager.init();
+
+        var self = this;
+        var arrayQuestions = new Array();
+        console.log("getSurvey2");
+        webService.getSurvey(1, function(results){
+            console.log("getSurvey3");
+            if(results.status == "SUCCESS"){
+                self.arrayQuestions = results.list;
+                console.log(self.arrayQuestions);
+            }
+        });
+        console.log(self.arrayQuestions);
+
     }
+
+
+
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFFW6ftcenI5Zs6FxjmwSKwJe0cA852_g&callback=initMap"></script>

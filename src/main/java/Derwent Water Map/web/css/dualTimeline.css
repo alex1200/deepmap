@@ -1,0 +1,127 @@
+#timeline2 {
+    background: #232629;
+    height:60px;
+    position: absolute;
+    top: 92px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 80;
+}
+
+#timeline2 #timeRangeSlider2 {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    bottom: 0;
+    left: 20px
+}
+
+#timeline2 .ui-slider .ui-slider-handle {
+    position: absolute;
+    width: 1px;
+    height: 54px;
+    background: 0 0;
+    cursor: ew-resize
+}
+
+#timeline2 .ui-slider .ui-slider-handle:after {
+    position: absolute;
+    left: -17px;
+    top: 0;
+    background-image: url(../media/sprites/sprite.png);
+    background-position: -74px -353px;
+    width: 17px;
+    content: '';
+    height: 100%
+}
+
+#timeline2 .ui-slider .ui-slider-handle:last-child {
+    width: 2px
+}
+
+#timeline2 .ui-slider .ui-slider-handle:last-child:after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-image: url(../media/sprites/sprite.png);
+    background-position: -403px -248px;
+    width: 17px;
+    content: '';
+    height: 100%
+}
+
+#timeline2 .ui-slider .ui-slider-handle:hover:after {
+    background-image: url(../media/sprites/sprite.png);
+    background-position: -37px -353px;
+    width: 17px;
+    height: 54px
+}
+
+#timeline2 .ui-slider .ui-slider-handle:last-child:hover:after {
+    background-image: url(../media/sprites/sprite.png);
+    background-position: 0 -353px;
+    width: 17px;
+    height: 54px
+}
+
+#timeline2:after {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    content: '';
+    height: 15px;
+    /*background: url(../media/sprites/sprite.png)repeat-x*/
+}
+
+#timeline2 #timelineCanvasHost2 {
+    position: absolute;
+    top: 12px;
+    right: 19px;
+    bottom: 0;
+    left: 20px;
+    overflow: hidden
+}
+
+#timeline2 #timelineCanvas2 {
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+#timeline2 #timelineLabels2 {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    bottom: 0;
+    left: 20px;
+    font-size: 10px
+}
+
+#timeline2 #timelineLabels2 .timelineLabel {
+    position: absolute;
+    top: 2px;
+    display: block;
+    overflow: visible;
+    color: #6b6f76;
+    font-weight: 700
+}
+
+#timeline2 #timelineLabels2 .timelineLabel:before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    width: 2px;
+    height: 22px;
+    background: rgba(255, 102, 0, .5)
+}
+
+#timeline2 #timelineLabels2 .timelineLabel .timelineText {
+    position: relative;
+    left: -25px;
+    width: 50px;
+    padding: 3px 0;
+    text-align: center
+}

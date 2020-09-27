@@ -1,0 +1,100 @@
+body{
+	margin: 0px;
+	font-family: "Segoe UI",Arial,sans-serif;
+}
+
+nav{
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	height: 61px;
+	background-color: #1d1d1d;
+	color: rgba(255,255,255,0.6);
+	/* font-family: Lato, sans-serif; */
+	font-size: 1.3rem;
+	/* padding: 1.25em 1.7em; */
+	padding: 7px;
+	padding-left: 15px;
+	padding-right: 15px;
+	font-size: 30px;
+	text-transform: uppercase;
+}
+
+#map{
+	background-image:url(media/map.jpg);
+	background-size:contain;
+	background-repeat:no-repeat;
+	position:fixed;
+	top:0px;
+	left:0px;
+	height:100%;
+	width:100%;
+	margin: 0px;
+}
+
+#content{
+	position:fixed;
+	bottom:61px;
+	left:0px;
+	right:0px;
+	top:71.614vh;
+	padding-left:10px;
+	padding-right:10px;
+	background-color:#243546;
+}
+
+#slideshow{
+	display:none;
+	width:260px;
+	height:200px;
+	position:fixed;
+	top:25px;
+	left:25px;
+	box-shadow: 5px 5px 5px #363636;
+}
+#slideshow button{
+	z-index:120;
+}
+.mySlides {
+	display:none;
+	z-index:110;
+	}
+	
+#panorama{
+	display:none;
+	position:fixed;
+	top:0px;
+	left:0px;
+	height:100%;
+	width:100%;
+}
+
+#textContainer{
+	position: fixed;
+	top: 100px;
+	right: 25px;
+	width: 300px;
+	bottom: 100px;
+	/* overflow: scroll; */
+	z-index: 200;
+	background-color: rgba(36,36,36,0.5);
+	padding: 42px;
+	color: white;
+}
+#text{
+	overflow: scroll;
+	height: 100%;
+}
+
+.myTextSlides {
+	display:none;
+}
+
+s {
+	text-decoration: none;
+}
+
+enamex{
+	color:#7995ff;
+}

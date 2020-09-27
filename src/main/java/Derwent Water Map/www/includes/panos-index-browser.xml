@@ -1,0 +1,277 @@
+<!-- 
+	krpano Virtual Tour Demo - Weingut
+		http://krpano.com/tours/weingut/
+	
+	note - this is an reduced example (stronger image compression, only small 
+	images, fewer panos) to keep the download package small
+-->
+<krpano version="1.0.8" onstart="startup();">
+	<!-- vtour.xml template krpano tools version 1.0.8.12 -->
+	
+	<action name="startup">
+		<!-- load the first scene -->
+ loadscene(scene_, null, null); 
+	oninterrupt( stopspinloop() );
+			
+		set(continuespinning,true);
+		set(spincount,0);
+		set(intouchmode,true);
+		set(picname,blah);
+		set(caption,initdefault);
+		
+		spinloop();
+		
+		
+		<!-- build the thumbnails (remove the next line to remove the thumbnails) -->
+		<!-- buildthumbs(); -->
+	</action>		
+		<action name="spinloop">
+		oninterrupt( stopspinloop(); );
+sub(plugin[compass_pointer].rotate, view.hlookat, heading);	
+		set(plugin[spinicon].enabled,true);set(plugin[spinicon].visible,true);
+		set(plugin[spiniconover].enabled,false);set(plugin[spiniconover].visible,false);
+				
+		add(hlookattemp,get(view.hlookat),1);
+		lookto(get(hlookattemp), get(view.vlookat), get(view.fov), linear(10));
+		if(continuespinning,spinloop())
+	</action>
+	<action name="stopspinloop">
+		set(continuespinning,false);
+		set(plugin[spinicon].enabled,false);set(plugin[spinicon].visible,false);
+		set(plugin[spiniconover].enabled,true);set(plugin[spiniconover].visible,true);
+		</action>
+	<action name="gofullscreen">
+		switch(fullscreen);
+		set(plugin[fullscreenicon].enabled,false);set(plugin[fullscreenicon].visible,false);
+		set(plugin[fullscreeniconover].enabled,true);set(plugin[fullscreeniconover].visible,true);
+	</action>
+	<action name="gofullscreenback">
+		switch(fullscreen);
+		set(plugin[fullscreeniconover].enabled,false);set(plugin[fullscreeniconover].visible,false);
+		set(plugin[fullscreenicon].enabled,true);set(plugin[fullscreenicon].visible,true);
+	</action>
+		
+	<!-- disable the progress bar -->
+	<progress showload="none" showwait="none" />
+	
+
+	<!-- hotspot styles (for Flash and HTML5) -->
+	<style name="hotspot_ani_black"
+	       url="/iphone/img/hotspot_ani_black_64x64x20.png"
+	       crop="0|0|64|64"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       onloaded="hotspot_animate();"
+	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
+	       />
+
+	<style name="hotspot_ani_white"
+	       url="/iphone/img/hotspot_ani_outline_64x64x20.png"
+	       crop="0|0|64|64"
+	       alpha="1"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       onloaded="hotspot_animate();"
+	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
+	       />
+	       
+	<style name="alt_hotspot_ani_black"
+	       alturl="/iphone/img/hotspot_ani_black_64x64x20.png"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       altonloaded="set(crop,'0|0|64|64'); resetsize(); set(alpha,1.0); if(isphone, mul(scale,2)); hotspot_animate();"
+	       />
+	       
+	<style name="alt_hotspot_ani_white"
+	       alturl="/iphone/img/hotspot_ani_outline_64x64x20.png"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       altonloaded="set(crop,'0|0|64|64'); resetsize(); set(alpha,1.0); if(isphone, mul(scale,2)); hotspot_animate();"
+	       />
+
+		<style name="imagehotspot" 
+		       capture="false" 
+		       zorder="2"
+		       alpha="1"
+		       url="/iphone/img/hotspot_photo.png" 
+		       alturl="/iphone/img/hotspot_photo.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+40" 
+		       oy="+30" 
+		       />
+		<style name="perspectivehotspot" 
+		       capture="false" 
+		       zorder="2" 
+		       alpha="1"
+		       url="/iphone/img/hotspot_scanshot.png" 
+		       alturl="/iphone/img/hotspot_scanshot.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+40" 
+		       oy="+30" 
+		       />
+		<style name="jshotspot" 
+		       capture="false" 
+		       zorder="2" 
+		       onclick="js(jshotspot(get(pic)));" 
+		       alpha="0"
+		       alturl="/iphone/img/pixel-blue.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+40" 
+		       oy="+30" 
+		       />
+		 <style name="transparenthotspot" 
+		       capture="false" 
+		       zorder="2" 
+		       onclick="showpic('');" 
+		       alpha="0"
+		       url="/iphone/img/pixel-blue.png" 
+		       alturl="/iphone/img/pixel-blue.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+20" 
+		       oy="+15" 
+		       />
+		<style name="videohotspot" 
+		       capture="false" 
+		       zorder="2" 
+		       onclick="showvideo();" 
+		       alpha="1"
+		       url="/iphone/img/hotspot_video.png" 
+		       alturl="/iphone/img/hotspot_video.png" 
+		       altonloaded="if(isphone, mul(scale,2));"
+		       zoom="true" 
+		       scale="0.3" 
+		       ox="+40" 
+		       oy="+30" 
+		       />
+		       
+	<action name="hotspot_animate">
+		inc(frame,1,get(frames),0);
+		mul(ypos,frame,frameheight);
+		txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight));
+		delayedcall(0.03, hotspot_animate() );
+	</action>
+	
+	
+	<!-- text style for hotspot hovering -->       
+	<textstyle name="hotspottextstyle" 
+	           font="Arial" fontsize="18" bold="true" italic="true" textcolor="0xFFF7EF" background="false" border="false"
+	           alpha="1" blendmode="layer" effect="glow(0x000000,0.5,4,3);dropshadow(4,45,0x000000,4,0.66);" 
+	           origin="cursor" edge="bottom" textalign="center" xoffset="0" yoffset="-3" noclip="true" showtime="0.1" fadetime="0.25" fadeintime="0.1" 
+	           />	
+	<textstyle name="mediacaptiontextstyle" 
+	           font="Arial" 
+	           fontsize="14" 
+	           bold="true" 
+	           textcolor="0x000000" 
+	           background="true"
+	           backgroundcolor="0xFFFFFF"
+	            
+	           border="true"
+	           bordercolor="0x000000"
+	           
+	           alpha=".9" 
+	           blendmode="layer" 
+	           effect="glow(0x000000,0.5,4,3);dropshadow(4,45,0x000000,4,0.66);" 
+	           origin="bottom" 
+	           edge="bottom" 
+	           textalign="center" 
+	           xoffset="0" 
+	           yoffset="5" 
+	           noclip="true" 
+	           showtime="0.1" 
+	           fadetime="0.25" 
+	           fadeintime="0.1" 
+	           />	
+	           	
+	<!-- actions -->
+       
+	<!-- calc the max. flyout size of a hotspot for the current screen size -->
+	<action name="calc_flyout_size">
+		div(screen_sideaspect, stagewidth, stageheight);
+		div(hotspot_sideaspect, hotspot[%1].width, hotspot[%1].height);
+		
+		if(screen_sideaspect LT hotspot_sideaspect,
+			<!-- align at screen width -->
+			div(hotspot[%1].width,stagewidth,stageheight);
+			mul(hotspot[%1].width,90);
+			txtadd(hotspot[%1].width,'%');
+			set(hotspot[%1].height,prop);
+		  ,
+		  <!-- align at screen height -->
+			set(hotspot[%1].width,prop);
+			set(hotspot[%1].height,90%);
+		  );
+	</action>
+
+	<!-- fly in a hotspot = show hotspot fixed at screen -->
+	<action name="flyin">
+		if(hotspot[%1].flying == 0.0, hotspot[%1].resetsize(); calc_flyout_size(%1); );
+		if(hotspot[%1].oldscale === null, copy(hotspot[%1].oldscale, hotspot[%1].scale) );
+		if(hotspot[%1].oldrx === null, copy(hotspot[%1].oldrx, hotspot[%1].rx) );
+		if(hotspot[%1].oldry === null, copy(hotspot[%1].oldry, hotspot[%1].ry) );
+		if(hotspot[%1].oldrz === null, copy(hotspot[%1].oldrz, hotspot[%1].rz) );
+		set(hotspot[%1].zorder,20);
+		set(hotspot[%1].enabled,true);
+		set(hotspot[%1].visible,true);
+		tween(hotspot[%1].alpha,  1.0);
+		tween(hotspot[%1].flying, 1.0);
+		tween(hotspot[%1].scale,  1.0);
+		tween(hotspot[%1].rx, 0.0);
+		tween(hotspot[%1].ry, 0.0);
+		tween(hotspot[%1].rz, 0.0);
+	</action>
+
+	<!-- fly the hotspot out/back -->
+	<action name="flyout">
+		set(hotspot[%1].enabled,false);
+		tween(hotspot[%1].alpha,  0.0, 0.5, default, set(hotspot[%1].visible,false); );
+		tween(hotspot[%1].flying, 0.0);
+		tween(hotspot[%1].scale,  get(hotspot[%1].oldscale));
+		tween(hotspot[%1].rx,  get(hotspot[%1].oldrx));
+		tween(hotspot[%1].ry,  get(hotspot[%1].oldry));
+		tween(hotspot[%1].rz,  get(hotspot[%1].oldrz));
+		set(picname,);
+	</action>	       
+	       
+	<action name="showpic">
+		<!-- creates a new hotspot and fly it out -->
+		if(hotspot[get(pic)] === null,
+			txtadd(picfilename,'iphone/img-rus/media/',get(pic),'.jpg');
+			addhotspot(get(pic));
+			getcenter(hsath,hsatv);
+			copy(hotspot[get(pic)].ath, hsath);
+			copy(hotspot[get(pic)].atv, hsatv);
+			set(hotspot[get(pic)].visible,false);
+			set(hotspot[get(pic)].distorted,true);
+			set(hotspot[get(pic)].zorder,20);
+			set(hotspot[get(pic)].scale,0.1);
+			set(hotspot[get(pic)].alpha,0.0);
+			<!--set(hotspot[get(pic)].effect,glow(0xFFFFFF,1.0,30,10000);dropshadow(10,45,0x000000,10,0.3););-->
+			set(hotspot[get(pic)].onloaded, flyin(get(name)) );
+			set(hotspot[get(pic)].onclick, flyout(get(name)) );
+			set(hotspot[get(pic)].onhover, showtext(%1, mediacaptiontextstyle) );
+			copy(hotspot[get(pic)].url,picfilename); 
+			set(picname,get(name));
+		,
+			flyin(get(pic));
+			set(picname,get(name));
+		);
+	</action>
+	<action name="showvideo">
+		set(videoname,get(name));
+	</action>
+
+	
+	
+	
+		
+		        
+	
+	
+	
+</krpano>
+	

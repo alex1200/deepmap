@@ -5,6 +5,7 @@
     <title>New Text Explorer</title>
 
     <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="../www/css/survey.css" type="text/css"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="css/external/css.css" type="text/css" media="all">
     <link rel="stylesheet" href="css/external/genericons.css" type="text/css" media="all">
@@ -42,6 +43,7 @@
 </head>
 <body>
 <div id="mainContainer" >
+    <div id="surveyViewer"></div>
     <div id="searchHelpContainer" onclick="/*if(mainNavigator.hasLoaded == true)*/mainNavigator.toggleSearchHelp()">
         <div id="searchHelp">
             <h1>Search Help</h1>
@@ -247,6 +249,86 @@
         ga('send', 'pageview');
 
     </script>
+    <script>
+        var self = this;
+        var arrayQuestions = new Array();
+        var deepMapSurvey =1;
+        webService.getSurvey(2, function(results){
+            if(results.status == "SUCCESS"){
+                self.arrayQuestions = results.list;
+                console.log(self.arrayQuestions);
+                loadSurvey(0);
+            }
+        });
+
+        function loadSurvey(question){
+            var questionText = arrayQuestions[question][1];
+            var type = arrayQuestions[question][2];
+            var div = $('<div id="surveyQuestion">'+questionText+'</div>');
+            $('#surveyViewer').show();
+            $('#surveyViewer').empty();
+            $('#surveyViewer').append(div);
+            if(type == "1"){
+                var div = $('<div id="surveyRadio">' +
+                    '<div id="radioHead"><span style="margin-left: 5px;">Very Negative</span><span style="right: 5px;position: absolute;">Very Positive</span></div>'+
+                    '<div id="radioGroup"><span class="radioUnit"><input type="radio" name="radio" value="1"> 1</span>' +
+                    '<span class="radioUnit"><input type="radio" name="radio" value="2"> 2</span>' +
+                    '<span class="radioUnit"><input type="radio" name="radio" value="3" checked="checked"> 3</span>' +
+                    '<span class="radioUnit"><input type="radio" name="radio" value="4"> 4</span>' +
+                    '<span class="radioUnit"><input type="radio" name="radio" value="5"> 5</span></div></div>');
+                $('#surveyViewer').append(div);
+            }
+            else if(type == "2"){
+                var div = $('<div id="surveyText"><textarea id="textarea" placeholder="Enter text here"></textarea></div>');
+                $('#surveyViewer').append(div);
+            }
+            var div = $('<div id="surveyButton"><button onclick="submitSurvey(\''+question+'\')">Submit</button></div>');
+            $('#surveyViewer').append(div);
+        }
+
+        function submitSurvey(question){
+            var type = arrayQuestions[question][2];
+            var answer;
+            if(type == "1") {
+                answer = $("input[name='radio']:checked").val();
+            }
+            else if(type == "2"){
+                answer = $('#textarea').val();
+            }
+            var user = "undefined";
+            if (typeof(Storage) !== "undefined") {
+                user = localStorage.getItem("userID");
+            } else {
+                // Sorry! No Web Storage support..
+            }
+            webService.postSurvey(question, answer, user, function(results){
+                console.log(results);
+                if(results.status == "SUCCESS"){
+                    $('#surveyViewer').hide();
+                    if(question == 6){
+                        deepMapSurvey++;
+                    }
+                    if(deepMapSurvey==1){
+                        loadSurvey(6);
+                    }
+                }
+                else{
+                    console.log("SurveyError");
+                }
+            });
+        }
+    </script>
+
+    <div id="introContainer" onclick="$('#introContainer').hide()">
+        <div id="introCenter">
+            <div id="introClose">&times;</div>
+            <div id="introText">
+                This Deep Map allows for complex searches of the texts from the Corpus of Lake District Writing, a collection of works composed between 1622 and 1900.
+                You can use the various searches at the top of the screen to query the texts, and locations mentioned in proximity to your search term will be displayed on the map.
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

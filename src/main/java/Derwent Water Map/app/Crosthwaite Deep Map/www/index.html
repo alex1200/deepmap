@@ -1,0 +1,242 @@
+<html>
+<head>
+<link rel="stylesheet" href="main.css" type="text/css" media="all">
+<link rel="stylesheet" href="w3.css">
+<link rel="stylesheet" href="js/pano.css">
+<script src="js/main.js"></script>
+<script src="js/jquerymin.js"></script>
+
+</head>
+<body class="multiple-scenes view-control-buttons">
+<div id="map">
+	<img class="station" data-id="station1" src="media/station_blue1.png" style="position:fixed;margin:-12.5px;width:25px;top:32.540vw;left:70.000vw;content:'1';" onclick="loadStation(1)">
+	<img class="station" data-id="station2" src="media/station_blue2.png" style="position:fixed;margin:-12.5px;width:25px;top:34.677vw;left:66.129vw;content:'2';" onclick="loadStation(2)">
+	<img class="station" data-id="station3" src="media/station_blue3.png" style="position:fixed;margin:-12.5px;width:25px;top:42.500vw;left:47.056vw;content:'3';" onclick="loadStation(3)">
+	<img class="station" data-id="station4" src="media/station_blue4.png" style="position:fixed;margin:-12.5px;width:25px;top:34.717vw;left:10.403vw;content:'4';" onclick="loadStation(4)">
+	<img class="station" data-id="station5" src="media/station_blue5.png" style="position:fixed;margin:-12.5px;width:25px;top:18.750vw;left:70.967vw;content:'5';" onclick="loadStation(5)">
+	<img class="station" data-id="station6" src="media/station_blue6.png" style="position:fixed;margin:-12.5px;width:25px;top:21.612vw;left:67.620vw;content:'6';" onclick="loadStation(6)">
+	<img class="station" data-id="station7" src="media/station_blue7.png" style="position:fixed;margin:-12.5px;width:25px;top:31.814vw;left:83.629vw;content:'7';" onclick="loadStation(7)">
+	<img class="station" data-id="station8" src="media/station_blue8.png" style="position:fixed;margin:-12.5px;width:25px;top:48.346vw;left:84.919vw;content:'8';" onclick="loadStation(8)">
+	<img id="modMap" src="media/map3.png" onclick="toggleMap(1);" style="position:fixed;width:100px;top:25px;right:25px;border:0px;margin:2px;z-index:100">
+	<img id="hisMap" src="media/map.jpg" onclick="toggleMap(2);" style="position:fixed;width:100px;top:25px;right:125px;border:2px solid blue;margin:0px;z-index:110">
+
+	<div id="slideshow"  class="w3-content w3-display-container">
+		<div class="mySlides w3-animate-opacity" style="display: block;">
+			<img src="BowderStone.jpg" style="width:100%;height:100%;">
+			<div class="w3-display-bottommiddle w3-text-white w3-hide-small">
+			  <span class="w3-white w3-padding-small" style="font-size:11px">Bowder Stone</span>
+			</div>
+		</div>
+		<div class="mySlides w3-animate-opacity" style="display: block;">
+			<img src="CrosthwaiteChurch2.jpg" style="width:100%;height:100%;">
+			<div class="w3-display-bottommiddle w3-text-white w3-hide-small">
+			  <span class="w3-white w3-padding-small" style="font-size:11px">Crosthwaite Church</span>
+			</div>
+		</div>
+		<div class="mySlides w3-animate-opacity" style="display: block;">
+			<img src="BarrowHouse2.jpg" style="width:100%;height:100%;">
+			<div class="w3-display-bottommiddle w3-text-white w3-hide-small">
+			  <span class="w3-white w3-padding-small" style="font-size:11px">Barrow House</span>
+			</div>
+		</div>
+		<!--img class="mySlides" src="BowderStone.jpg">
+		<img class="mySlides" src="CrosthwaiteChurch2.jpg">
+		<img class="mySlides" src="BarrowHouse2.jpg"-->
+		<button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+		<button class="w3-button w3-black w3-display-right" onclick="plusDivs(+1)">&#10095;</button>
+	</div>
+	<div id="content">
+		<p>As part of Lancaster University’s Geospatial Innovation in the Digital Humanities: A Deep Map of the English Lake District project, we wanted to explore the concept of a Deep Map in a more limited scope, to allow for a discussion of the included elements and features, and evaluate their effectiveness. We chose to focus on a single historic map of Derwent Water Lake in the Lake District, created by Peter Crosthwaite in 1783. Crosthwaite’s map depicts his representation of Thomas Wests Viewing Stations around Derwent Water. The West stations are picturesque locations in the environment that West visited during his travels.</p>
+	</div>
+</div>
+<div id="panorama">
+	<div id="pano"></div>
+
+	<div id="sceneList">
+	  <ul class="scenes">
+		<a href="#" class="scene" data-id="station1">
+		  <li class="text">Station 1</li>
+		</a>
+		<a href="#" class="scene" data-id="station2">
+		  <li class="text">Station 2</li>
+		</a>
+		<a href="#" class="scene" data-id="station3">
+		  <li class="text">Station 3</li>
+		</a>
+		<a href="#" class="scene" data-id="station4">
+		  <li class="text">Station 4</li>
+		</a>
+		<a href="#" class="scene" data-id="station5">
+		  <li class="text">Station 5</li>
+		</a>
+		<a href="#" class="scene" data-id="station6">
+		  <li class="text">Station 6</li>
+		</a>
+		<a href="#" class="scene" data-id="station7">
+		  <li class="text">Station 7</li>
+		</a>
+		<a href="#" class="scene" data-id="station8">
+		  <li class="text">Station 8</li>
+		</a>
+	  </ul>
+	</div>
+
+	<div id="titleBar">
+	  <h1 class="sceneName"></h1>
+	</div>
+
+	<a href="#" id="autorotateToggle">
+	  <img class="icon off" src="img/play.png">
+	  <img class="icon on" src="img/pause.png">
+	</a>
+
+	<a href="#" id="fullscreenToggle">
+	  <img class="icon off" src="img/fullscreen.png">
+	  <img class="icon on" src="img/windowed.png">
+	</a>
+
+	<a href="#" id="sceneListToggle">
+	  <img class="icon off" src="img/expand.png">
+	  <img class="icon on" src="img/collapse.png">
+	</a>
+
+	<a href="#" id="viewUp" class="viewControlButton viewControlButton-1">
+	  <img class="icon" src="img/up.png">
+	</a>
+	<a href="#" id="viewDown" class="viewControlButton viewControlButton-2">
+	  <img class="icon" src="img/down.png">
+	</a>
+	<a href="#" id="viewLeft" class="viewControlButton viewControlButton-3">
+	  <img class="icon" src="img/left.png">
+	</a>
+	<a href="#" id="viewRight" class="viewControlButton viewControlButton-4">
+	  <img class="icon" src="img/right.png">
+	</a>
+	<a href="#" id="viewIn" class="viewControlButton viewControlButton-5">
+	  <img class="icon" src="img/plus.png">
+	</a>
+	<a href="#" id="viewOut" class="viewControlButton viewControlButton-6">
+	  <img class="icon" src="img/minus.png">
+	</a>
+
+	<div id="textContainer">
+		<div id="text">
+
+		</div>
+		<button class="w3-button w3-black w3-display-left" onclick="plusTextDivs(-1)">&#10094;</button>
+		<button class="w3-button w3-black w3-display-right" onclick="plusTextDivs(+1)">&#10095;</button>
+	</div>
+</div>
+<nav>
+<span><a onclick="toggleMapPano(1)">Home</a></span>
+<span style="float:right"><a onclick="toggleText()">Toggle Text</a></span>
+</nav>
+</body>
+<script>
+function toggleMap(index){
+	if(index==1){
+		$('#modMap').css('border','2px solid blue');
+		$('#modMap').css('margin','0px');
+		$('#modMap').css('z-index','110');
+		$('#hisMap').css('border','0px solid blue');
+		$('#hisMap').css('margin','2px');
+		$('#hisMap').css('z-index','100');
+		
+		$('#slideshow').show();
+		$('#map').css('background-image','url(media/map3.png)');
+	}
+	else{
+		$('#hisMap').css('border','2px solid blue');
+		$('#hisMap').css('margin','0px');
+		$('#hisMap').css('z-index','110');
+		$('#modMap').css('border','0px solid blue');
+		$('#modMap').css('margin','2px');
+		$('#modMap').css('z-index','100');
+		
+		$('#slideshow').hide();
+		$('#map').css('background-image','url(media/map.jpg)');
+	}
+}
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+    showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    if (n > x.length) {slideIndex = 1} 
+    if (n < 1) {slideIndex = x.length} ;
+    for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none"; 
+    }
+    x[slideIndex-1].style.display = "block"; 
+}
+
+function toggleMapPano(index){
+	if(index==1){
+		$('#map').show();
+		$('#panorama').hide();
+	}
+	else{
+		$('#map').hide();
+		$('#panorama').show();
+	}
+}
+
+function toggleText(){
+    var x = document.getElementById("textContainer");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+<script src="common/es5-shim.js"></script>
+<script src="common/eventShim.js"></script>
+<script src="common/classList.js"></script>
+<script src="common/requestAnimationFrame.js" ></script>
+<script src="common/screenfull.js" ></script>
+<script src="common/bowser.js" ></script>
+<script src="common/marzipano.js" ></script>
+
+
+<script src="js/text.js"></script>
+<script src="js/pano_data.js"></script>
+<script src="js/pano.js"></script>
+
+<script>
+    function loadStation(station){
+        $('#map').hide();
+        $('#panorama').show();
+
+        // var stationTexts = text[station];
+        // stationTexts.forEach(function(text) {
+        //     var div = '<div class="myTextSlides w3-animate-opacity" style="display: block;">'+
+        //         '<h2 class="w3-white w3-padding-small" style="font-size:11px">'+text.title+'</h2>'+
+        //         '<h3 class="w3-white w3-padding-small" style="font-size:11px">'+text.text+'<span>'+text.text+'</span></h3>'+
+		// 			'<span class="w3-white w3-padding-small" style="font-size:11px">'+text.text+'</span>'+
+        //     	'</div>';
+        //     $('#textContainer').append(div);
+        // });
+        // $('#textContainer').show();
+    }
+    function plusTextDivs(n) {
+        showTextDivs(slideIndex += n);
+    }
+
+    function showTextDivs(n) {
+        var i;
+        var x = document.getElementsByClassName("myTextSlides");
+        if (n > x.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = x.length} ;
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        x[slideIndex-1].style.display = "block";
+    }
+</script>
+</html>
